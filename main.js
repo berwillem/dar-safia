@@ -1066,10 +1066,22 @@ export const perfumeCatalog = [
 // au build ; l'optional chaining empêcherait cette substitution.
 const WHATSAPP_PHONE = import.meta.env.VITE_WHATSAPP_PHONE || '';
 
+// Numéros de remplacement connus. Ils débloquent le développement mais ne
+// mènent à aucune conciergerie : on refuse qu'ils partent en production sans
+// être vus. Ajouter ici tout nouveau numéro fictif utilisé en local.
+const PLACEHOLDER_PHONES = ['213000000000', '213555000000'];
+const isPlaceholderPhone = PLACEHOLDER_PHONES.includes(WHATSAPP_PHONE);
+
 if (!WHATSAPP_PHONE) {
   console.error(
     '[Dar Safia] VITE_WHATSAPP_PHONE non défini : les liens de commande WhatsApp sont désactivés. ' +
     'Copiez .env.example vers .env et renseignez le numéro de la conciergerie.'
+  );
+} else if (isPlaceholderPhone) {
+  console.warn(
+    `[Dar Safia] Numéro WhatsApp FICTIF en usage (${WHATSAPP_PHONE}). ` +
+    'Les parcours de commande fonctionnent mais n\'aboutissent nulle part. ' +
+    'Remplacez VITE_WHATSAPP_PHONE avant tout déploiement.'
   );
 }
 
@@ -1100,6 +1112,52 @@ const SRCSET_WIDTHS = {
   '/img/perfumes/': [400, 800],
   '/img/branding/': [1200, 1800, 2400]
 };
+
+/**
+ * Retourne une copie d'un objet dont toutes les valeurs texte sont échappées,
+ * prête pour l'insertion en innerHTML.
+ *
+ * Le catalogue est aujourd'hui codé en dur, donc sûr. Il proviendra de Strapi
+ * (phase 3) : à ce moment-là, chaque champ devient une donnée externe et donc
+ * non fiable. Passer par cette vue dès maintenant évite d'avoir à repasser sur
+ * chaque gabarit au moment de la bascule.
+ *
+ * Utiliser l'objet BRUT pour tout ce qui n'est pas du HTML (messages WhatsApp,
+ * comparaisons) : le texte échappé y ferait apparaître des « &amp; ».
+ */
+function escapedFields(obj) {
+  const out = {};
+  for (const [key, value] of Object.entries(obj)) {
+    out[key] = typeof value === 'string' ? escapeHtml(value) : value;
+  }
+  return out;
+}
+
+/**
+ * Rend une note sur 5 sous forme d'étoiles reflétant la valeur réelle, au lieu
+ * de cinq étoiles pleines systématiques.
+ *
+ * Technique : deux rangées de ★ superposées, celle du dessus tronquée à un
+ * pourcentage. On n'utilise que le glyphe ★ (U+2605), universellement présent
+ * dans les polices — contrairement aux demi-étoiles (U+2BE8) qui s'affichent
+ * en tofu sur beaucoup d'Android et d'iOS.
+ *
+ * Le libellé accessible est indispensable : la forme visuelle seule n'est pas
+ * restituée par un lecteur d'écran.
+ */
+function renderStars(rating) {
+  const value = Math.max(0, Math.min(5, Number(rating) || 0));
+  const percent = (value / 5) * 100;
+  const label = `Noté ${value.toFixed(1)} sur 5`;
+  return {
+    label,
+    percent,
+    html: `<span class="star-meter" role="img" aria-label="${escapeHtml(label)}" style="--star-fill:${percent.toFixed(1)}%">`
+        + `<span class="star-meter-bg" aria-hidden="true">★★★★★</span>`
+        + `<span class="star-meter-fg" aria-hidden="true">★★★★★</span>`
+        + `</span>`
+  };
+}
 
 /**
  * Construit un srcset à partir d'une image dérivée par le pipeline.
@@ -1499,11 +1557,13 @@ export function showHomePage(updateHash = true) {
   }
 }
 
-function renderProductDetailContent(p) {
+function renderProductDetailContent(raw) {
   const container = qs('#productDetailContainer');
   if (!container) return;
 
-  const theme = getCategoryTheme(p);
+  // `p` = vue échappée pour le HTML ; `raw` = données brutes (thème, liens WA).
+  const p = escapedFields(raw);
+  const theme = getCategoryTheme(raw);
   const productView = qs('#productDetailView');
   if (productView) {
     productView.style.setProperty('--theme-accent', theme.accentColor);
@@ -1515,8 +1575,9 @@ function renderProductDetailContent(p) {
 
   // Find 3 recommended related perfumes in same category or gender
   const related = perfumeCatalog
-    .filter(item => item.id !== p.id && (item.gender === p.gender || item.category === p.category))
-    .slice(0, 3);
+    .filter(item => item.id !== raw.id && (item.gender === raw.gender || item.category === raw.category))
+    .slice(0, 3)
+    .map(escapedFields);
 
   container.innerHTML = `
     <!-- Thematic Atmosphere Banner -->
@@ -1588,7 +1649,7 @@ function renderProductDetailContent(p) {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2C12 2 4 7 4 12a8 8 0 0016 0c0-5-8-10-8-10z"/></svg>
             </div>
             <div class="pdp-m-data">
-              <span class="pdp-m-val" style="color:${theme.accentLt};">${p.sillage.split('&')[0]}</span>
+              <span class="pdp-m-val" style="color:${theme.accentLt};">${escapeHtml(raw.sillage.split('&')[0])}</span>
               <span class="pdp-m-lbl">Projection &amp; Sillage</span>
               <div class="pdp-m-bar"><div class="pdp-m-bar-fill" style="width:88%; background:${theme.barGradient};"></div></div>
             </div>
@@ -1617,7 +1678,7 @@ function renderProductDetailContent(p) {
           <h1 class="pdp-title">${p.name}</h1>
           
           <div class="pdp-rating-row">
-            <div class="pdp-stars" style="color:${theme.accentLt};">★★★★★</div>
+            <div class="pdp-stars" style="color:${theme.accentLt};">${renderStars(raw.rating).html}</div>
             <span class="pdp-score">${p.rating} / 5</span>
             <span class="pdp-reviews-link">(${p.reviewsCount} avis vérifiés)</span>
           </div>
@@ -1686,7 +1747,7 @@ function renderProductDetailContent(p) {
 
         <!-- Action CTAs -->
         <div class="pdp-cta-group">
-          <a href="${getWhatsAppOrderLink(p.name, p.priceFormatted) || '#'}" target="_blank" rel="noopener noreferrer" class="btn-gold pdp-wa-btn" style="box-shadow: 0 8px 25px rgba(37,211,102,0.45);">
+          <a href="${getWhatsAppOrderLink(raw.name, raw.priceFormatted) || '#'}" target="_blank" rel="noopener noreferrer" class="btn-gold pdp-wa-btn" style="box-shadow: 0 8px 25px rgba(37,211,102,0.45);">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
             <span>Commander sur WhatsApp</span>
           </a>
@@ -1865,7 +1926,11 @@ function renderProducts() {
     return;
   }
 
-  container.innerHTML = filtered.map(p => `
+  container.innerHTML = filtered.map(raw => {
+    // `p` = vue échappée pour le HTML ; `raw` = données brutes pour le reste.
+    const p = escapedFields(raw);
+    const waLink = getWhatsAppOrderLink(raw.name, raw.priceFormatted) || '#';
+    return `
     <article class="pcard" data-id="${p.id}" data-category="${p.category}">
       <div class="pcard-img-wrap">
         <img src="${p.img}" srcset="${imgSrcset(p.img)}" sizes="(max-width: 700px) 88vw, 340px"
@@ -1876,7 +1941,7 @@ function renderProducts() {
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
             <span>Fiche Complète</span>
           </button>
-          <a href="${getWhatsAppOrderLink(p.name, p.priceFormatted) || '#'}" target="_blank" rel="noopener noreferrer" class="pcard-wa-btn" title="Commander sur WhatsApp">
+          <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="pcard-wa-btn" title="Commander sur WhatsApp">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
             <span>WhatsApp</span>
           </a>
@@ -1904,11 +1969,12 @@ function renderProducts() {
         </div>
       </div>
     </article>
-  `).join('');
+  `;
+  }).join('');
 
   attach3DCardTilt();
 
-  gsap.fromTo('.pcard', 
+  gsap.fromTo('.pcard',
     { y: 35, opacity: 0, scale: 0.98 },
     { y: 0, opacity: 1, scale: 1, duration: 0.5, stagger: 0.035, ease: 'power2.out' }
   );
@@ -2499,6 +2565,21 @@ function initReviewModal() {
   openReviewBtn?.addEventListener('click', () => reviewBackdrop?.classList.add('open'));
   closeReviewBtn?.addEventListener('click', () => reviewBackdrop?.classList.remove('open'));
 
+  /** Note actuellement sélectionnée dans le formulaire (5 par défaut). */
+  const getSelectedRating = () =>
+    Number(qs('input[name="reviewRating"]:checked')?.value) || 5;
+
+  // Le libellé « n / 5 Étoiles » doit suivre la sélection.
+  const ratingText = qs('#reviewRatingText');
+  qsa('input[name="reviewRating"]').forEach(input => {
+    input.addEventListener('change', () => {
+      const value = getSelectedRating();
+      if (ratingText) {
+        ratingText.textContent = `${value} / 5 ${value > 1 ? 'Étoiles' : 'Étoile'}`;
+      }
+    });
+  });
+
   reviewBackdrop?.addEventListener('click', (e) => {
     if (e.target === reviewBackdrop) reviewBackdrop.classList.remove('open');
   });
@@ -2508,10 +2589,12 @@ function initReviewModal() {
     const reviewerName = qs('#reviewAuthorName')?.value || 'Client Vérifié';
     const perfumeLoved = qs('#reviewPerfumeChoice')?.value || 'Parfum Dar Safia';
     const reviewContent = qs('#reviewText')?.value || '';
+    const reviewRating = getSelectedRating();
 
     showToast(`Merci ${reviewerName} ! Votre avis a été publié avec succès.`);
     reviewBackdrop?.classList.remove('open');
     reviewForm.reset();
+    if (ratingText) ratingText.textContent = '5 / 5 Étoiles';
 
     const grid = qs('#testimonialsGrid');
     if (grid) {
@@ -2520,7 +2603,7 @@ function initReviewModal() {
       const newCard = document.createElement('div');
       newCard.className = 'tcard tcard--featured in-view';
       newCard.innerHTML = `
-        <div class="tcard-stars">★★★★★</div>
+        <div class="tcard-stars">${renderStars(reviewRating).html}</div>
         <blockquote class="tcard-quote">"${escapeHtml(reviewContent)}"</blockquote>
         <div class="tcard-author">
           <div class="tcard-avatar">${escapeHtml(reviewerName.charAt(0).toUpperCase())}</div>
@@ -2814,6 +2897,58 @@ function initQuiz() {
 }
 
 // ══════════════════════════════════════════════
+//   SURFACES SUPERPOSÉES (MODALES, TIROIRS, MENU)
+// ══════════════════════════════════════════════
+/**
+ * Toutes les surfaces refermables par Échap ou par un clic extérieur.
+ * Chaque entrée est [sélecteur, classe d'ouverture].
+ */
+const OVERLAY_SELECTORS = [
+  ['#quizBackdrop', 'open'],
+  ['#reviewModalBackdrop', 'open'],
+  ['#upsellModalBackdrop', 'open'],
+  ['#bagDrawerBackdrop', 'open'],
+  ['#mobileDrawer', 'open'],
+  ['#hamburgerBtn', 'active']
+];
+
+function closeAllOverlays() {
+  OVERLAY_SELECTORS.forEach(([selector, openClass]) => {
+    qs(selector)?.classList.remove(openClass);
+  });
+}
+
+// ══════════════════════════════════════════════
+//   GARDE-FOU : NUMÉRO WHATSAPP FICTIF
+// ══════════════════════════════════════════════
+/**
+ * Affiche un bandeau bien visible tant qu'un numéro de remplacement est
+ * configuré. Objectif : rendre impossible un déploiement où les clients
+ * cliquent « Commander » sans que personne ne reçoive le message.
+ */
+function showPlaceholderPhoneBanner() {
+  if (!isPlaceholderPhone) return;
+
+  const banner = document.createElement('div');
+  banner.className = 'placeholder-phone-banner';
+  banner.setAttribute('role', 'alert');
+
+  const text = document.createElement('span');
+  text.textContent =
+    `Numéro WhatsApp fictif (${WHATSAPP_PHONE}) — les commandes n'aboutissent nulle part. ` +
+    'À remplacer dans .env avant déploiement.';
+
+  const dismiss = document.createElement('button');
+  dismiss.type = 'button';
+  dismiss.className = 'placeholder-phone-dismiss';
+  dismiss.textContent = 'Masquer';
+  dismiss.addEventListener('click', () => banner.remove());
+
+  banner.append(text, dismiss);
+  document.body.appendChild(banner);
+}
+
+// ══════════════════════════════════════════════
 //   ROUTING & HASH NAVIGATION
 // ══════════════════════════════════════════════
 function initRouting() {
@@ -2938,11 +3073,8 @@ function initMobileMenu() {
     }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeMenu();
-    }
-  });
+  // La touche Échap est gérée globalement (voir closeAllOverlays) afin que
+  // toutes les surfaces se ferment de façon cohérente, pas seulement ce menu.
 }
 
 // ══════════════════════════════════════════════
@@ -2969,6 +3101,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const generalWaLink = getWhatsAppGeneralLink();
   if (mainWaBtn && generalWaLink) mainWaBtn.href = generalWaLink;
   else mainWaBtn?.setAttribute('aria-disabled', 'true');
+
+  showPlaceholderPhoneBanner();
 
   // Smooth scroll for nav anchor links with proper offset
   document.addEventListener('click', (e) => {
@@ -3004,10 +3138,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Échap ferme toute surface superposée. Un seul point d'entrée : ajouter
+  // une nouvelle modale se fait en complétant OVERLAY_SELECTORS.
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      qs('#quizBackdrop')?.classList.remove('open');
-      qs('#reviewModalBackdrop')?.classList.remove('open');
-    }
+    if (e.key === 'Escape') closeAllOverlays();
   });
 });

@@ -1083,16 +1083,30 @@
           <input type="text" id="reviewPerfumeChoice" class="form-input" placeholder="ex. Prada Paradoxe Intense ou Dior Sauvage Elixir" required />
         </div>
 
+        <!-- Vraie saisie de note : des boutons radio stylés en étoiles.
+             L'ordre est inversé en CSS pour colorer les étoiles précédentes
+             au survol, tout en restant navigable au clavier. -->
         <div class="form-group">
-          <label class="form-label">Note Globale</label>
-          <div class="star-rating-select">
-            <span class="star-active">★</span>
-            <span class="star-active">★</span>
-            <span class="star-active">★</span>
-            <span class="star-active">★</span>
-            <span class="star-active">★</span>
-            <span class="rating-txt">5 / 5 Étoiles</span>
-          </div>
+          <fieldset class="star-rating-select">
+            <legend class="form-label">Note Globale</legend>
+            <div class="star-rating-input">
+              <input type="radio" name="reviewRating" id="reviewRating5" value="5" checked />
+              <label for="reviewRating5" title="5 étoiles sur 5"><span class="sr-only">5 étoiles</span></label>
+
+              <input type="radio" name="reviewRating" id="reviewRating4" value="4" />
+              <label for="reviewRating4" title="4 étoiles sur 5"><span class="sr-only">4 étoiles</span></label>
+
+              <input type="radio" name="reviewRating" id="reviewRating3" value="3" />
+              <label for="reviewRating3" title="3 étoiles sur 5"><span class="sr-only">3 étoiles</span></label>
+
+              <input type="radio" name="reviewRating" id="reviewRating2" value="2" />
+              <label for="reviewRating2" title="2 étoiles sur 5"><span class="sr-only">2 étoiles</span></label>
+
+              <input type="radio" name="reviewRating" id="reviewRating1" value="1" />
+              <label for="reviewRating1" title="1 étoile sur 5"><span class="sr-only">1 étoile</span></label>
+            </div>
+            <span class="rating-txt" id="reviewRatingText">5 / 5 Étoiles</span>
+          </fieldset>
         </div>
 
         <div class="form-group">
