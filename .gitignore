@@ -1,0 +1,23 @@
+# Dépendances
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+.vite/
+
+# Environnement — ne jamais commiter de valeurs réelles
+.env
+.env.*
+!.env.example
+
+# Éditeurs / OS
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*

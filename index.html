@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dar Safia | Maison de Haute Parfumerie — Parfums d'Exception</title>
+  <meta name="description" content="Dar Safia — Maison de haute parfumerie. Découvrez notre catalogue exclusif de 45 parfums authentiques, fiches complètes, extraits rares et coffrets cadeaux de luxe. Livraison 58 Wilayas." />
+  <link rel="icon" type="image/x-icon" href="/logo/LOGOF FAVICON.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="no-scroll">
+
+  <!-- Accessibilité : permet de sauter la navigation au clavier -->
+  <a href="#contenuPrincipal" class="skip-link">Aller au contenu principal</a>
+
+
+  <!-- ═══ CUSTOM CURSOR ═══ -->
+  <div class="cursor" id="cursor">
+    <div class="cursor-core"></div>
+    <div class="cursor-ring-outer"></div>
+    <div class="cursor-label" id="cursorLabel">VOIR</div>
+  </div>
+
+  <!-- ═══ PRELOADER ═══ -->
+  <div class="preloader" id="preloader">
+    <div class="preloader-inner">
+      <div class="pl-logo-wrap">
+        <img src="/logo/LOGO WEBP4.webp" alt="Dar Safia" class="pl-logo" />
+        <div class="pl-logo-ring"></div>
+      </div>
+      <div class="pl-wordmark">
+        <span class="pl-dar">DAR</span>
+        <span class="pl-dot">◆</span>
+        <span class="pl-safia">SAFIA</span>
+      </div>
+      <div class="pl-tagline">MAISON DE PARFUM · PARIS &amp; ALGER</div>
+      <div class="pl-bar-track"><div class="pl-bar-fill" id="plBar"></div></div>
+      <div class="pl-percent" id="plPercent">0%</div>
+    </div>
+    <div class="pl-corner pl-corner--tl"></div>
+    <div class="pl-corner pl-corner--tr"></div>
+    <div class="pl-corner pl-corner--bl"></div>
+    <div class="pl-corner pl-corner--br"></div>
+  </div>
+
+  <!-- ═══ UNIFIED FIXED HEADER (TICKER + NAVBAR + MOBILE DRAWER) ═══ -->
+  <header class="site-header" id="siteHeader">
+    
+    <!-- Announcement Ticker -->
+    <div class="ticker-bar" id="tickerBar">
+      <div class="ticker-inner">
+        <span class="ticker-item">✨ Collection Officielle 2026 — 45 Parfums d'Exception en Stock</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">📦 Livraison Express 58 Wilayas &amp; Paiement Sécurisé à la Réception</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">💎 100% Authenticité Garantie &amp; Flacons Originaux Certifiés</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">💬 Service Conciergerie VIP &amp; Commande Immédiate sur WhatsApp</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">✨ Collection Officielle 2026 — 45 Parfums d'Exception en Stock</span>
+        <span class="ticker-sep">◆</span>
+        <span class="ticker-item">📦 Livraison Express 58 Wilayas &amp; Paiement Sécurisé à la Réception</span>
+        <span class="ticker-sep">◆</span>
+      </div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="nav" id="nav">
+      <div class="nav-inner">
+        
+        <!-- Logo -->
+        <a href="#hero" class="nav-logo" id="navLogoLink" aria-label="Dar Safia Maison de Parfum">
+          <img src="/logo/LOGO WEBP4.webp" alt="DS Monogram" class="nav-mono" />
+          <div class="nav-brand-stack">
+            <span class="nav-name">DAR SAFIA</span>
+            <span class="nav-city">Haute Parfumerie</span>
+          </div>
+        </a>
+
+        <!-- Desktop Menu Links -->
+        <div class="nav-links" id="navLinks">
+          <a href="#heritage" class="nav-a">Héritage</a>
+          <a href="#collection" class="nav-a">
+            <span>Catalogue</span>
+            <span class="nav-pill-count">45</span>
+          </a>
+          <a href="#artistry" class="nav-a">Art Olfactif</a>
+          <a href="#packaging" class="nav-a">Coffrets</a>
+          <a href="#acclaim" class="nav-a">Avis</a>
+          <a href="#atelier" class="nav-a">Atelier</a>
+          <!-- Le tableau de bord admin n'est volontairement plus lié depuis la
+               navigation publique : il n'a aucune authentification (voir
+               admin.html). À rebrancher une fois l'auth serveur en place. -->
+        </div>
+
+        <!-- Right Utilities -->
+        <div class="nav-utils">
+          
+          <!-- Scent Finder Quiz -->
+          <button class="nav-util-btn" id="quizNavBtn" title="Trouvez votre parfum">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <span class="quiz-btn-text">Quiz</span>
+          </button>
+
+          <!-- Music Toggle Button -->
+          <button class="music-toggle-btn" id="musicToggleBtn" title="Ambiance Sonore 432Hz">
+            <div class="sound-wave" id="soundWaveAnim">
+              <span></span><span></span><span></span><span></span>
+            </div>
+            <span class="music-label" id="musicTrackLabel">Ambiance</span>
+          </button>
+
+          <!-- Shopping Bag -->
+          <button class="nav-bag" id="bagBtn" title="Mon Panier">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span class="bag-badge" id="bagBadge">0</span>
+          </button>
+
+          <!-- VIP Contact Link -->
+          <a href="#collaborations" class="nav-contact-cta" id="navContactCta">
+            <span>Contact</span>
+          </a>
+
+          <!-- Mobile Hamburger Toggle -->
+          <button class="hamburger-btn" id="hamburgerBtn" aria-label="Menu Mobile">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+        </div>
+      </div>
+      <div class="nav-progress-line" id="navProgress"></div>
+    </nav>
+
+    <!-- Mobile Slide-out Drawer -->
+    <div class="mobile-drawer" id="mobileDrawer">
+      <div class="mobile-drawer-inner">
+        <div class="mobile-drawer-links">
+          <a href="#heritage" class="mobile-nav-a">Héritage</a>
+          <a href="#collection" class="mobile-nav-a">Catalogue (45 Parfums)</a>
+          <a href="#artistry" class="mobile-nav-a">Art Olfactif &amp; Pyramide</a>
+          <a href="#packaging" class="mobile-nav-a">Coffrets Cadeaux &amp; Packaging</a>
+          <a href="#acclaim" class="mobile-nav-a">Avis Clients &amp; Témoignages</a>
+          <a href="#collaborations" class="mobile-nav-a">Collaborations &amp; B2B</a>
+          <a href="#atelier" class="mobile-nav-a">Le Club Privé Atelier</a>
+        </div>
+        <div class="mobile-drawer-footer">
+          <a href="https://wa.me/213555000000" target="_blank" rel="noopener noreferrer" class="btn-gold mobile-wa-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>Commander sur WhatsApp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- ═══ TOASTS STACK ═══ -->
+  <div id="toastStack" class="toast-stack"></div>
+
+  <!-- ══════════════════════════════════════════════
+       PRODUCT DETAIL PAGE VIEW (REAL FULL PAGE)
+  ══════════════════════════════════════════════ -->
+  <section class="product-detail-view" id="productDetailView" style="display: none;">
+    <div class="container" id="productDetailContainer">
+      <!-- Injected dynamically via main.js renderProductDetailContent() -->
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════
+       MAIN HOME VIEW
+  ══════════════════════════════════════════════ -->
+  <div id="homeMainView">
+
+    <main id="contenuPrincipal" tabindex="-1">
+
+      <!-- ─────────────────────────────────────────
+           SECTION 1 · CINEMATIC HERO (INTRODUCTION)
+      ───────────────────────────────────────── -->
+      <section class="hero" id="hero">
+        <div class="hero-media">
+          <img src="/branding images/Dar Safia Branding_page-0001.jpg" alt="Dar Safia Haute Parfumerie" class="hero-img" id="heroImg" />
+          <div class="hero-vignette"></div>
+          <div class="hero-grain"></div>
+          <div class="hero-glow-orb"></div>
+        </div>
+
+        <!-- Floating ornament lines -->
+        <div class="hero-line hero-line--v-left"></div>
+        <div class="hero-line hero-line--v-right"></div>
+        <div class="hero-line hero-line--h-top"></div>
+        <div class="hero-line hero-line--h-bottom"></div>
+
+        <div class="hero-body">
+          <div class="hero-eyebrow" id="heroEyebrow">
+            <span class="eyebrow-dash"></span>
+            MAISON DE HAUTE PARFUMERIE · ÉDITION 2026
+            <span class="eyebrow-dash"></span>
+          </div>
+
+          <h1 class="hero-title" id="heroTitle">
+            <span class="ht-line" id="htLine1">Dar</span>
+            <span class="ht-line ht-line--script" id="htLine2">Safia</span>
+            <span class="ht-line ht-line--sub" id="htLine3">L'Élégance pour Tous</span>
+          </h1>
+
+          <p class="hero-desc" id="heroDesc">
+            L'univers des fragrances d'exception et des plus prestigieuses signatures olfactives.<br />
+            Parfums 100% authentiques, fiches produits détaillées et coffrets d'artisanat d'art.
+          </p>
+
+          <div class="hero-actions" id="heroActions">
+            <a href="#collection" class="btn-gold">
+              <span>Explorer les 45 Parfums</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <button class="btn-ghost" id="heroQuizBtn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>
+              <span>Trouver Mon Parfum Idéal</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Floating metrics strip -->
+        <div class="hero-metrics" id="heroMetrics">
+          <div class="metric">
+            <span class="metric-val" data-target="45">0</span><span class="metric-unit">+</span>
+            <span class="metric-label">Parfums d'Exception</span>
+          </div>
+          <div class="metric-div"></div>
+          <div class="metric">
+            <span class="metric-val" data-target="100">0</span><span class="metric-unit">%</span>
+            <span class="metric-label">Authenticité Certifiée</span>
+          </div>
+          <div class="metric-div"></div>
+          <div class="metric">
+            <span class="metric-val" data-target="48">0</span><span class="metric-unit">h</span>
+            <span class="metric-label">Tenue &amp; Sillage Intense</span>
+          </div>
+          <div class="metric-div"></div>
+          <div class="metric">
+            <span class="metric-val" data-target="58">0</span><span class="metric-unit"></span>
+            <span class="metric-label">Wilayas Livrées Express</span>
+          </div>
+        </div>
+
+        <!-- Scroll prompt -->
+        <a href="#collection" class="scroll-prompt" id="scrollPrompt">
+          <span class="scroll-txt">Découvrir le Catalogue</span>
+          <div class="scroll-line"></div>
+        </a>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 2 · MARQUEE RIBBON
+      ───────────────────────────────────────── -->
+      <div class="marquee-strip" aria-hidden="true">
+        <div class="marquee-track" id="marqueeTrack">
+          <span>Prada Paradoxe</span><span class="ms-diamond">◆</span>
+          <span>Dior Sauvage Elixir (39 000 DA)</span><span class="ms-diamond">◆</span>
+          <span>Valentino Born In Roma</span><span class="ms-diamond">◆</span>
+          <span>YSL MYSLF Le Parfum</span><span class="ms-diamond">◆</span>
+          <span>JPG Scandal Elixir</span><span class="ms-diamond">◆</span>
+          <span>Givenchy L'Interdit Rouge</span><span class="ms-diamond">◆</span>
+          <span>Terre d'Hermès Intense</span><span class="ms-diamond">◆</span>
+          <span>D&amp;G Devotion</span><span class="ms-diamond">◆</span>
+          <span>Armani Stronger With You</span><span class="ms-diamond">◆</span>
+          <span>Rabanne Fame In Love</span><span class="ms-diamond">◆</span>
+          <span>Prada Paradoxe</span><span class="ms-diamond">◆</span>
+          <span>Dior Sauvage Elixir</span><span class="ms-diamond">◆</span>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 3 · BRAND HERITAGE
+      ───────────────────────────────────────── -->
+      <section class="heritage" id="heritage">
+        <div class="container">
+          <div class="heritage-layout reveal-on-scroll">
+
+            <div class="heritage-visual" id="heritageVis">
+              <div class="hv-frame">
+                <img src="/branding images/Dar Safia Branding_page-0003.jpg" alt="Maison Dar Safia" class="hv-img" />
+                <div class="hv-overlay"></div>
+              </div>
+              <div class="hv-card" id="hvCard">
+                <div class="hv-card-logo">
+                  <img src="/logo/LOGO WEBP4.webp" alt="DS" />
+                </div>
+                <div class="hv-card-text">
+                  <span class="hv-card-label">Maison de Parfum</span>
+                  <span class="hv-card-title">Garantie 100% Authenticité</span>
+                </div>
+              </div>
+              <div class="hv-corner hv-corner--tl"></div>
+              <div class="hv-corner hv-corner--br"></div>
+            </div>
+
+            <div class="heritage-copy" id="heritageCopy">
+              <span class="eyebrow-tag">— La Maison Dar Safia</span>
+              <h2 class="section-h">
+                L'Art de la <em class="italic-gold">Haute Parfumerie</em><br />À Portée de Main
+              </h2>
+              <div class="section-rule"></div>
+              <p class="body-lead">
+                Née d'une passion inconditionnelle pour les sillages nobles, <strong>Dar Safia</strong> réunit les plus grandes créations de la parfumerie mondiale ainsi que des extraits d'une concentration magistrale.
+              </p>
+              <p class="body-copy">
+                Chaque flacon proposé dans notre collection est sélectionné selon des critères d'exigence rigoureux : pureté des accords, longévité exceptionnelle sur la peau et provenance authentique certifiée.
+              </p>
+
+              <div class="pillar-grid">
+                <div class="pillar">
+                  <div class="pillar-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                  </div>
+                  <strong>Parfums 100% Originaux</strong>
+                  <p>Authenticité garantie sur l'ensemble de notre catalogue officiel.</p>
+                </div>
+                <div class="pillar">
+                  <div class="pillar-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  </div>
+                  <strong>Sillage Extraordinaire</strong>
+                  <p>Formulations de haute concentration pour une présence qui dure jusqu'à 48h.</p>
+                </div>
+                <div class="pillar">
+                  <div class="pillar-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  </div>
+                  <strong>Service Concierge VIP</strong>
+                  <p>Conseils personnalisés &amp; commande instantanée via WhatsApp.</p>
+                </div>
+              </div>
+
+              <a href="#collection" class="link-arrow">
+                Découvrir les Parfums &amp; Tarifs
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 4 · CATALOGUE COMPLET (45 PARFUMS)
+      ───────────────────────────────────────── -->
+      <section class="collection" id="collection">
+        <div class="container">
+          <div class="section-header" id="collectionHeader">
+            <span class="eyebrow-tag">— Catalogue Officiel</span>
+            <h2 class="section-h">Les Parfums d'Exception &amp; <em class="italic-gold">Tarifs</em></h2>
+            <p class="section-sub">Cliquez sur n'importe quel flacon pour ouvrir sa <strong>fiche produit complète</strong> avec notes, histoire et commande WhatsApp.</p>
+          </div>
+
+          <!-- Search Bar & Controls -->
+          <div class="catalog-controls">
+            <div class="catalog-search-wrap">
+              <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" id="catalogSearchInput" class="catalog-search-input" placeholder="Rechercher par nom, marque (Dior, Prada, YSL...), ou note olfactive..." />
+            </div>
+            <div class="catalog-stats">
+              <span class="catalog-count-badge" id="productsCount">45 parfums d'exception</span>
+            </div>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-f="all">Tous les Parfums</button>
+            <button class="filter-tab" data-f="femme">Pour Femme</button>
+            <button class="filter-tab" data-f="homme">Pour Homme</button>
+            <button class="filter-tab" data-f="unisexe">Unisexe</button>
+            <button class="filter-tab" data-f="floral">Floral &amp; Rose</button>
+            <button class="filter-tab" data-f="woody">Boisé &amp; Vétiver</button>
+            <button class="filter-tab" data-f="amber">Oriental &amp; Ambre</button>
+            <button class="filter-tab" data-f="gourmand">Gourmand &amp; Vanille</button>
+            <button class="filter-tab" data-f="fresh">Frais &amp; Aquatique</button>
+          </div>
+
+          <!-- Products Grid -->
+          <div class="products-grid-wrap">
+            <div class="products" id="productsGrid">
+              <!-- Rendered dynamically via main.js -->
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 5 · OLFACTORY ARTISTRY
+      ───────────────────────────────────────── -->
+      <section class="artistry" id="artistry">
+        <div class="artistry-bg" id="artistryBg">
+          <img src="/branding images/Dar Safia Branding_page-0004.jpg" alt="Art Olfactif" class="artistry-bg-img" id="artistryBgImg" />
+          <div class="artistry-vignette"></div>
+        </div>
+
+        <div class="container artistry-inner reveal-on-scroll">
+          <div class="artistry-top" id="artistryTop">
+            <span class="eyebrow-tag eyebrow-tag--light">— Pyramide Olfactive</span>
+            <h2 class="artistry-h">L'Alchimie des<br /><em class="italic-gold">Grandes Essences</em></h2>
+            <p class="artistry-sub">Découvrez comment nos accords s'épanouissent sur la peau, de la première vaporisation éclatante jusqu'au sillage majestueux de 48 heures.</p>
+          </div>
+
+          <!-- Interactive Pyramid -->
+          <div class="pyramid" id="pyramid">
+            <div class="pyramid-tabs">
+              <button class="ptab active" data-l="top">
+                <span class="ptab-num">01</span>
+                <span class="ptab-title">Notes de Tête</span>
+                <span class="ptab-sub">0 — 30 min · L'Éveil</span>
+              </button>
+              <button class="ptab" data-l="heart">
+                <span class="ptab-num">02</span>
+                <span class="ptab-title">Notes de Cœur</span>
+                <span class="ptab-sub">30 min — 6h · L'Âme</span>
+              </button>
+              <button class="ptab" data-l="base">
+                <span class="ptab-num">03</span>
+                <span class="ptab-title">Notes de Fond</span>
+                <span class="ptab-sub">6h — 48h · Le Sillage</span>
+              </button>
+            </div>
+            <div class="pyramid-body" id="pyramidBody">
+              <h3 class="pyramid-h" id="pyramidH">Notes de Tête · L’Éveil Sensoriel</h3>
+              <p class="pyramid-p" id="pyramidP">L’explosion initiale dès la vaporisation. Bergamote de Calabre, mandarine givrée, baies roses et néroli solaire captivent instantanément les sens.</p>
+              <div class="pyramid-tags" id="pyramidTags">
+                <span>Bergamote de Calabre</span>
+                <span>Néroli Doré</span>
+                <span>Poivre Rose</span>
+                <span>Mandarine Sanguine</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 6 · HAUTE PACKAGING
+      ───────────────────────────────────────── -->
+      <section class="packaging" id="packaging">
+        <div class="container">
+          <div class="packaging-layout reveal-on-scroll">
+
+            <div class="packaging-copy" id="packagingCopy">
+              <span class="eyebrow-tag">— L'Expérience Unboxing</span>
+              <h2 class="section-h">Coffrets de Luxe &amp;<br /><em class="italic-gold">Écrins Sur-Mesure</em></h2>
+              <div class="section-rule"></div>
+              <p class="body-lead">Chaque parfum commandé chez Dar Safia est préparé comme une pièce de haute joaillerie. Un packaging signature pensé pour faire de chaque réception un moment inoubliable.</p>
+
+              <ul class="feat-list">
+                <li class="feat-item">
+                  <div class="feat-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div>
+                    <strong>Écrin Velours &amp; Dorure à Chaud</strong>
+                    <p>Boîte rigide texturée protégeant le flacon contre la lumière et les chocs.</p>
+                  </div>
+                </li>
+                <li class="feat-item">
+                  <div class="feat-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div>
+                    <strong>Sceau d'Authenticité &amp; Certificat</strong>
+                    <p>Chaque commande s'accompagne d'une carte d'authenticité officielle scellée.</p>
+                  </div>
+                </li>
+                <li class="feat-item">
+                  <div class="feat-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  </div>
+                  <div>
+                    <strong>Échantillons Découverte Offerts</strong>
+                    <p>Deux vaporisateurs d'essai inclus avec chaque commande pour explorer d'autres sillages.</p>
+                  </div>
+                </li>
+              </ul>
+
+              <a href="#collaborations" class="btn-gold">
+                <span>Commander un Coffret Cadeau VIP</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+
+            <div class="packaging-visual" id="packagingVis">
+              <div class="pv-frame">
+                <img src="/branding images/Dar Safia Branding_page-0005.jpg" alt="Coffret Cadeau Dar Safia" class="pv-img" />
+                <div class="pv-glow"></div>
+              </div>
+              <div class="pv-corner pv-corner--tl"></div>
+              <div class="pv-corner pv-corner--br"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 7 · TESTIMONIALS (AVIS CLIENTS)
+      ───────────────────────────────────────── -->
+      <section class="acclaim" id="acclaim">
+        <div class="acclaim-bg-pattern" aria-hidden="true"></div>
+        <div class="container">
+          <div class="section-header" id="acclaimHeader">
+            <span class="eyebrow-tag">— Témoignages &amp; Avis</span>
+            <h2 class="section-h">Ce Que Disent Nos <em class="italic-gold">Clients</em></h2>
+            <p class="section-sub">Plus de 2 500 passionnés de parfums nous font confiance à travers toute l'Algérie et à l'international.</p>
+          </div>
+
+          <div class="testimonials-actions-bar">
+            <button class="btn-gold" id="openReviewModalBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Déposer Votre Avis Client</span>
+            </button>
+          </div>
+
+          <div class="testimonials" id="testimonialsGrid">
+
+            <div class="tcard tcard--featured">
+              <div class="tcard-stars">★★★★★</div>
+              <blockquote class="tcard-quote">
+                "J'ai commandé le Dior Sauvage Elixir (39 000 DA) et Prada Paradoxe Intense. L'emballage est tout simplement royal et le parfum tient facilement 2 jours complets sur mes vêtements. 100% authentique !"
+              </blockquote>
+              <div class="tcard-author">
+                <div class="tcard-avatar">A</div>
+                <div>
+                  <strong class="tcard-name">Amine B.</strong>
+                  <span class="tcard-title">Client Vérifié · Alger Hydra</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tcard">
+              <div class="tcard-stars">★★★★★</div>
+              <blockquote class="tcard-quote">
+                "Service client sur WhatsApp ultra réactif ! J'ai été livrée en 24h à Oran dans un magnifique coffret velours. Le Valentino Donna Born in Roma Intense est mon nouveau coup de cœur."
+              </blockquote>
+              <div class="tcard-author">
+                <div class="tcard-avatar">S</div>
+                <div>
+                  <strong class="tcard-name">Sarah M.</strong>
+                  <span class="tcard-title">Cliente Vérifiée · Oran</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tcard">
+              <div class="tcard-stars">★★★★★</div>
+              <blockquote class="tcard-quote">
+                "Enfin une maison de parfum sérieuse en Algérie. Les prix sont très compétitifs pour des flacons 100% originaux. Le JPG Scandal Elixir a un sillage incroyable."
+              </blockquote>
+              <div class="tcard-author">
+                <div class="tcard-avatar">Y</div>
+                <div>
+                  <strong class="tcard-name">Yacine K.</strong>
+                  <span class="tcard-title">Client Vérifié · Constantine</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tcard">
+              <div class="tcard-stars">★★★★★</div>
+              <blockquote class="tcard-quote">
+                "Commander par WhatsApp est tellement simple et rapide. Merci à l'équipe Dar Safia pour les échantillons offerts et le professionnalisme exemplaire."
+              </blockquote>
+              <div class="tcard-author">
+                <div class="tcard-avatar">L</div>
+                <div>
+                  <strong class="tcard-name">Leïla T.</strong>
+                  <span class="tcard-title">Cliente Vérifiée · Annaba</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 8 · COLLABORATIONS & PARTENARIATS
+      ───────────────────────────────────────── -->
+      <section class="collaborations" id="collaborations">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow-tag">— Conciergerie &amp; Partenariats</span>
+            <h2 class="section-h">Collaborations &amp; <em class="italic-gold">Sur-Mesure</em></h2>
+            <p class="section-sub">Créateurs de contenu, boutiques partenaires, organisateurs d'événements et entreprises : créons ensemble une expérience olfactive inoubliable.</p>
+          </div>
+
+          <div class="collab-grid">
+            <div class="collab-card">
+              <div class="collab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 class="collab-title">Ambassadeurs &amp; Créateurs</h3>
+              <p class="collab-desc">Vous êtes influenceur lifestyle, beauté ou luxe ? Rejoignez le cercle des ambassadeurs Dar Safia et recevez nos nouveautés exclusives.</p>
+            </div>
+
+            <div class="collab-card">
+              <div class="collab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.8"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              </div>
+              <h3 class="collab-title">B2B &amp; Revendeurs Agréés</h3>
+              <p class="collab-desc">Tarifs préférentiels pour les concept-stores, hôtels de luxe, salons de prestige et boutiques spécialisées avec garantie d'approvisionnement régulier.</p>
+            </div>
+
+            <div class="collab-card">
+              <div class="collab-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B8862B" stroke-width="1.8"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <h3 class="collab-title">Cadeaux d'Entreprise VIP</h3>
+              <p class="collab-desc">Coffrets cadeaux personnalisés avec gravure sur-mesure et packaging haut de gamme pour vos événements corporatifs et clients prestigieux.</p>
+            </div>
+          </div>
+
+          <div class="collab-form-wrap">
+            <div class="collab-form-header">
+              <img src="/logo/LOGO WEBP4.webp" alt="DS" class="collab-form-logo" />
+              <h3 class="collab-form-title">Formulaire de Demande de Collaboration</h3>
+              <p class="collab-form-sub">Remplissez ce formulaire et notre équipe conciergerie vous répondra sous 2 heures sur WhatsApp.</p>
+            </div>
+
+            <form class="collab-form" id="collabForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="collabType" class="form-label">Type de Collaboration *</label>
+                  <select id="collabType" class="form-select" required>
+                    <option value="Influenceur & Créateur de Contenu">Ambassadeur / Créateur de contenu</option>
+                    <option value="Partenariat B2B / Boutique">Boutique &amp; Distribution B2B</option>
+                    <option value="Cadeaux d'Affaires & VIP">Cadeaux d'Entreprise &amp; Événement VIP</option>
+                    <option value="Autre demande">Autre demande de partenariat</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="collabName" class="form-label">Votre Nom / Marque / Profil *</label>
+                  <input type="text" id="collabName" class="form-input" placeholder="ex. Sarah Luxury / Entreprise XYZ" required />
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="collabContact" class="form-label">Numéro WhatsApp ou Téléphone *</label>
+                  <input type="text" id="collabContact" class="form-input" placeholder="ex. 0550 12 34 56" required />
+                </div>
+
+                <div class="form-group">
+                  <label for="collabSocial" class="form-label">Lien Réseau Social / Instagram / TikTok</label>
+                  <input type="text" id="collabSocial" class="form-input" placeholder="ex. @darsafia.officiel" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="collabNotes" class="form-label">Détails de votre proposition ou projet *</label>
+                <textarea id="collabNotes" class="form-textarea" rows="4" placeholder="Décrivez brièvement votre projet, vos attentes ou le nombre de coffrets souhaités..." required></textarea>
+              </div>
+
+              <div class="collab-submit-wrap">
+                <button type="submit" class="btn-gold btn-gold--lg">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                  <span>Envoyer la Demande via WhatsApp Conciergerie</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────
+           SECTION 9 · PRIVATE ATELIER / NEWSLETTER
+      ───────────────────────────────────────── -->
+      <section class="atelier" id="atelier">
+        <div class="container">
+          <div class="atelier-card" id="atelierCard">
+            <div class="atelier-ornament atelier-ornament--tl" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1h20M1 1v20" stroke="#B8862B" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="atelier-ornament atelier-ornament--tr" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M59 1H39M59 1v20" stroke="#B8862B" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="atelier-ornament atelier-ornament--bl" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 59h20M1 59V39" stroke="#B8862B" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="atelier-ornament atelier-ornament--br" aria-hidden="true">
+              <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M59 59H39M59 59V39" stroke="#B8862B" stroke-width="1"/>
+              </svg>
+            </div>
+
+            <img src="/logo/LOGO WEBP4.webp" alt="DS" class="atelier-mono" />
+            <span class="eyebrow-tag" style="text-align:center;display:block;">— Le Cercle Privé</span>
+            <h2 class="atelier-h">Rejoignez le Club <em class="italic-gold">Dar Safia</em></h2>
+            <p class="atelier-desc">Accédez en avant-première aux arrivages de parfums rares, éditions limitées et invitations à nos ventes privées exclusives.</p>
+
+            <form class="atelier-form" id="newsletterForm" onsubmit="event.preventDefault(); showToast('Merci ! Vous êtes maintenant inscrit au Cercle Privé Dar Safia.'); this.reset();">
+              <div class="form-field-wrap">
+                <input type="email" class="form-input" id="emailInput" placeholder="Votre adresse e-mail ou téléphone" required />
+              </div>
+              <button type="submit" class="btn-gold">
+                <span>Rejoindre le Cercle</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+            <p class="atelier-privacy">Vos données sont strictement confidentielles. Aucun spam.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div><!-- end #homeMainView -->
+
+
+  <!-- ─────────────────────────────────────────
+       FOOTER
+  ───────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer-top-line"></div>
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-brand">
+          <img src="/logo/LOGO WEBP2.webp" alt="Dar Safia" class="footer-mono" />
+          <p class="footer-brand-tagline">Dar Safia · L'Élégance pour Tous</p>
+          <p class="footer-brand-desc">Maison de haute parfumerie proposant 45 créations olfactives d'exception, authentiques et sélectionnées avec passion.</p>
+          <div class="footer-socials">
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="fsocial" aria-label="Instagram">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener" class="fsocial" aria-label="TikTok">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+            </a>
+            <a href="https://wa.me/213555000000" target="_blank" rel="noopener" class="fsocial" aria-label="WhatsApp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-h">Parfums Phares</h4>
+          <ul class="footer-ul">
+            <li><a href="#product-2">Prada Paradoxe Intense</a></li>
+            <li><a href="#product-39">Dior Sauvage Elixir (39 000 DA)</a></li>
+            <li><a href="#product-4">Valentino Born In Roma Intense</a></li>
+            <li><a href="#product-24">JPG Scandal Pour Homme Elixir</a></li>
+            <li><a href="#product-32">YSL MYSLF Le Parfum</a></li>
+            <li><a href="#product-13">Givenchy L'Interdit Rouge</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-h">La Maison</h4>
+          <ul class="footer-ul">
+            <li><a href="#heritage">Notre Héritage</a></li>
+            <li><a href="#collection">Catalogue 45 Parfums</a></li>
+            <li><a href="#artistry">Pyramide Olfactive</a></li>
+            <li><a href="#packaging">Coffrets &amp; Cadeaux</a></li>
+            <li><a href="#acclaim">Avis &amp; Témoignages</a></li>
+            <li><a href="#collaborations">Collaborations &amp; B2B</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4 class="footer-col-h">Conciergerie &amp; Contact</h4>
+          <address class="footer-addr">
+            <p><strong>Alger</strong><br />Hydra &amp; Sidi Yahia</p>
+            <p><strong>Oran</strong><br />Akid Lotfi &amp; Front de Mer</p>
+            <p><strong>WhatsApp 7j/7</strong><br />+213 (0) 555 00 00 00</p>
+            <p class="footer-email">contact@darsafia.com</p>
+          </address>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Dar Safia Maison de Parfum. Tous droits réservés.</p>
+        <nav class="footer-legal">
+          <a href="#">Garantie d'Authenticité</a>
+          <span>·</span>
+          <a href="#">Conditions de Livraison 58 Wilayas</a>
+          <span>·</span>
+          <a href="#">Mentions Légales</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ══════════════════════════════════════════════
+       FLOATING WHATSAPP BUBBLE
+  ══════════════════════════════════════════════ -->
+  <div class="wa-float-container" id="waFloatContainer">
+    <div class="wa-tooltip">
+      <div class="wa-tooltip-header">
+        <span class="wa-dot-online"></span>
+        <strong>Conciergerie Dar Safia</strong>
+      </div>
+      <p>Besoin d'un conseil parfum ou envie de commander ? Écrivez-nous sur WhatsApp !</p>
+    </div>
+    <a href="https://wa.me/213555000000" target="_blank" rel="noopener noreferrer" class="wa-float-btn" id="floatingWaBtn" aria-label="Discuter sur WhatsApp">
+      <span class="wa-pulse"></span>
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      <span class="wa-badge-online">1</span>
+    </a>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: BESPOKE SCENT FINDER QUIZ PROMAX
+  ══════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="quizBackdrop">
+    <div class="modal modal--quiz" id="quizModal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="quizClose" aria-label="Fermer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="quiz-header">
+        <img src="/logo/LOGO WEBP4.webp" alt="DS" class="quiz-mono" />
+        <div class="quiz-header-text">
+          <span class="quiz-step-badge" id="quizStepBadge">Étape 1 sur 4</span>
+          <h3>Diagnostic Olfactif Sur-Mesure</h3>
+          <p id="quizSubheader">Définissez votre profil en 4 étapes pour révéler votre signature d'exception.</p>
+        </div>
+        <div class="quiz-progress">
+          <div class="quiz-prog-fill" id="quizProgFill" style="width: 25%"></div>
+        </div>
+      </div>
+
+      <!-- Navigation Bar inside Quiz (Back button) -->
+      <div class="quiz-nav-row" id="quizNavRow" style="display: none;">
+        <button class="quiz-prev-btn" id="quizPrevBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+          <span>Question précédente</span>
+        </button>
+      </div>
+
+      <!-- Étape 1 : Le Destinataire & L'Allure -->
+      <div class="quiz-step active" id="qzStep1">
+        <h4 class="quiz-q">1. Pour qui recherchez-vous cette création ?</h4>
+        <div class="quiz-opts quiz-opts--grid">
+          <button class="quiz-opt" data-q="gender" data-a="femme">
+            <span class="quiz-opt-icon">🌸</span>
+            <div class="quiz-opt-content">
+              <strong>Pour Femme</strong>
+              <small>Fleurs solaires, vanille noble, pivoine &amp; élégance</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="gender" data-a="homme">
+            <span class="quiz-opt-icon">⚡</span>
+            <div class="quiz-opt-content">
+              <strong>Pour Homme</strong>
+              <small>Bois nobles, vétiver, épices rares &amp; charisme viril</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="gender" data-a="unisexe">
+            <span class="quiz-opt-icon">✨</span>
+            <div class="quiz-opt-content">
+              <strong>Unisexe &amp; Haute Niche</strong>
+              <small>Accords rares d'ambre, de cuir et de santal pur</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="gender" data-a="cadeau">
+            <span class="quiz-opt-icon">🎁</span>
+            <div class="quiz-opt-content">
+              <strong>Cadeau de Prestige</strong>
+              <small>Les plus grands chefs-d'œuvre unanimement salués</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Étape 2 : L'Atmosphère & Le Moment Idéal -->
+      <div class="quiz-step" id="qzStep2">
+        <h4 class="quiz-q">2. Quel est le moment et l'atmosphère privilégiés ?</h4>
+        <div class="quiz-opts quiz-opts--grid">
+          <button class="quiz-opt" data-q="moment" data-a="day">
+            <span class="quiz-opt-icon">☀️</span>
+            <div class="quiz-opt-content">
+              <strong>Quotidien &amp; Signature Chic</strong>
+              <small>Un sillage raffiné, élégant et lumineux du matin au soir</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="moment" data-a="night">
+            <span class="quiz-opt-icon">🌙</span>
+            <div class="quiz-opt-content">
+              <strong>Soirée &amp; Séduction Nocturne</strong>
+              <small>Un magnétisme chaud, mystérieux et irrésistiblement sensuel</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="moment" data-a="prestige">
+            <span class="quiz-opt-icon">👑</span>
+            <div class="quiz-opt-content">
+              <strong>Affirmation &amp; Haute Cérémonie</strong>
+              <small>Un parfum royal d'une autorité et d'une prestance absolues</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="moment" data-a="fresh">
+            <span class="quiz-opt-icon">🌊</span>
+            <div class="quiz-opt-content">
+              <strong>Fraîcheur &amp; Énergie Solaire</strong>
+              <small>Un souffle tonique d'agrumes, d'embruns et de grand air</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Étape 3 : La Famille Olfactive Privilégiée -->
+      <div class="quiz-step" id="qzStep3">
+        <h4 class="quiz-q">3. Quelle famille olfactive fait vibrer vos sens ?</h4>
+        <div class="quiz-opts quiz-opts--compact">
+          <button class="quiz-opt" data-q="family" data-a="amber">
+            <span class="quiz-opt-icon">✨</span>
+            <div class="quiz-opt-content">
+              <strong>Ambrée &amp; Vanille Royale</strong>
+              <small>Ambre chaud, vanille Bourbon, fève tonka, benjoin</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="family" data-a="woody">
+            <span class="quiz-opt-icon">🪵</span>
+            <div class="quiz-opt-content">
+              <strong>Boisée &amp; Oud Majestueux</strong>
+              <small>Cèdre de l'Atlas, vétiver d'Haïti, santal précieux, patchouli</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="family" data-a="floral">
+            <span class="quiz-opt-icon">🌸</span>
+            <div class="quiz-opt-content">
+              <strong>Florale &amp; Poudrée</strong>
+              <small>Rose de Grasse, jasmin sambac, fleur d'oranger, iris noble</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="family" data-a="fresh">
+            <span class="quiz-opt-icon">🌊</span>
+            <div class="quiz-opt-content">
+              <strong>Marine &amp; Hespéridée</strong>
+              <small>Notes océaniques, mandarine verte, bergamote d'Italie</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="family" data-a="gourmand">
+            <span class="quiz-opt-icon">🍯</span>
+            <div class="quiz-opt-content">
+              <strong>Gourmande &amp; Sucrée</strong>
+              <small>Caramel au beurre salé, marron glacé, mangue, cacao</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="family" data-a="spicy">
+            <span class="quiz-opt-icon">🔥</span>
+            <div class="quiz-opt-content">
+              <strong>Épicée &amp; Cuir Obscur</strong>
+              <small>Cardamome, poivre noir, encens mystique, cuir noir</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Étape 4 : Sillage & Intensité Souhaitée -->
+      <div class="quiz-step" id="qzStep4">
+        <h4 class="quiz-q">4. Quelle intensité et persistance recherchez-vous ?</h4>
+        <div class="quiz-opts quiz-opts--grid">
+          <button class="quiz-opt" data-q="intensity" data-a="subtle">
+            <span class="quiz-opt-icon">🍃</span>
+            <div class="quiz-opt-content">
+              <strong>Élégance Discrète (Eau de Toilette)</strong>
+              <small>Tenue 24h, sillage raffiné et agréable en toute circonstance</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="intensity" data-a="balanced">
+            <span class="quiz-opt-icon">💫</span>
+            <div class="quiz-opt-content">
+              <strong>Présence Remarquable (Eau de Parfum)</strong>
+              <small>Tenue 36h à 48h, projection harmonieuse et captivante</small>
+            </div>
+          </button>
+          <button class="quiz-opt" data-q="intensity" data-a="intense">
+            <span class="quiz-opt-icon">⚡</span>
+            <div class="quiz-opt-content">
+              <strong>Monumentale &amp; Solaire (Elixir Concentré)</strong>
+              <small>Tenue 48h à 72h+, sillage impérial qui marque les mémoires</small>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Résultat Diagnostic Personnalisé -->
+      <div class="quiz-step" id="qzResult">
+        <div class="qr-box">
+          <div class="qr-match-badge" id="qrMatchBadge">
+            <span class="qr-match-percent" id="qrMatchScore">98%</span>
+            <span>de Correspondance Olfactive</span>
+          </div>
+
+          <span class="eyebrow-tag" style="display:block;text-align:center;margin-bottom:.4rem">— Votre Signature Absolue</span>
+          <h3 class="qr-title" id="qrTitle"></h3>
+          <span class="qr-brand" id="qrBrand"></span>
+
+          <div class="qr-main-card">
+            <div class="qr-img-ring">
+              <img src="" id="qrImg" alt="" />
+            </div>
+            <div class="qr-main-info">
+              <div class="qr-price-line">
+                <span class="qr-price" id="qrPrice"></span>
+                <span class="qr-badge" id="qrBadge"></span>
+              </div>
+              <p class="qr-desc" id="qrDesc"></p>
+              
+              <!-- Accord olfactif phare -->
+              <div class="qr-notes-preview" id="qrNotesPreview">
+                <div class="qr-note-tag"><small>Tête :</small> <span id="qrTopNote"></span></div>
+                <div class="qr-note-tag"><small>Cœur :</small> <span id="qrHeartNote"></span></div>
+                <div class="qr-note-tag"><small>Fond :</small> <span id="qrBaseNote"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTAs -->
+          <div class="qr-actions">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="btn-gold qr-wa-btn" id="qrWhatsAppBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <span>Commander cette création</span>
+            </a>
+            <button class="btn-ghost qr-pdp-btn" id="qrExplore">
+              <span>Voir la Fiche Détaillée</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Alternative recommendations -->
+          <div class="qr-alternatives-wrap" id="qrAlternativesWrap">
+            <span class="qr-alt-title">Autres Créations Idéales pour Vous :</span>
+            <div class="qr-alt-grid" id="qrAltGrid"></div>
+          </div>
+
+          <button class="qr-restart-btn" id="qrRestartBtn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            <span>Recommencer le diagnostic</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: DÉPOSER UN AVIS CLIENT
+  ══════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="reviewModalBackdrop">
+    <div class="modal modal--review" id="reviewModal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeReviewModal" aria-label="Fermer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="review-modal-header">
+        <img src="/logo/LOGO WEBP4.webp" alt="DS" class="review-mono" />
+        <h3>Partagez Votre Expérience</h3>
+        <p>Votre avis aide les passionnés de parfum à faire le bon choix.</p>
+      </div>
+
+      <form class="review-form" id="reviewForm">
+        <div class="form-group">
+          <label for="reviewAuthorName" class="form-label">Votre Prénom et Ville *</label>
+          <input type="text" id="reviewAuthorName" class="form-input" placeholder="ex. Sarah M. (Oran)" required />
+        </div>
+
+        <div class="form-group">
+          <label for="reviewPerfumeChoice" class="form-label">Parfum Commandé *</label>
+          <input type="text" id="reviewPerfumeChoice" class="form-input" placeholder="ex. Prada Paradoxe Intense ou Dior Sauvage Elixir" required />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Note Globale</label>
+          <div class="star-rating-select">
+            <span class="star-active">★</span>
+            <span class="star-active">★</span>
+            <span class="star-active">★</span>
+            <span class="star-active">★</span>
+            <span class="star-active">★</span>
+            <span class="rating-txt">5 / 5 Étoiles</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="reviewText" class="form-label">Votre Commentaire *</label>
+          <textarea id="reviewText" class="form-textarea" rows="3" placeholder="Parlez-nous de la tenue du parfum, de l'emballage ou de la livraison..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-gold" style="width: 100%; justify-content: center;">
+          <span>Publier Mon Avis</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MODAL: UP-SELLING & PACK VIP CONCIERGE
+  ══════════════════════════════════════════════ -->
+  <div class="modal-backdrop" id="upsellModalBackdrop">
+    <div class="modal modal--upsell" id="upsellModal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeUpsellModal" aria-label="Fermer">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+
+      <div class="upsell-header">
+        <span class="upsell-pill">✨ Privilège Maison Dar Safia</span>
+        <h3>Complétez Votre Expérience Haute Couture</h3>
+        <p>Profitez de nos offres exclusives et coffrets complémentaires préparés spécialement pour votre commande.</p>
+      </div>
+
+      <!-- Current Item Recap -->
+      <div class="upsell-current-item" id="upsellCurrentItem">
+        <img src="" id="upsellCurrentImg" alt="" class="upsell-curr-img" />
+        <div class="upsell-curr-info">
+          <span class="upsell-curr-tag">Parfum Sélectionné</span>
+          <strong class="upsell-curr-name" id="upsellCurrentName"></strong>
+          <span class="upsell-curr-price" id="upsellCurrentPrice"></span>
+        </div>
+      </div>
+
+      <!-- Up-Sell Offers List -->
+      <div class="upsell-offers-grid">
+
+        <!-- Offer 1: Duo Pack (-20% on 2nd) -->
+        <label class="upsell-card" id="upsellDuoCard">
+          <input type="checkbox" class="upsell-chk" id="chkDuoPack" />
+          <div class="upsell-card-custom-chk"></div>
+          <div class="upsell-card-body">
+            <div class="upsell-card-top">
+              <span class="upsell-badge-promo">🔥 Offre Duo -20%</span>
+              <strong class="upsell-card-title">Pack Duo Sillage &amp; Complémentarité</strong>
+            </div>
+            <p class="upsell-card-desc" id="upsellDuoDesc">Associez un 2ème parfum signature assorti pour le soir ou pour offrir.</p>
+            <div class="upsell-duo-match" id="upsellDuoMatch">
+              <img src="" id="upsellDuoImg" class="upsell-duo-thumb" alt="" />
+              <div class="upsell-duo-meta">
+                <span class="upsell-duo-name" id="upsellDuoName"></span>
+                <span class="upsell-duo-prices">
+                  <span class="upsell-price-orig" id="upsellDuoOrigPrice"></span>
+                  <strong class="upsell-price-disc" id="upsellDuoDiscPrice"></strong>
+                </span>
+              </div>
+            </div>
+          </div>
+        </label>
+
+        <!-- Offer 2: Atomiseur Nomade de Sac -->
+        <label class="upsell-card">
+          <input type="checkbox" class="upsell-chk" id="chkAtomizer" />
+          <div class="upsell-card-custom-chk"></div>
+          <div class="upsell-card-body">
+            <div class="upsell-card-top">
+              <span class="upsell-badge-acc">👝 Format Sac &amp; Voyage</span>
+              <strong class="upsell-card-title">Vaporisateur Nomade Rechargeable en Or Brossé</strong>
+            </div>
+            <p class="upsell-card-desc">Vaporisateur 10ml hermétique ultra-léger + kit de remplissage rapide &amp; étui en suédine noire.</p>
+            <span class="upsell-addon-price">+ 3 500 DA</span>
+          </div>
+        </label>
+
+        <!-- Offer 3: Pack 3 Échantillons Rares -->
+        <label class="upsell-card">
+          <input type="checkbox" class="upsell-chk" id="chkSamples" />
+          <div class="upsell-card-custom-chk"></div>
+          <div class="upsell-card-body">
+            <div class="upsell-card-top">
+              <span class="upsell-badge-acc">🧪 Haute Découverte</span>
+              <strong class="upsell-card-title">Coffret Échantillons Niche (3 x 3ml)</strong>
+            </div>
+            <p class="upsell-card-desc">Sélection de 3 extraits concentrés pour tester les nouveautés de la Maison.</p>
+            <span class="upsell-addon-price">+ 1 800 DA</span>
+          </div>
+        </label>
+
+        <!-- Offer 4: Gravure & Emballage Cadeau VIP -->
+        <label class="upsell-card upsell-card--free">
+          <input type="checkbox" class="upsell-chk" id="chkGiftWrap" checked />
+          <div class="upsell-card-custom-chk"></div>
+          <div class="upsell-card-body">
+            <div class="upsell-card-top">
+              <span class="upsell-badge-free">🎁 OFFERT AUJOURD'HUI</span>
+              <strong class="upsell-card-title">Écrin Cadeau Dar Safia &amp; Ruban de Soie Doré</strong>
+            </div>
+            <p class="upsell-card-desc">Boîte rigide de luxe magnétisée avec ruban satiné et carte manuscrite personnalisée.</p>
+            <span class="upsell-addon-price" style="color: #25D366;">0 DA (Inclus)</span>
+          </div>
+        </label>
+
+      </div>
+
+      <!-- Live Total Summary -->
+      <div class="upsell-total-bar">
+        <div class="upsell-total-left">
+          <span class="upsell-total-label">Montant Total Estimé :</span>
+          <strong class="upsell-total-val" id="upsellTotalVal"></strong>
+          <span class="upsell-saving-tag" id="upsellSavingTag" style="display: none;"></span>
+        </div>
+        <div class="upsell-total-actions">
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-gold upsell-confirm-btn" id="upsellConfirmWaBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <span>Commander sur WhatsApp</span>
+          </a>
+          <button class="upsell-skip-btn" id="upsellSkipBtn">Continuer avec le parfum seul</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       SLIDE-IN SHOPPING BAG DRAWER (PANIER LUXE)
+  ══════════════════════════════════════════════ -->
+  <div class="bag-drawer-backdrop" id="bagDrawerBackdrop">
+    <div class="bag-drawer" id="bagDrawer" role="dialog" aria-modal="true">
+      <div class="bag-drawer-header">
+        <div class="bag-drawer-title">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+          <h3>Votre Panier de Prestige</h3>
+          <span class="bag-count-badge" id="bagDrawerCount">0 article</span>
+        </div>
+        <button class="modal-close" id="closeBagDrawer" aria-label="Fermer le panier">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Free Delivery Progress -->
+      <div class="bag-delivery-bar">
+        <div class="bag-deliv-text" id="bagDelivText">Ajoutez 1 parfum de plus pour bénéficier de la <strong>Livraison Gratuite 58 Wilayas</strong> !</div>
+        <div class="bag-deliv-track">
+          <div class="bag-deliv-fill" id="bagDelivFill" style="width: 50%;"></div>
+        </div>
+      </div>
+
+      <!-- Items List -->
+      <div class="bag-items-scroll" id="bagItemsList">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Bag Up-Sell Suggestions -->
+      <div class="bag-upsell-section">
+        <span class="bag-upsell-heading">Compléments Recommandés :</span>
+        <div class="bag-upsell-pills">
+          <button class="bag-add-addon-btn" data-addon="atomizer" data-price="3500" data-name="Vaporisateur Or Brossé 10ml">
+            <span>+ Vaporisateur Nomade (3 500 DA)</span>
+          </button>
+          <button class="bag-add-addon-btn" data-addon="samples" data-price="1800" data-name="Coffret 3 Échantillons Niche">
+            <span>+ Coffret 3 Échantillons (1 800 DA)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer & Checkout -->
+      <div class="bag-drawer-footer">
+        <div class="bag-subtotal-row">
+          <span>Sous-total Panier :</span>
+          <strong id="bagSubtotalVal">0 DA</strong>
+        </div>
+        <div class="bag-shipping-row">
+          <span>Livraison 58 Wilayas :</span>
+          <span class="bag-ship-status" id="bagShipStatus">Calculée sur WhatsApp</span>
+        </div>
+
+        <a href="#" target="_blank" rel="noopener noreferrer" class="btn-gold bag-checkout-wa-btn" id="bagCheckoutWaBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span>Finaliser la Commande sur WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
