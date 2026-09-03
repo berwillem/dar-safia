@@ -16,14 +16,23 @@ Ne jamais réécrire du code qui fonctionne sans raison.
 
 ## État actuel
 
-Vanilla HTML/CSS/JS + Vite + GSAP. Fichiers clés :
+Migration en cours. Trois répertoires cohabitent, tous doivent builder :
 
-| Fichier | Rôle |
+| Répertoire | Rôle |
 |---|---|
-| `index.html` | Page unique : hero, catalogue, PDP, quiz, panier, modales |
-| `main.js` | Catalogue (45 parfums), routage par hash, panier, quiz, animations |
-| `style.css` | Design system complet (~3 700 lignes) |
-| `admin.html` / `admin.css` | Maquette dashboard — **aucune auth, données fictives** |
+| racine (`index.html`, `main.js`, `style.css`) | Ancien site vanilla Vite + GSAP. Reste fonctionnel jusqu'à bascule complète. |
+| `web/` | Application Next.js 16 (App Router, TS, Tailwind 4). Accueil, catalogue filtrable, 45 fiches produit (SSG), panier + commande WhatsApp, diagnostic olfactif. Tests Vitest. |
+| `cms/` | Strapi 5. **Init simple, aucun type de contenu**, SQLite par défaut. Intégration à `web/` non faite. |
+| `catalog-data.js` | Source du catalogue (45 parfums). `scripts/migrate-catalog.mjs` en dérive `web/src/data/` (gitignoré). |
+| `admin.html` / `admin.css` | Maquette dashboard de l'ancien site — **aucune auth, données fictives**. À retirer quand le vrai admin Strapi existe. |
+
+**Règle de couture :** dans `web/`, les composants importent uniquement
+`@/lib/catalog`, jamais `products.json` ni une implémentation concrète.
+Remplacer le repository statique par Strapi ne doit toucher que
+`web/src/lib/catalog/index.ts`.
+
+Next 16 postdate l'entraînement : lire `web/node_modules/next/dist/docs/`
+avant d'écrire du code Next.
 
 ## Architecture cible
 

@@ -1,0 +1,58 @@
+# ══════════════════════════════════════════════════════════════
+#   STRAPI — FICHIERS À NE PAS VERSIONNER
+# ══════════════════════════════════════════════════════════════
+# create-strapi n'écrit pas ce fichier quand --no-git-init est passé
+# (on est déjà dans un dépôt) ; il est donc ajouté à la main, sur la
+# base du .gitignore standard de Strapi 5.
+
+############################
+# Dépendances
+############################
+node_modules/
+.yarn/
+.pnp.*
+
+############################
+# Build & cache
+############################
+dist/
+build/
+.strapi/
+.cache/
+.strapi-updater.json
+.turbo/
+
+############################
+# Runtime / données locales
+############################
+.tmp/
+*.db
+*.sqlite
+*.sqlite3
+exports/
+*.dump
+.strapi-cloud.json
+
+############################
+# Environnement
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# Logs
+############################
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+############################
+# Éditeurs / OS
+############################
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
