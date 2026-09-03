@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 
 import { OlfactoryPyramid } from '@/components/OlfactoryPyramid';
 import { ProductCard } from '@/components/ProductCard';
+import { AddToCartButton } from '@/components/cart/AddToCartButton';
 import { catalog, lowestPrice } from '@/lib/catalog';
 import {
   formatFamily,
@@ -205,20 +206,37 @@ export default async function ProductPage({ params }: PageProps) {
               {product.description}
             </p>
 
-            {orderUrl ? (
-              <a
-                href={orderUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-8 inline-flex items-center gap-2.5 rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors duration-200 hover:bg-gold-light"
-              >
-                Commander sur WhatsApp
-              </a>
-            ) : (
-              <p className="mt-8 rounded-sm border border-smoke-2 px-5 py-3.5 text-sm text-ivory/50">
-                Commande momentanément indisponible.
-              </p>
-            )}
+            <div className="mt-8 flex flex-wrap gap-3">
+              {orderUrl ? (
+                <a
+                  href={orderUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors duration-200 hover:bg-gold-light"
+                >
+                  Commander sur WhatsApp
+                </a>
+              ) : (
+                <p className="rounded-sm border border-smoke-2 px-5 py-3.5 text-sm text-ivory/50">
+                  Commande momentanément indisponible.
+                </p>
+              )}
+
+              {/* Instantané construit ici, côté serveur : le composant client
+                  ne reçoit que les champs qu'il affiche. */}
+              <AddToCartButton
+                line={{
+                  productSlug: product.slug,
+                  variantId: variant.id,
+                  name: product.name,
+                  brandName: product.brand.name,
+                  imageUrl: image?.url ?? '',
+                  volumeMl: variant.volumeMl,
+                  unitPrice: price.amount,
+                  currency: 'DZD',
+                }}
+              />
+            </div>
 
             <OlfactoryPyramid notes={product.notes} />
 

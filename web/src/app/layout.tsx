@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { Cinzel, Cinzel_Decorative, Cormorant_Garamond, Montserrat } from 'next/font/google';
 
+import { PlaceholderPhoneBanner } from '@/components/PlaceholderPhoneBanner';
+import { SiteHeader } from '@/components/SiteHeader';
+import { CartDrawer } from '@/components/cart/CartDrawer';
+import { CartProvider } from '@/components/cart/CartProvider';
+
 import './globals.css';
 
 /**
@@ -63,7 +68,15 @@ export default function RootLayout({
         >
           Aller au contenu principal
         </a>
-        {children}
+
+        {/* Le provider n'englobe que le contexte : les pages qu'il reçoit en
+            children restent des composants serveur. */}
+        <CartProvider>
+          <SiteHeader />
+          {children}
+          <CartDrawer />
+          <PlaceholderPhoneBanner />
+        </CartProvider>
       </body>
     </html>
   );
