@@ -47,6 +47,12 @@ export function CartDrawer() {
       onClick={(event) => {
         if (event.target === dialogRef.current) closeCart();
       }}
+      // Le <dialog> natif ferme déjà sur Échap (événement `close`, géré plus
+      // bas). On double la garde ici car, sous certains états de focus, la
+      // fermeture native ne se déclenche pas de façon fiable.
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') closeCart();
+      }}
       className="m-0 ml-auto h-dvh max-h-dvh w-full max-w-md bg-noir-2 p-0 text-ivory backdrop:bg-black/70 backdrop:backdrop-blur-sm"
     >
       <div className="flex h-full flex-col">

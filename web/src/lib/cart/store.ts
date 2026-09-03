@@ -28,8 +28,13 @@ const listeners = new Set<Listener>();
 
 /**
  * Instantané courant. Doit être RÉFÉRENTIELLEMENT STABLE entre deux lectures
- * sans changement : useSyncExternalStore compare par identité et boucherait
+ * sans changement : useSyncExternalStore compare par identité et bouclerait
  * indéfiniment si on renvoyait un nouveau tableau à chaque appel.
+ *
+ * Corollaire : la relecture du stockage se fait UNE SEULE fois (latch `loaded`),
+ * pas à chaque `subscribe`. En dev, React (StrictMode) monte/démonte deux fois ;
+ * relire à chaque abonnement produirait une nouvelle référence à chaque cycle
+ * et déstabiliserait tout l'arbre de rendu.
  */
 let snapshot: CartLine[] = [];
 let loaded = false;
@@ -94,14 +99,19 @@ function commit(next: CartLine[]): void {
 
 // ── Contrat useSyncExternalStore ───────────────────────────────
 
-export function subscribe(listener: Listener): () => void {
-  // Première inscription : on charge depuis le stockage. Fait ici plutôt
-  // qu'au chargement du module, car ce fichier est aussi évalué côté serveur.
-  if (!loaded) {
-    loaded = true;
-    snapshot = readStorage();
-  }
+/**
+ * Charge le panier depuis le stockage, une seule fois. Appelé au premier
+ * `subscribe` ET au premier `getSnapshot` : selon l'ordre, React peut lire
+ * l'instantané avant de s'abonner.
+ */
+function ensureLoaded(): void {
+  if (loaded) return;
+  loaded = true;
+  snapshot = readStorage();
+}
 
+export function subscribe(listener: Listener): () => void {
+  ensureLoaded();
   listeners.add(listener);
 
   // Un autre onglet peut modifier le panier : on se resynchronise.
@@ -120,6 +130,7 @@ export function subscribe(listener: Listener): () => void {
 }
 
 export function getSnapshot(): CartLine[] {
+  ensureLoaded();
   return snapshot;
 }
 
@@ -186,4 +197,14 @@ export function removeLine(productSlug: string, variantId: string): void {
 
 export function clear(): void {
   commit([]);
+}
+
+/**
+ * Réinitialise l'état module. RÉSERVÉ AUX TESTS : le latch `loaded` empêche
+ * sinon de simuler plusieurs sessions dans un même processus.
+ */
+export function __resetForTests(): void {
+  snapshot = [];
+  loaded = false;
+  listeners.clear();
 }
