@@ -6,6 +6,10 @@ node_modules/
 dist/
 .vite/
 
+# Images dérivées — régénérées par `npm run images` depuis les masters
+# (branding images/, perfumes/, logo/). Ne pas versionner.
+public/img/
+
 # Environnement — ne jamais commiter de valeurs réelles
 .env
 .env.*

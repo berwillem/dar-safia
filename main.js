@@ -32,7 +32,7 @@ export const perfumeCatalog = [
     reviewsCount: 142,
     desc: "Une célébration de l'expression multidimensionnelle féminine. Un bouquet de fleurs blanches immortalisé par un accord d'ambre chaud et de musc révolutionnaire.",
     story: "Conçu par les maîtres parfumeurs Nadège Le Garlantezec et Antoine Maisondieu, Paradoxe réconcilie la fraîcheur du néroli avec la sensualité d'un ambre exclusif.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Néroli de Calabre, Bergamote, Mandarine',
     heart: 'Jasmin Sambac, Fleur d’Oranger, Cœur de Néroli',
     base: 'Ambrofix, Musc Blanc Serenolide, Benjoin de Siam',
@@ -55,7 +55,7 @@ export const perfumeCatalog = [
     reviewsCount: 98,
     desc: "L'intensité réinventée. Une signature florale ambrée magnifiée par une surdose de jasmin précieux et une profondeur boisée d'une sensualité captivante.",
     story: "L'expression la plus intense de Paradoxe, où la délicatesse florale rencontre la puissance d'accords ambrés profonds pour une présence inoubliable.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Essence de Néroli, Bergamote, Accord Poire',
     heart: 'Jasmin Grandiflorum, Accord Mousse, Fleur d’Oranger',
     base: 'Ambrofix, Vanille Bourbon, Accord Boisé Sombre',
@@ -78,7 +78,7 @@ export const perfumeCatalog = [
     reviewsCount: 215,
     desc: "Une élégance haute couture romaine mêlée à une touche d'audace contemporaine. Trois variétés de jasmin sublimées par une vanille Bourbon d'une rare noblesse.",
     story: "Inspiré par la grandeur éternelle de la cité de Rome et l'esprit rebelle de la haute couture Valentino.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Cassis, Poivre Rose, Bergamote Italienne',
     heart: 'Jasmin Sambac, Jasmin Grandiflorum, Thé au Jasmin',
     base: 'Vanille Bourbon, Bois de Gaïac, Cachemire',
@@ -101,7 +101,7 @@ export const perfumeCatalog = [
     reviewsCount: 87,
     desc: "L'ode magnétique aux nuits éternelles de Rome. Une vanille envoûtante s'embrase au contact du benjoin ambré et du jasmin solaire.",
     story: "Une célébration nocturne de la passion romaine dans sa concentration la plus riche et luxueuse.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Vanille Bourbon, Bergamote Solaire',
     heart: 'Trio de Jasmins Nobles, Accord Floral Nuit',
     base: 'Résine de Benjoin, Bois Précieux',
@@ -124,7 +124,7 @@ export const perfumeCatalog = [
     reviewsCount: 76,
     desc: "L'essence irrésistible de la féminité parisienne. Une mangue pulpeuse et succulente mariée à un jasmin d'une clarté lumineuse et un encens addictif.",
     story: "Hommage à l'esprit glamour et avant-gardiste de la maison Rabanne, un sillage fruité-floral d'une gourmandise irrésistible.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Mangue Sucrée, Bergamote Lumineuse',
     heart: 'Jasmin Lumineux Pur, Fleur d’Encens',
     base: 'Bois de Santal Onctueux, Vanille Noire',
@@ -147,7 +147,7 @@ export const perfumeCatalog = [
     reviewsCount: 164,
     desc: "Un souffle de liberté et de grâce. Une rose moderne infusée de pêche veloutée et de vanille aérienne qui caresse la peau d'une fraîcheur éclatante.",
     story: "Créé par des femmes pour les femmes qui conquièrent leur propre destinée avec douceur et détermination.",
-    img: '/perfumes/fresh.jpg',
+    img: '/img/perfumes/fresh.webp',
     top: 'Pêche Blanche Juteuse, Poire Fondante',
     heart: 'Rose Ispahan Soufflée, Jasmin Pétale',
     base: 'Vanille de Madagascar, Muscs Propres, Cèdre',
@@ -170,7 +170,7 @@ export const perfumeCatalog = [
     reviewsCount: 310,
     desc: "Une véritable explosion florale opulente et voluptueuse. Des milliers de fleurs transformées en une traînée de charme ensorcelante et gourmande.",
     story: "Le parfum mythique qui a transformé la haute parfumerie en une bombe d'émotions positives et florales.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Thé Vert, Bergamote, Osmanthus',
     heart: 'Orchidée Cattleya, Rose Centifolia, Jasmin Sambac',
     base: 'Patchouli Pur, Vanille Gourmande, Musc',
@@ -193,7 +193,7 @@ export const perfumeCatalog = [
     reviewsCount: 52,
     desc: "Le chic parisien incarné avec panache. Un accord chypré floral vintage aux notes riches de prune veloutée, de mousse de chêne et de fleurs d'oranger.",
     story: "L'élégance audacieuse et intemporelle de la haute couture française des années dorées.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Fleur d’Oranger, Prune Mirabelle, Bergamote',
     heart: 'Ylang-Ylang, Jasmin Mystique, Rose Poudrée',
     base: 'Mousse de Chêne, Ambre Gris, Bois de Santal',
@@ -216,7 +216,7 @@ export const perfumeCatalog = [
     reviewsCount: 180,
     desc: "Une déclaration d'amour solaire aux racines italiennes. Un citron confit croustillant ouvre la voie à une fleur d'oranger rayonnante et une vanille bourbon onctueuse.",
     story: "Inspiré par le Sacré-Cœur emblématique de D&G, symbole de dévotion inconditionnelle et de passion gourmande.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Citron d’Italie Confit, Zestes Sucrés',
     heart: 'Fleur d’Oranger Lumineuse, Panna Cotta',
     base: 'Vanille de Madagascar Précieuse',
@@ -239,7 +239,7 @@ export const perfumeCatalog = [
     reviewsCount: 195,
     desc: "La pure quintessence de la rose Chloé magnifiée à son apogée. Un parfum raffiné, intemporel et follement envoûtant.",
     story: "La liberté d'esprit et l'élégance naturelle de la femme Chloé sublimées par une rose damascena éclatante.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Litchi Rosé, Pivoine Royale, Freesia',
     heart: 'Rose Damascena Intense, Muguet Frais',
     base: 'Bois de Cèdre de Virginie, Ambre Doré',
@@ -262,7 +262,7 @@ export const perfumeCatalog = [
     reviewsCount: 88,
     desc: "Inspiré par le premier réveil d'un jardin londonien à l'aube. Une énergie pétillante de grenade givrée et de pétales de rose saupoudrés de rosée.",
     story: "Capturant les premières lueurs du jour sur les jardins royaux de Londres, frais et pétillant.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Grenade Glacée, Citron Pétillant',
     heart: 'Pétales de Rose, Pomme Verte Croquante, Géranium',
     base: 'Jasmin Blanc, Glycine',
@@ -285,7 +285,7 @@ export const perfumeCatalog = [
     reviewsCount: 112,
     desc: "L'icône absolue du trench-coat Burberry en parfum. Un bouquet floral grand style empreint d'une pluie printanière sur des roses de Damas.",
     story: "L'esprit de l'artisanat britannique et du trench-coat iconique, réinterprété en haute parfumerie.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Pois de Senteur, Bergamote, Mandarine',
     heart: 'Géranium d’Afrique, Freesia, Coing Doré',
     base: 'Rose de Damas, Rose Centifolia, Patchouli',
@@ -308,7 +308,7 @@ export const perfumeCatalog = [
     reviewsCount: 220,
     desc: "L'attraction de l'interdit poussée à l'obsession. Une tubéreuse blanche charnelle enflammée par une orange sanguine ardente et un accord épicé rouge.",
     story: "L'audace de franchir la ligne rouge. Une sensualité incandescente qui consume tout sur son passage.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Orange Sanguine de Sicile, Gingembre Rouge',
     heart: 'Tubéreuse d’Inde, Jasmin Sambac, Piment Doux',
     base: 'Patchouli d’Indonésie, Bois de Santal, Vétiver',
@@ -331,7 +331,7 @@ export const perfumeCatalog = [
     reviewsCount: 94,
     desc: "Le summum du magnétisme. L'accord floral blanc iconique s'enveloppe de coques de cacao recyclées et d'un patchouli sombre d'une richesse infinie.",
     story: "L'ultime tentation où la fleur blanche charnelle s'unit à la gourmandise sombre du cacao torréfié.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Fleur d’Oranger de Tunisie, Coques de Cacao Torréfié',
     heart: 'Tubéreuse Sombre, Jasmin Grandiflorum',
     base: 'Patchouli Cacao, Ambroxan, Vétiver Bourbon',
@@ -354,7 +354,7 @@ export const perfumeCatalog = [
     reviewsCount: 140,
     desc: "Une invitation magnétique au lâcher-prise. Une rose antimorose ultra-lumineuse qui danse avec un bois blond éclatant et une poire délicieusement juteuse.",
     story: "Une bouffée d'énergie joyeuse pour celles qui s'expriment librement et avec élégance.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Poire Sucrée, Ambrette d’Équateur',
     heart: 'Rose Essential Grasse, Iris Précieux',
     base: 'Bois de Cèdre de Virginie, Muscs Blancs',
@@ -377,7 +377,7 @@ export const perfumeCatalog = [
     reviewsCount: 340,
     desc: "L'or liquide de la Maison Dior. Un bouquet floral magistral composé d'absolus de fleur d'oranger, de jasmin de Grasse et de rose centifolia.",
     story: "Le chef-d'œuvre de la parfumerie Dior composé comme une ode à la féminité majestueuse.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Fleur d’Oranger Solaire, Ylang-Ylang des Comores',
     heart: 'Jasmin Grandiflorum de Grasse, Rose de Mai',
     base: 'Bois de Santal Onctueux, Vanille d’Or',
@@ -400,7 +400,7 @@ export const perfumeCatalog = [
     reviewsCount: 155,
     desc: "Un hommage éclatant à toutes les femmes divines. Une alliance spectaculaire de lys blanc majestueux, de meringue gourmande et d'un souffle marin salé unique.",
     story: "Le corset iconique de Gaultier transformé en un bijou d'or pour une fragrance sensationnelle et salée-sucrée.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Calypso Marin, Bergamote, Fruits Rouges',
     heart: 'Lys Majestueux, Jasmin Étoilé, Ylang-Ylang',
     base: 'Meringue Sucrée, Musc Blanc, Patchouli Doré',
@@ -423,7 +423,7 @@ export const perfumeCatalog = [
     reviewsCount: 96,
     desc: "L'instant où tout peut basculer dans la passion. Un miel d'agrumes lumineux se fond dans un magnolia opulent et un sillage d'ambre cristallin.",
     story: "Créé par la plus ancienne maison de parfum au monde, un moment d'émotion pure figé dans le temps.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Miel d’Agrumes, Bergamote, Mandarine',
     heart: 'Magnolia Blanc, Ylang-Ylang, Jasmin Sambac',
     base: 'Ambre Cristallin, Benjoin, Bois de Santal',
@@ -446,7 +446,7 @@ export const perfumeCatalog = [
     reviewsCount: 280,
     desc: "Une explosion fruitée et magnétique qui captive instantanément. Pastèque succulente, kiwi exotique et cyclamen rose sur fond de muscs veloutés.",
     story: "Inspiré de la carte de tarot de L'Impératrice, symbole de séduction irrésistible et de vitalité.",
-    img: '/perfumes/fresh.jpg',
+    img: '/img/perfumes/fresh.webp',
     top: 'Kiwi Juteux, Rhubarbe Rose, Poivre Rose',
     heart: 'Pastèque Gorgée d’Eau, Cyclamen Rose, Jasmin',
     base: 'Bois de Citronnier, Musc Propre, Santal',
@@ -469,7 +469,7 @@ export const perfumeCatalog = [
     reviewsCount: 75,
     desc: "L'incarnation de la jeune Parisienne pétillante et espiègle. Pomme d'amour croquante, rose délicate et fond de santal caressant.",
     story: "Le chic français sans effort, plein de charme, de malice et d'élégance naturelle.",
-    img: '/perfumes/rose.jpg',
+    img: '/img/perfumes/rose.webp',
     top: 'Pomme d’Amour, Cassis Noir, Feuilles de Lierre',
     heart: 'Rose Pétillante, Jasmin d’Égypte, Violette',
     base: 'Bois de Santal, Ambre Gris, Chantilly Musquée',
@@ -492,7 +492,7 @@ export const perfumeCatalog = [
     reviewsCount: 168,
     desc: "Une force sensuelle et élégante inspirée des rivages méditerranéens. Sorbet cassis rafraîchissant, pomme Granny Smith et bois blancs soyeux.",
     story: "Un hommage à la féminité puissante selon Donatella Versace, entre fraîcheur aquatique et sensualité boisée.",
-    img: '/perfumes/fresh.jpg',
+    img: '/img/perfumes/fresh.webp',
     top: 'Sorbet Cassis Noir, Pomme Granny Smith, Trèfle',
     heart: 'Églantine Sauvage, Pêche Givrée, Pétalia, Jasmin',
     base: 'Styrax, Bois Blancs Précieux, Musc, Patchouli',
@@ -517,7 +517,7 @@ export const perfumeCatalog = [
     reviewsCount: 260,
     desc: "L'énergie masculine affirmée et séduisante. Cardamome épicée, poivre rose vibrant et un accord inimitable de marron glacé fumé à la vanille.",
     story: "L'histoire d'un amour puissant et inconditionnel, célébrant la confiance et le magnétisme contemporain.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Cardamome du Guatemala, Poivre Rose, Violette',
     heart: 'Sauge Sclarée Aromatique, Lavande de Provence',
     base: 'Accord Marron Glacé, Vanille Jungle Essence, Cèdre',
@@ -540,7 +540,7 @@ export const perfumeCatalog = [
     reviewsCount: 115,
     desc: "Rejoignez l'élite olfactive. Un accord inédit de narcisse sauvage couplé à un quatuor de vétivers nobles et une vanille Tasuki d'une profondeur absolue.",
     story: "Pour les hommes d'honneur qui définissent leurs propres règles avec distinction et savoir-être.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Sauge Sclarée, Noix de Muscade, Cardamome',
     heart: 'Narcisse Sauvage de France, Café Torréfié, Iris',
     base: 'Quatuor de Vétivers, Vanille Tasuki, Cèdre',
@@ -563,7 +563,7 @@ export const perfumeCatalog = [
     reviewsCount: 190,
     desc: "Le roi du ring olfactif. Un caramel brûlé au beurre salé percutant mêlé à la fève tonka suave et un vétiver puissant qui fait succomber les foules.",
     story: "Couronné champion de la séduction, ce concentré d'audace frappe avec force et volupté.",
-    img: '/perfumes/oud.jpg',
+    img: '/img/perfumes/oud.webp',
     top: 'Sauge Royale, Mandarine Sanguine',
     heart: 'Caramel Salé Onctueux, Fève Tonka Intense',
     base: 'Vétiver Sombre, Cèdre Noir',
@@ -586,7 +586,7 @@ export const perfumeCatalog = [
     reviewsCount: 145,
     desc: "La perfection architecturale en flacon. Un iris noble majestueux marié au néroli lumineux et à l'ambre chaud pour une allure aristocratique impeccable.",
     story: "L'exploration de la dualité masculine selon Miuccia Prada, épurée, sophistiquée et luxueuse.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Néroli Doré, Poivre Noir, Cardamome',
     heart: 'Iris Pallida d’Italie, Violette, Géranium',
     base: 'Ambre Chaud, Bois de Cèdre, Patchouli Pur',
@@ -609,7 +609,7 @@ export const perfumeCatalog = [
     reviewsCount: 130,
     desc: "L'appel des sommets glaciaires. Pamplemousse givré, sauge aromatique vivifiante et cèdre majestueux composent une ode à la conquête.",
     story: "Inspiré par les expéditions vers les sommets les plus vertigineux du mont Blanc.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Pamplemousse Givré, Feuilles de Violette',
     heart: 'Sauge Sclarée Pure, Poivre Rose Alpin',
     base: 'Bois de Cèdre Platinum, Ambre Minéral',
@@ -632,7 +632,7 @@ export const perfumeCatalog = [
     reviewsCount: 380,
     desc: "La force minérale et tellurique portée à incandescence. La puissance du vétiver haïtien sublimée par des agrumes solaires et du poivre du Sichuan.",
     story: "La structure originelle de Terre d'Hermès revisitée par Christine Nagel, où le vétiver prend racine dans une terre fertile et chaude.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Bergamote Verte, Pamplemousse Hespéridé',
     heart: 'Poivre du Sichuan, Géranium Sauvage, Silex Minéral',
     base: 'Vétiver Intense d’Haïti, Résine d’Oliban, Cèdre',
@@ -655,7 +655,7 @@ export const perfumeCatalog = [
     reviewsCount: 450,
     desc: "L'immensité de la mer Méditerranée encapsulée. Des notes marines cristallines vivifiées par la mandarine verte de Calabre et un patchouli guatémaltèque durable.",
     story: "L'île de Pantelleria et ses roches volcaniques léchées par des vagues turquoise, un souffle de liberté absolue.",
-    img: '/perfumes/fresh.jpg',
+    img: '/img/perfumes/fresh.webp',
     top: 'Notes Marines Océaniques, Mandarine Verte',
     heart: 'Sauge Sclarée, Lavande de Provence, Géranium',
     base: 'Patchouli du Guatemala, Vétiver Minéral',
@@ -678,7 +678,7 @@ export const perfumeCatalog = [
     reviewsCount: 180,
     desc: "Le charme nocturne à l'état pur. Un iris précieux sombrement enveloppé de poivre noir, de baume de Tolu et de vanille noire de Madagascar.",
     story: "Pour l'homme raffiné dont l'élégance naturelle n'a besoin d'aucun artifice pour séduire.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Poivre Noir de Madagascar, Bergamote, Lavande',
     heart: 'Iris d’Italie Sombre, Cannelle, Clou de Girofle',
     base: 'Vanille Noire, Baume de Tolu, Patchouli, Benjoin',
@@ -701,7 +701,7 @@ export const perfumeCatalog = [
     reviewsCount: 225,
     desc: "Le fruit défendu du jardin d'Éden de Gaultier. Noix de coco sensuelle, bois de santal chaud et fève tonka addictive pour un sillage aphrodisiaque.",
     story: "Une tentation irrésistible sous le soleil d'un jardin tropical où tout est permis.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Ananas Givré, Gingembre Sauvage, Cyprès',
     heart: 'Bois de Coco Grillé, Fève Tonka Suave',
     base: 'Bois de Santal Royal, Ambre Gris',
@@ -724,7 +724,7 @@ export const perfumeCatalog = [
     reviewsCount: 240,
     desc: "La quintessence de la puissance masculine. Un encens mystique associé à une vanille noire envoûtante et une fève tonka magnétique.",
     story: "La consécration de la victoire pour ceux qui ne reculent devant aucun défi.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Cardamome Noire, Poivre Rose, Lavandin Vert',
     heart: 'Encens Mystique, Patchouli d’Indonésie',
     base: 'Gousse de Vanille Noire, Fève Tonka Sombre',
@@ -747,7 +747,7 @@ export const perfumeCatalog = [
     reviewsCount: 165,
     desc: "L'affirmation audacieuse de l'homme contemporain. Une fleur d'oranger intense et texturée, intensifiée par des bois noirs et un accord poivré vibrant.",
     story: "Être soi-même sans compromis. L'intensité masculine d'une génération libre et passionnée.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Poivre Noir Vibrant, Bergamote de Calabre',
     heart: 'Fleur d’Oranger Intense de Tunisie',
     base: 'Bois Riches Ambrés, Patchouli Cœur, Vanille Bourbon',
@@ -770,7 +770,7 @@ export const perfumeCatalog = [
     reviewsCount: 290,
     desc: "La nouvelle icône masculine signée YSL. Une fraîcheur éclatante de bergamote combinée à un cœur floral pur et des bois sensuels.",
     story: "La réinvention de la masculinité dans un sillage fluide et infiniment raffiné.",
-    img: '/perfumes/oud.jpg',
+    img: '/img/perfumes/oud.webp',
     top: 'Cœur de Bergamote de Calabre, Vert de Bergamote',
     heart: 'Absolu de Fleur d’Oranger de Tunisie',
     base: 'Cœur de Patchouli d’Indonésie, Ambrofix',
@@ -793,7 +793,7 @@ export const perfumeCatalog = [
     reviewsCount: 370,
     desc: "Le philtre de séduction le plus célèbre du monde. Cardamome orientale, bois de cèdre noble et fève tonka dans une concentration riche et envoûtante.",
     story: "Quand la nuit tombe sur Paris, l'homme YSL devient le maître irrésistible de toutes les attractions.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Cardamome Aromatique, Pamplemousse',
     heart: 'Essence de Cèdre de Virginie, Sauge Sclarée',
     base: 'Fève Tonka Suave, Bois de Santal, Vétiver',
@@ -816,7 +816,7 @@ export const perfumeCatalog = [
     reviewsCount: 140,
     desc: "La passion et l'énergie à l'état pur. Une orange sanguine vive confrontée à la sauge aromatique et des bois d'acajou nobles.",
     story: "Le rouge symbolisant le courage, la détermination et la force des esprits pionniers.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Orange Sanguine Juteuse, Cardamome, Pamplemousse',
     heart: 'Sauge Aromatique, Bois de Cèdre, Baies de Genièvre',
     base: 'Bois d’Acajou Sombre, Fève Tonka, Cèdre de l’Atlas',
@@ -839,7 +839,7 @@ export const perfumeCatalog = [
     reviewsCount: 85,
     desc: "L'énergie d'un plongeon en eaux claires. Pamplemousse rose étincelant, poivre rose piquant et accords aquatiques dynamisants.",
     story: "Inspiré par le polo iconique L.12.12 et la fraîcheur d'un court de tennis au lever du jour.",
-    img: '/perfumes/fresh.jpg',
+    img: '/img/perfumes/fresh.webp',
     top: 'Pamplemousse Rose, Poivre Rose, Mandarine',
     heart: 'Accord Aquatique Cristallin, Sauge Sclarée',
     base: 'Bois de Cèdre, Vétiver Haïtien, Muscs Propres',
@@ -862,7 +862,7 @@ export const perfumeCatalog = [
     reviewsCount: 92,
     desc: "Une rencontre poétique entre la mer indomptée et le bois chauffé au soleil. Accords marins salés, cuir souple et santal apaisant.",
     story: "Le flacon bambou penché par le vent marin, sculpté comme une ode à la liberté naturelle.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Accords Marins Iodés, Poivre Rose, Cardamome',
     heart: 'Cuir Chaud, Figue Sauvage, Patchouli',
     base: 'Bois de Santal Doré, Akigalawood, Vétiver',
@@ -885,7 +885,7 @@ export const perfumeCatalog = [
     reviewsCount: 520,
     desc: "L'interprétation la plus dense et mystérieuse de Sauvage. Une mandarine juteuse et nocturne embrasée par un santal crémeux du Sri Lanka et une fève tonka fumée.",
     story: "L'heure bleue dans le désert où le ciel s'embrase et libère la magie des grands espaces sauvages.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Mandarine Sauvage, Bergamote de Reggio',
     heart: 'Bois de Santal du Sri Lanka, Cèdre de Virginie',
     base: 'Fève Tonka Noire, Absolu de Vanille Papouasie',
@@ -908,7 +908,7 @@ export const perfumeCatalog = [
     reviewsCount: 680,
     desc: "La quintessence absolue de la parfumerie masculine. Une concentration sans précédent où des épices enivrantes rencontrent une lavande de Nyons sur mesure et des bois profonds.",
     story: "Composé par François Demachy comme une liqueur rare de haute précision, d'une puissance et d'une noblesse incomparables.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Cannelle Royale, Noix de Muscade, Cardamome, Pamplemousse',
     heart: 'Cœur de Lavande de Nyons AOP',
     base: 'Bois de Réglisse Sombre, Santal, Ambre, Patchouli',
@@ -931,7 +931,7 @@ export const perfumeCatalog = [
     reviewsCount: 160,
     desc: "Le parfum de l'homme qui règne sur son quotidien. Orange sanguine explosive, essence de piment fort épicé et cèdre noble de l'Atlas.",
     story: "Couronné par un bouchon artisanal en forme de couronne royale, pour les souverains du quotidien.",
-    img: '/perfumes/oud.jpg',
+    img: '/img/perfumes/oud.webp',
     top: 'Orange Sanguine de Sicile, Citron Torréfié, Genièvre',
     heart: 'Essence de Piment Fort, Lavande, Sauge Sclarée',
     base: 'Bois de Cèdre de l’Atlas, Patchouli, Vétiver',
@@ -954,7 +954,7 @@ export const perfumeCatalog = [
     reviewsCount: 95,
     desc: "Le coup de fouet tonique légendaire. Menthe poivrée vivifiante, eucalyptus rafraîchissant et vétiver énergisant pour les esprits sportifs.",
     story: "La fraîcheur aromatique vintage indémodable qui réveille les sens dès le matin.",
-    img: '/perfumes/emerald.jpg',
+    img: '/img/perfumes/emerald.webp',
     top: 'Menthe Poivrée, Eucalyptus, Orange d’Italie',
     heart: 'Lavande, Basilic Aromatique, Noix de Muscade',
     base: 'Vétiver, Bois de Cèdre, Santal Blanc',
@@ -977,7 +977,7 @@ export const perfumeCatalog = [
     reviewsCount: 230,
     desc: "Le magnétisme obscur d'un smoking impeccable. Néroli doré, cardamome envoûtante et cuir noir fumé composent un sillage de haute séduction.",
     story: "L'incarnation de l'homme sophistiqué dont le regard capte l'attention de toute une assemblée.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Néroli Doré, Cardamome, Cyprès Frais',
     heart: 'Benjoin Chaud, Sauge Sclarée, Muscade',
     base: 'Cuir Noir Profond, Patchouli Sombre, Ciste',
@@ -1000,7 +1000,7 @@ export const perfumeCatalog = [
     reviewsCount: 175,
     desc: "L'audace portée à son comble. Une tubéreuse opulente embrasse une figue noire gourmande et un bois de santal d'une richesse stupéfiante.",
     story: "Un parfum libre et décomplexé sans distinction de genre, pour les amateurs d'excès assumés.",
-    img: '/perfumes/ruby.jpg',
+    img: '/img/perfumes/ruby.webp',
     top: 'Figue Noire Gourmande, Mandarine Dorée',
     heart: 'Tubéreuse Opulente, Fleur d’Oranger Solaire',
     base: 'Bois de Santal Crémeux, Ambre Chaud',
@@ -1023,7 +1023,7 @@ export const perfumeCatalog = [
     reviewsCount: 195,
     desc: "L'addiction en format généreux. Caramel salé gourmand, fève tonka envoûtante et vétiver viril pour des mois de présence inoubliable.",
     story: "Le parfum de tous les succès dans un flacon géant de 150ml d'une générosité impériale.",
-    img: '/perfumes/amber.jpg',
+    img: '/img/perfumes/amber.webp',
     top: 'Sauge Sclarée Royale, Mandarine',
     heart: 'Caramel Doré Fumé, Fève Tonka',
     base: 'Vétiver Sombre, Cèdre Majestueux',
@@ -1046,7 +1046,7 @@ export const perfumeCatalog = [
     reviewsCount: 210,
     desc: "L'arme de séduction des créatures nocturnes. Cannelle chaude, cèdre rouge de Virginie et tabac blond envoûtant composent une aura incandescente.",
     story: "Créé pour l'homme de la nuit qui vit intensément et transforme chaque soirée en fête mémorable.",
-    img: '/perfumes/noir.jpg',
+    img: '/img/perfumes/noir.webp',
     top: 'Cannelle Jaune, Mandarine Verte, Lavande',
     heart: 'Cèdre Rouge, Encens Mystique, Cumin',
     base: 'Tabac Blond de Virginie, Cyprès, Cuir',
@@ -1091,6 +1091,27 @@ export function escapeHtml(value) {
     '"': '&quot;',
     "'": '&#39;'
   })[ch]);
+}
+
+// Largeurs réellement générées par scripts/optimize-images.mjs, par dossier.
+// Doit rester synchronisé avec les `widths` des JOBS de ce script : déclarer
+// ici une largeur qui n'est pas produite ferait pointer le srcset vers un 404.
+const SRCSET_WIDTHS = {
+  '/img/perfumes/': [400, 800],
+  '/img/branding/': [1200, 1800, 2400]
+};
+
+/**
+ * Construit un srcset à partir d'une image dérivée par le pipeline.
+ * '/img/perfumes/rose.webp' -> '/img/perfumes/rose-400.webp 400w, …-800.webp 800w'
+ * Retourne '' pour toute image hors pipeline (aucun srcset émis).
+ */
+function imgSrcset(src) {
+  const match = /^(.*)\.webp$/.exec(src || '');
+  if (!match) return '';
+  const prefix = Object.keys(SRCSET_WIDTHS).find(dir => src.startsWith(dir));
+  if (!prefix) return '';
+  return SRCSET_WIDTHS[prefix].map(w => `${match[1]}-${w}.webp ${w}w`).join(', ');
 }
 
 export function getWhatsAppOrderLink(perfumeName, price) {
@@ -1529,7 +1550,8 @@ function renderProductDetailContent(p) {
       <!-- Left Column: Luxury Bottle Showcase -->
       <div class="pdp-gallery-card">
         <div class="pdp-main-img-wrap" style="box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 45px ${theme.accentGlow};">
-          <img src="${p.img}" alt="${p.name}" class="pdp-main-img" id="pdpMainImg" />
+          <img src="${p.img}" srcset="${imgSrcset(p.img)}" sizes="(max-width: 900px) 92vw, 520px"
+               alt="${p.name}" class="pdp-main-img" id="pdpMainImg" decoding="async" />
           ${p.badge ? `<div class="pdp-badge-top" style="background:linear-gradient(135deg, ${theme.accentColor}, ${theme.accentLt});">${p.badge}</div>` : ''}
           <div class="pdp-auth-shield" style="border-color:${theme.accentGlow};">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="${theme.accentLt}" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
@@ -1541,11 +1563,11 @@ function renderProductDetailContent(p) {
           <button class="pdp-thumb-btn active" data-img="${p.img}">
             <img src="${p.img}" alt="${p.name} vue 1" />
           </button>
-          <button class="pdp-thumb-btn" data-img="/branding images/Dar Safia Branding_page-0005.jpg">
-            <img src="/branding images/Dar Safia Branding_page-0005.jpg" alt="Coffret Luxe" />
+          <button class="pdp-thumb-btn" data-img="/img/branding/branding-05.webp">
+            <img src="/img/branding/branding-05.webp" alt="Coffret Luxe" />
           </button>
-          <button class="pdp-thumb-btn" data-img="/branding images/Dar Safia Branding_page-0004.jpg">
-            <img src="/branding images/Dar Safia Branding_page-0004.jpg" alt="Vaporisateur" />
+          <button class="pdp-thumb-btn" data-img="/img/branding/branding-04.webp">
+            <img src="/img/branding/branding-04.webp" alt="Vaporisateur" />
           </button>
         </div>
 
@@ -1766,6 +1788,9 @@ function renderProductDetailContent(p) {
           opacity: 0,
           duration: 0.15,
           onComplete: () => {
+            // Le srcset doit suivre la source, sinon le navigateur continue
+            // de servir les variantes de l'image précédente.
+            mainImg.srcset = imgSrcset(newImg);
             mainImg.src = newImg;
             gsap.to(mainImg, { opacity: 1, duration: 0.3 });
           }
@@ -1843,7 +1868,8 @@ function renderProducts() {
   container.innerHTML = filtered.map(p => `
     <article class="pcard" data-id="${p.id}" data-category="${p.category}">
       <div class="pcard-img-wrap">
-        <img src="${p.img}" alt="${p.name}" class="pcard-img" loading="lazy" />
+        <img src="${p.img}" srcset="${imgSrcset(p.img)}" sizes="(max-width: 700px) 88vw, 340px"
+             alt="${p.name}" class="pcard-img" loading="lazy" decoding="async" />
         <div class="pcard-shine"></div>
         <div class="pcard-hover-layer">
           <button class="pcard-qv" data-id="${p.id}" aria-label="Voir la fiche complète de ${p.name}">
@@ -2214,7 +2240,7 @@ function addToBag(perfumeOrName, priceFormatted) {
         name: perfumeOrName,
         priceFormatted: priceFormatted,
         price: parseInt(String(priceFormatted).replace(/\D/g, '')) || 3500,
-        img: '/logo/LOGO WEBP4.webp',
+        img: '/img/logo/LOGO WEBP4.webp',
         brand: 'Dar Safia'
       };
     }
@@ -2231,7 +2257,7 @@ function addToBag(perfumeOrName, priceFormatted) {
       brand: item.brand || 'Dar Safia',
       price: item.price || parseInt(String(item.priceFormatted).replace(/\D/g, '')) || 0,
       priceFormatted: item.priceFormatted || `${item.price} DA`,
-      img: item.img || '/logo/LOGO WEBP4.webp',
+      img: item.img || '/img/logo/LOGO WEBP4.webp',
       qty: 1
     });
   }
