@@ -24,6 +24,13 @@ import sharp from 'sharp';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'public', 'img');
 
+/**
+ * Cibles supplémentaires recevant une copie des dérivés. Pendant la migration,
+ * le site Vite et l'application Next coexistent et servent chacun leur propre
+ * dossier public. Une seule commande alimente les deux.
+ */
+const MIRRORS = [path.join(ROOT, 'web', 'public', 'img')];
+
 /** Qualité WebP : 78 est le seuil au-delà duquel le gain visuel est nul. */
 const WEBP = { quality: 78, effort: 5 };
 
@@ -126,6 +133,24 @@ async function run() {
 
   console.log(`\n✓ Dérivés écrits dans public/img/`);
   console.log(`  masters : ${mb(sourceBytes)} MB  ->  dérivés : ${mb(outputBytes)} MB`);
+
+  // Recopie vers les cibles secondaires (application Next pendant la migration).
+  for (const mirror of MIRRORS) {
+    if (!existsSync(path.dirname(path.dirname(mirror)))) continue; // cible absente : on ignore
+    await copyDir(OUT, mirror);
+    console.log(`  copié vers ${path.relative(ROOT, mirror)}`);
+  }
+}
+
+/** Copie récursive simple (évite une dépendance pour trois lignes). */
+async function copyDir(from, to) {
+  await mkdir(to, { recursive: true });
+  for (const entry of await readdir(from, { withFileTypes: true })) {
+    const src = path.join(from, entry.name);
+    const dest = path.join(to, entry.name);
+    if (entry.isDirectory()) await copyDir(src, dest);
+    else await copyFile(src, dest);
+  }
 }
 
 run().catch(err => {

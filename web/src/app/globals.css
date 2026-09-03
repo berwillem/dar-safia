@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+/* ══════════════════════════════════════════════════════════════
+   DAR SAFIA — THÈME
+   Reflet de design-system/tokens.json. Tailwind 4 se configure en
+   CSS (@theme), il n'y a plus de tailwind.config.js.
+
+   Toute valeur ici vient des tokens : ne jamais écrire une couleur
+   ou une taille en dur dans un composant.
+   ══════════════════════════════════════════════════════════════ */
+@theme {
+  /* ── Couleurs de marque (extraites à l'identique de style.css) ── */
+  --color-noir: #1a120f;
+  --color-noir-2: #241915;
+  --color-noir-3: #2d1f1a;
+  --color-burgundy: #340b10;
+  --color-burgundy-2: #480f17;
+  --color-gold: #c89b3c;
+  --color-gold-light: #e4bd68;
+  --color-gold-dark: #8e651d;
+  --color-ivory: #f9f6f0;
+  --color-ivory-2: #ece4d5;
+  --color-smoke: rgba(249, 246, 240, 0.07);
+  --color-smoke-2: rgba(249, 246, 240, 0.12);
+
+  /* ── Polices ──
+     Les variables --font-cinzel-* viennent de next/font (layout.tsx), qui
+     auto-héberge les fichiers. La pile de repli reste explicite pour couvrir
+     l'intervalle avant chargement. */
+  --font-display: var(--font-cinzel-decorative), Georgia, serif;
+  --font-serif: var(--font-cinzel), Georgia, serif;
+  --font-body: var(--font-cormorant), Georgia, serif;
+  --font-ui: var(--font-montserrat), system-ui, sans-serif;
+
+  /* ── Échelle typographique (9 pas, cf. design-system/README.md) ── */
+  --text-3xs: 0.625rem;
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.3125rem;
+  --text-2xl: 1.5rem;
+
+  /* ── Titres fluides ── */
+  --text-display-sm: clamp(1.5rem, 3vw, 2rem);
+  --text-display-md: clamp(2rem, 5vw, 3rem);
+  --text-display-lg: clamp(2.5rem, 7vw, 4.5rem);
+
+  /* ── Interlettrage ── */
+  --tracking-label: 0.14em;
+  --tracking-eyebrow: 0.22em;
+
+  /* ── Rayons, ombres, mouvement ── */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+
+  --shadow-gold: 0 0 45px rgba(200, 155, 60, 0.25);
+  --shadow-dark: 0 25px 60px rgba(0, 0, 0, 0.6);
+
+  --ease-lux: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Points de rupture (4 paliers, contre 17 dans l'ancien CSS) ── */
+  --breakpoint-sm: 580px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1320px;
+
+  /* ── Mise en page ── */
+  --container-site: 1320px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   UNIVERS OLFACTIFS
+   Une famille = une atmosphère. Appliqué via data-universe sur un
+   conteneur, jamais par correspondance de nom de parfum comme le
+   faisait getCategoryTheme() dans l'ancien main.js.
+   ══════════════════════════════════════════════════════════════ */
+[data-universe="floral"]  { --universe-accent: #e892a2; --universe-light: #f8bbd0; --universe-glow: rgba(232, 146, 162, 0.3); }
+[data-universe="amber"]   { --universe-accent: #e5a93c; --universe-light: #f5cb5c; --universe-glow: rgba(229, 169, 60, 0.3); }
+[data-universe="woody"]   { --universe-accent: #d4af37; --universe-light: #f3e5ab; --universe-glow: rgba(212, 175, 55, 0.25); }
+[data-universe="fresh"]   { --universe-accent: #00b4d8; --universe-light: #90e0ef; --universe-glow: rgba(0, 180, 216, 0.3); }
+[data-universe="gourmand"]{ --universe-accent: #e63946; --universe-light: #ff6b6b; --universe-glow: rgba(230, 57, 70, 0.3); }
+[data-universe="spicy"]   { --universe-accent: #2a9d8f; --universe-light: #52b788; --universe-glow: rgba(42, 157, 143, 0.3); }
+
+/* Défaut, si aucun univers n'est déclaré : l'or de la maison. */
+:root {
+  --universe-accent: var(--color-gold);
+  --universe-light: var(--color-gold-light);
+  --universe-glow: rgba(200, 155, 60, 0.25);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BASE
+   Dar Safia est un univers sombre assumé : pas de bascule clair /
+   sombre. Le fond et les couleurs sont donc peints explicitement.
+   ══════════════════════════════════════════════════════════════ */
+body {
+  background: var(--color-noir);
+  color: var(--color-ivory);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Focus clavier visible — exigence d'accessibilité du projet. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

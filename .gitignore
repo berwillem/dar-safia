@@ -9,6 +9,12 @@ dist/
 # Images dérivées — régénérées par `npm run images` depuis les masters
 # (branding images/, perfumes/, logo/). Ne pas versionner.
 public/img/
+web/public/img/
+
+# Catalogue migré — régénéré par `node scripts/migrate-catalog.mjs`
+# depuis catalog-data.js, qui reste la source. Ne pas versionner :
+# éditer le JSON généré serait perdu au prochain lancement.
+web/src/data/
 
 # Environnement — ne jamais commiter de valeurs réelles
 .env
