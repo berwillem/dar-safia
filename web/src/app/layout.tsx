@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cinzel, Cinzel_Decorative, Cormorant_Garamond, Montserrat } from 'next/font/google';
 
 import { PlaceholderPhoneBanner } from '@/components/PlaceholderPhoneBanner';
+import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { CartProvider } from '@/components/cart/CartProvider';
@@ -74,6 +75,7 @@ export default function RootLayout({
         <CartProvider>
           <SiteHeader />
           {children}
+          <SiteFooter />
           <CartDrawer />
           <PlaceholderPhoneBanner />
         </CartProvider>

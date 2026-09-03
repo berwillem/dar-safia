@@ -122,3 +122,35 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ENTRÉE DE PAGE — un seul mouvement, à l'ouverture
+   Niveau « motion d'expérience » : les blocs montent légèrement
+   depuis un état VISIBLE (pas opacity:0 en attente d'un observer).
+   Neutralisé par la règle prefers-reduced-motion plus haut.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes ds-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.ds-rise {
+  animation: ds-rise 0.7s var(--ease-lux) both;
+}
+/* Cadence : chaque enfant direct décalé de 90 ms. */
+.ds-rise-stagger > * {
+  animation: ds-rise 0.7s var(--ease-lux) both;
+}
+.ds-rise-stagger > *:nth-child(1) { animation-delay: 0ms; }
+.ds-rise-stagger > *:nth-child(2) { animation-delay: 90ms; }
+.ds-rise-stagger > *:nth-child(3) { animation-delay: 180ms; }
+.ds-rise-stagger > *:nth-child(4) { animation-delay: 270ms; }
+.ds-rise-stagger > *:nth-child(5) { animation-delay: 360ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  /* État de repos immédiat : pas même un flash du keyframe. */
+  .ds-rise,
+  .ds-rise-stagger > * {
+    animation: none;
+  }
+}
