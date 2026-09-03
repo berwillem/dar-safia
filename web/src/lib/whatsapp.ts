@@ -3,9 +3,11 @@
  *   CONCIERGERIE WHATSAPP
  * ══════════════════════════════════════════════════════════════
  *
- * Le numéro vient de NEXT_PUBLIC_WHATSAPP_PHONE. Comme sur le site Vite,
- * un numéro de remplacement est détecté et signalé : un lien de commande
- * qui n'aboutit nulle part doit être visible, jamais silencieux.
+ * Numéro public par nature (affiché aux clients). Surchargeable par
+ * environnement via NEXT_PUBLIC_WHATSAPP_PHONE ; à défaut, le numéro réel
+ * de la maison. Un numéro de remplacement connu est détecté et signalé,
+ * pour qu'un lien de commande qui n'aboutit nulle part ne soit jamais
+ * silencieux.
  *
  * NEXT_PUBLIC_ est inclus dans le bundle client : n'y mettre aucun secret.
  */
@@ -14,7 +16,8 @@ import type { Product } from './catalog';
 import { lowestPrice } from './catalog';
 import { formatPrice, formatVolume } from './format';
 
-const PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE ?? '';
+const DEFAULT_PHONE = '213554276642';
+const PHONE = process.env.NEXT_PUBLIC_WHATSAPP_PHONE || DEFAULT_PHONE;
 
 /** Numéros fictifs utilisés en développement. */
 const PLACEHOLDERS = ['213000000000', '213555000000'];

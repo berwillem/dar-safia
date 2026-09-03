@@ -19,12 +19,13 @@ import { perfumeCatalog } from './catalog-data.js';
 // ══════════════════════════════════════════════
 //   CONFIGURATION
 // ══════════════════════════════════════════════
-// Numéro de la conciergerie WhatsApp — défini via la variable
-// d'environnement VITE_WHATSAPP_PHONE (voir .env.example).
-// Format international sans "+" ni espaces, ex. 213770123456.
+// Numéro de la conciergerie WhatsApp. Public par nature (affiché aux clients).
+// Surchargeable par environnement via VITE_WHATSAPP_PHONE (voir .env.example) ;
+// à défaut, le numéro réel de la maison sert de valeur par défaut.
+// Format international sans "+" ni espaces.
 // NB : forme exacte `import.meta.env.VITE_*` — Vite la remplace statiquement
 // au build ; l'optional chaining empêcherait cette substitution.
-const WHATSAPP_PHONE = import.meta.env.VITE_WHATSAPP_PHONE || '';
+const WHATSAPP_PHONE = import.meta.env.VITE_WHATSAPP_PHONE || '213554276642';
 
 // Numéros de remplacement connus. Ils débloquent le développement mais ne
 // mènent à aucune conciergerie : on refuse qu'ils partent en production sans
