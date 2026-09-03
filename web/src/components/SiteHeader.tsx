@@ -10,6 +10,7 @@ import { CartButton } from './cart/CartButton';
  */
 const NAV = [
   { href: '/parfums', label: 'Parfums' },
+  { href: '/trouver', label: 'Trouver mon parfum' },
   { href: '/parfums?genre=femme', label: 'Pour Femme' },
   { href: '/parfums?genre=homme', label: 'Pour Homme' },
 ];
