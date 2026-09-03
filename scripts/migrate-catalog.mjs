@@ -207,7 +207,13 @@ function migrate() {
       bestseller: /best seller/i.test(old.badge || ''),
 
       seo: {
-        title: `${old.name} — ${old.brand} | Dar Safia`,
+        // Pas de suffixe « | Dar Safia » ici : le template de metadata du
+        // layout Next l'ajoute déjà, et le cumuler donnait
+        // « … | Dar Safia | Dar Safia ». La marque n'est ajoutée que si le
+        // nom ne la contient pas déjà ('Hermès Terre d'Hermès' — pas deux fois).
+        title: slugify(old.name).includes(slugify(old.brand))
+          ? old.name
+          : `${old.name} — ${old.brand}`,
         description: old.desc.slice(0, 155)
       }
     };

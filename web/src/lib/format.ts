@@ -72,7 +72,10 @@ export function formatFamily(family: string, locale: Locale = 'fr'): string {
   return FAMILY_LABELS[family]?.[locale] ?? family;
 }
 
-/** Sillage 1–5 en libellé. */
+/**
+ * Sillage 1–5 en libellé. Retourne null si la donnée est absente : afficher
+ * « Modéré » par défaut affirmerait une mesure que l'on n'a pas.
+ */
 const SILLAGE_LABELS: Record<number, string> = {
   1: 'Intime',
   2: 'Discret',
@@ -81,6 +84,6 @@ const SILLAGE_LABELS: Record<number, string> = {
   5: 'Puissant',
 };
 
-export function formatSillage(level: number): string {
-  return SILLAGE_LABELS[level] ?? SILLAGE_LABELS[3];
+export function formatSillage(level: number | undefined): string | null {
+  return level ? (SILLAGE_LABELS[level] ?? null) : null;
 }
