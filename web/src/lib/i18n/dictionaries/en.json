@@ -52,6 +52,45 @@
     "quizBandTitle": "Four questions to find your signature",
     "quizBandCta": "Start"
   },
+  "manifesto": {
+    "lines": [
+      "More than a perfume.",
+      "A memory."
+    ],
+    "body": "A trail is not chosen in a display case. It is recognised — across a room, on a coat, years later. Dar Safia gathers the creations capable of that: the ones whose trace outlives the moment.",
+    "aside": "Every bottle is held to three demands: purity of accords, wear on the skin, and verified provenance."
+  },
+  "scent": {
+    "title": "The materials that recur",
+    "body": "Across the house's {count} creations, a few materials appear more than the rest. Without anyone deciding it, they draw the taste of Dar Safia.",
+    "occurrences": "{count} creations",
+    "explore": "Explore by family"
+  },
+  "signature": {
+    "title": "The signatures",
+    "intro": "One at a time.",
+    "discover": "View the page",
+    "of": "{current} of {total}"
+  },
+  "figures": {
+    "title": "The house in figures",
+    "creations": "creations in the catalogue",
+    "houses": "houses represented",
+    "wilayas": "wilayas delivered to",
+    "note": "Figures from the current catalogue."
+  },
+  "voices": {
+    "title": "What our clients say",
+    "verified": "Verified client"
+  },
+  "closing": {
+    "lines": [
+      "Your signature",
+      "is waiting."
+    ],
+    "cta": "Discover the collection",
+    "secondary": "Or let us guide you"
+  },
   "catalog": {
     "eyebrow": "Catalogue",
     "title": "All perfumes",

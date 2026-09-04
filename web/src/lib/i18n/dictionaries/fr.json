@@ -52,6 +52,45 @@
     "quizBandTitle": "Quatre questions pour trouver votre signature",
     "quizBandCta": "Commencer"
   },
+  "manifesto": {
+    "lines": [
+      "Plus qu'un parfum.",
+      "Une mémoire."
+    ],
+    "body": "Un sillage ne se choisit pas dans une vitrine. Il se reconnaît — au détour d'une pièce, sur un vêtement, des années plus tard. Dar Safia réunit les créations capables de cela : celles dont la trace survit à l'instant.",
+    "aside": "Chaque flacon est retenu sur trois exigences : la pureté des accords, la tenue sur la peau, et une provenance vérifiée."
+  },
+  "scent": {
+    "title": "Les matières qui reviennent",
+    "body": "Sur les {count} créations de la maison, quelques matières reparaissent plus que les autres. Elles dessinent, sans qu'on l'ait décidé, le goût de Dar Safia.",
+    "occurrences": "{count} créations",
+    "explore": "Explorer par famille"
+  },
+  "signature": {
+    "title": "Les signatures",
+    "intro": "Une à une.",
+    "discover": "Voir la fiche",
+    "of": "{current} sur {total}"
+  },
+  "figures": {
+    "title": "La maison en quelques chiffres",
+    "creations": "créations au catalogue",
+    "houses": "maisons représentées",
+    "wilayas": "wilayas livrées",
+    "note": "Chiffres du catalogue actuel."
+  },
+  "voices": {
+    "title": "Ce qu'en disent nos clients",
+    "verified": "Client vérifié"
+  },
+  "closing": {
+    "lines": [
+      "Votre signature",
+      "vous attend."
+    ],
+    "cta": "Découvrir la collection",
+    "secondary": "Ou laissez-nous vous guider"
+  },
   "catalog": {
     "eyebrow": "Catalogue",
     "title": "Tous les parfums",
