@@ -4,6 +4,7 @@
     "scentFinder": "Trouver mon parfum",
     "forHer": "Pour Femme",
     "forHim": "Pour Homme",
+    "contact": "Contact",
     "cart": "Panier",
     "cartWithCount": "Panier, {count} article|Panier, {count} articles",
     "openMenu": "Ouvrir le menu",
@@ -90,6 +91,28 @@
     ],
     "cta": "Découvrir la collection",
     "secondary": "Ou laissez-nous vous guider"
+  },
+  "contact": {
+    "title": "Parlons de\nvotre parfum.",
+    "lead": "La conciergerie Dar Safia répond sur WhatsApp, sept jours sur sept — pour un conseil, une disponibilité ou une commande.",
+    "messageLabel": "Votre message",
+    "messagePlaceholder": "Bonjour Dar Safia, je cherche un parfum pour…",
+    "nameLabel": "Prénom",
+    "cityLabel": "Ville",
+    "send": "Envoyer sur WhatsApp",
+    "sendHint": "Votre message ouvre WhatsApp : rien n'est envoyé tant que vous ne l'avez pas relu.",
+    "unavailable": "La conciergerie est momentanément injoignable. Réessayez dans un moment.",
+    "phoneLabel": "Numéro WhatsApp",
+    "facts": {
+      "hours": "Réponse 7j/7",
+      "delivery": "Livraison dans les 58 wilayas",
+      "payment": "Paiement à la livraison"
+    },
+    "undecidedText": "Vous ne savez pas encore quoi choisir ?",
+    "undecidedLink": "Faites le diagnostic olfactif",
+    "signature": "— {name}, {city}",
+    "signatureNameOnly": "— {name}",
+    "signatureCityOnly": "— {city}"
   },
   "catalog": {
     "eyebrow": "Catalogue",
@@ -250,6 +273,7 @@
     "forHer": "Pour elle",
     "forHim": "Pour lui",
     "findYours": "Trouver votre parfum",
+    "contact": "Contact",
     "rights": "© {year} Dar Safia. Tous droits réservés.",
     "guarantee": "Authenticité garantie · Paiement à la livraison"
   },

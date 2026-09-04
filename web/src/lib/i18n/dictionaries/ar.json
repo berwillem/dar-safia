@@ -4,6 +4,7 @@
     "scentFinder": "اعثر على عطرك",
     "forHer": "لها",
     "forHim": "له",
+    "contact": "اتصل بنا",
     "cart": "السلة",
     "cartWithCount": "السلة، {count} عنصر|السلة، {count} عناصر",
     "openMenu": "فتح القائمة",
@@ -90,6 +91,28 @@
     ],
     "cta": "اكتشف المجموعة",
     "secondary": "أو دعنا نرشدك"
+  },
+  "contact": {
+    "title": "لنتحدّث عن\nعطرك.",
+    "lead": "تردّ خدمة دار صافية على واتساب، سبعة أيام في الأسبوع — لنصيحة، أو للتأكّد من التوفّر، أو لطلب.",
+    "messageLabel": "رسالتك",
+    "messagePlaceholder": "مرحبًا دار صافية، أبحث عن عطر لـ…",
+    "nameLabel": "الاسم",
+    "cityLabel": "المدينة",
+    "send": "الإرسال عبر واتساب",
+    "sendHint": "رسالتك تفتح واتساب: لا يُرسَل شيء قبل أن تُراجعها.",
+    "unavailable": "خدمة الكونسيرج غير متاحة مؤقتًا. حاول بعد قليل.",
+    "phoneLabel": "رقم واتساب",
+    "facts": {
+      "hours": "ردّ 7/7",
+      "delivery": "التوصيل إلى 58 ولاية",
+      "payment": "الدفع عند الاستلام"
+    },
+    "undecidedText": "لم تقرّر بعد ما تختار؟",
+    "undecidedLink": "قم بالتشخيص العطري",
+    "signature": "— {name}، {city}",
+    "signatureNameOnly": "— {name}",
+    "signatureCityOnly": "— {city}"
   },
   "catalog": {
     "eyebrow": "الكتالوج",
@@ -250,6 +273,7 @@
     "forHer": "لها",
     "forHim": "له",
     "findYours": "اعثر على عطرك",
+    "contact": "اتصل بنا",
     "rights": "© {year} دار صافية. جميع الحقوق محفوظة.",
     "guarantee": "أصالة مضمونة · الدفع عند الاستلام"
   },

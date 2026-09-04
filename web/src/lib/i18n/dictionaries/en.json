@@ -4,6 +4,7 @@
     "scentFinder": "Find my scent",
     "forHer": "For Her",
     "forHim": "For Him",
+    "contact": "Contact",
     "cart": "Cart",
     "cartWithCount": "Cart, {count} item|Cart, {count} items",
     "openMenu": "Open menu",
@@ -90,6 +91,28 @@
     ],
     "cta": "Discover the collection",
     "secondary": "Or let us guide you"
+  },
+  "contact": {
+    "title": "Let's talk about\nyour scent.",
+    "lead": "The Dar Safia concierge answers on WhatsApp, seven days a week — for advice, availability or an order.",
+    "messageLabel": "Your message",
+    "messagePlaceholder": "Hello Dar Safia, I'm looking for a scent for…",
+    "nameLabel": "First name",
+    "cityLabel": "City",
+    "send": "Send on WhatsApp",
+    "sendHint": "Your message opens WhatsApp: nothing is sent until you've reviewed it.",
+    "unavailable": "The concierge is unreachable right now. Try again in a moment.",
+    "phoneLabel": "WhatsApp number",
+    "facts": {
+      "hours": "Replies 7 days a week",
+      "delivery": "Delivery across all 58 wilayas",
+      "payment": "Cash on delivery"
+    },
+    "undecidedText": "Not sure what to choose yet?",
+    "undecidedLink": "Take the scent diagnostic",
+    "signature": "— {name}, {city}",
+    "signatureNameOnly": "— {name}",
+    "signatureCityOnly": "— {city}"
   },
   "catalog": {
     "eyebrow": "Catalogue",
@@ -250,6 +273,7 @@
     "forHer": "For her",
     "forHim": "For him",
     "findYours": "Find your scent",
+    "contact": "Contact",
     "rights": "© {year} Dar Safia. All rights reserved.",
     "guarantee": "Authenticity guaranteed · Cash on delivery"
   },

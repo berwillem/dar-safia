@@ -59,6 +59,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
     { href: '/trouver', label: dict.nav.scentFinder },
     { href: '/parfums?genre=femme', label: dict.nav.forHer },
     { href: '/parfums?genre=homme', label: dict.nav.forHim },
+    { href: '/contact', label: dict.nav.contact },
   ];
 
   return (

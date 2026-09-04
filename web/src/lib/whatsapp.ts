@@ -25,10 +25,26 @@ const PLACEHOLDERS = ['213000000000', '213555000000'];
 export const whatsappConfigured = PHONE !== '';
 export const whatsappIsPlaceholder = PLACEHOLDERS.includes(PHONE);
 
+/** Numéro brut (chiffres, indicatif compris), ou chaîne vide si non configuré. */
+export const whatsappPhone = PHONE;
+
 /** URL wa.me, ou null si aucun numéro n'est configuré. */
 export function whatsappUrl(message: string): string | null {
   if (!PHONE) return null;
   return `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+}
+
+/**
+ * Forme lisible du numéro : « +213 554 27 66 42 ». Regroupe l'indicatif (3
+ * chiffres) puis le reste en 3-2-2-2. Retombe sur « +<chiffres> » si le
+ * découpage ne s'applique pas.
+ */
+export function formatWhatsappPhone(phone: string = PHONE): string {
+  const digits = phone.replace(/\D/g, '');
+  if (!digits) return '';
+  const rest = digits.slice(3);
+  const grouped = rest.replace(/^(\d{3})(\d{2})(\d{2})(\d{2})$/, '$1 $2 $3 $4');
+  return `+${digits.slice(0, 3)} ${grouped}`.trim();
 }
 
 /** Message de commande pour un parfum donné. */
