@@ -7,8 +7,8 @@ import { useEffect, type RefObject } from 'react';
  *   RÉVÉLATION AU DÉFILEMENT
  * ══════════════════════════════════════════════════════════════
  *
- * Un seul mécanisme partagé par les sections de l'accueil, plutôt qu'une
- * timeline réécrite à chaque fois.
+ * Un seul mécanisme partagé par les sections de l'accueil et la page contact,
+ * plutôt qu'une timeline réécrite à chaque fois.
  *
  * Deux gestes, et deux seulement :
  *   [data-rise]   — la ligne monte depuis un masque (typographie).
@@ -73,7 +73,22 @@ export function useReveal(ref: RefObject<HTMLElement | null>, deps: unknown[] = 
         });
       }, ref);
 
-      teardown = () => ctx.revert();
+      // Onglet ouvert en arrière-plan : `requestAnimationFrame` est gelé, un
+      // ScrollTrigger déjà dans la vue ne se déclenche donc jamais et le
+      // contenu reste sur son état initial (opacity 0 / décalé). Au retour sur
+      // l'onglet — ou à la restauration depuis le cache historique — on
+      // recalcule : tout trigger dont le seuil est franchi se cale sur sa fin.
+      const onShow = () => {
+        if (!document.hidden) ScrollTrigger.refresh();
+      };
+      document.addEventListener('visibilitychange', onShow);
+      window.addEventListener('pageshow', onShow);
+
+      teardown = () => {
+        document.removeEventListener('visibilitychange', onShow);
+        window.removeEventListener('pageshow', onShow);
+        ctx.revert();
+      };
     })();
 
     return () => {
