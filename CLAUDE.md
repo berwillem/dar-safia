@@ -21,8 +21,8 @@ Migration en cours. Trois répertoires cohabitent, tous doivent builder :
 | Répertoire | Rôle |
 |---|---|
 | racine (`index.html`, `main.js`, `style.css`) | Ancien site vanilla Vite + GSAP. Reste fonctionnel jusqu'à bascule complète. |
-| `web/` | Application Next.js 16 (App Router, TS, Tailwind 4). Accueil, catalogue filtrable, 45 fiches produit (SSG), panier + commande WhatsApp, diagnostic olfactif. Tests Vitest. |
-| `cms/` | Strapi 5. **Init simple, aucun type de contenu**, SQLite par défaut. Intégration à `web/` non faite. |
+| `web/` | Application Next.js 16 (App Router, TS, Tailwind 4). Toutes routes sous `/[locale]/` (FR/AR/EN + RTL). Accueil, catalogue filtrable, 45 fiches produit × 3 langues (SSG), panier + commande WhatsApp, diagnostic olfactif. Tests Vitest. |
+| `cms/` | Strapi 5. Types de contenu définis (product, brand, collection, fragrance-note). SQLite par défaut, PostgreSQL prêt via env. `web/` consomme l'API si `CATALOG_SOURCE=strapi`. Reste : déployer + peupler (`cms/scripts/seed.mjs`). |
 | `catalog-data.js` | Source du catalogue (45 parfums). `scripts/migrate-catalog.mjs` en dérive `web/src/data/` (gitignoré). |
 | `admin.html` / `admin.css` | Maquette dashboard de l'ancien site — **aucune auth, données fictives**. À retirer quand le vrai admin Strapi existe. |
 

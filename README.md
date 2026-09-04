@@ -55,9 +55,14 @@ npm run develop                 # http://localhost:1337/admin
 - **Phase 2** — `web/` : accueil, catalogue filtrable, 45 fiches produit
   (SSG + SEO + données structurées), panier + commande WhatsApp, diagnostic
   olfactif, 404. Tests sur toute la logique métier.
-- **Phase 3** — Strapi scaffoldé. Types de contenu et intégration : à venir.
-- **Phase 4** — i18n FR / AR / EN + RTL : non commencé. `web/src/lib/format.ts`
-  prend déjà une locale en paramètre.
+- **Phase 3** — Strapi : scaffold + types de contenu (product, brand,
+  collection, fragrance-note). `web/` sait consommer l'API
+  (`CATALOG_SOURCE=strapi`). Seed dans `cms/scripts/seed.mjs`. Reste :
+  déployer Strapi sur le VPS et peupler.
+- **Phase 4** — i18n FR / AR / EN + RTL : fait. Toutes les routes sous
+  `/[locale]/`, dictionnaires dans `web/src/lib/i18n/`, RTL et polices
+  arabes. Le CONTENU des parfums reste en français (traduction via l'i18n
+  Strapi plus tard).
 
 ### La règle de couture
 
