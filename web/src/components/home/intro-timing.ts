@@ -21,20 +21,40 @@ import { useSyncExternalStore } from 'react';
 
 export const INTRO_SESSION_KEY = 'darsafia.intro.seen';
 
+/**
+ * Une seule courbe pour toute l'intro — le cubic-bezier demandé par la
+ * maison. Compteur, rideau et typographie la partagent : c'est ce qui fait
+ * lire la séquence comme UN geste et non comme trois animations collées.
+ */
+export const LUXE_EASE_ID = 'darsafia-luxe';
+export const LUXE_EASE_CURVE = '0.76, 0, 0.24, 1';
+
 // ── Timeline « l'intro joue » (première visite de la session) ──
-// Compteur 0→100, tenue courte, rideau qui s'écarte, PUIS la typographie.
-export const COUNTER_DURATION = 1.3;
-export const COUNTER_HOLD = 0.15;
-export const CURTAIN_DURATION = 1.1;
-/** Instant où le rideau est entièrement ouvert — la typographie embraie ici. */
+// Compteur 0→100, tenue, rideau qui s'écarte, PLAN SEUL, puis typographie.
+export const COUNTER_DURATION = 1.6;
+export const COUNTER_HOLD = 0.25;
+export const CURTAIN_DURATION = 1.35;
+
+/** Instant où le rideau est entièrement ouvert. */
 export const CURTAIN_DONE = COUNTER_DURATION + COUNTER_HOLD + CURTAIN_DURATION;
+
+/**
+ * Le temps où le film reste SEUL à l'écran, rideau ouvert, avant que quoi
+ * que ce soit d'autre n'arrive. C'est ce silence qui fait la différence
+ * entre « une animation » et un plan de cinéma : on laisse voir le flacon
+ * avant de parler par-dessus.
+ */
+export const FILM_ALONE = 0.9;
+
+/** Instant où la typographie du hero — et la nav — entrent, ensemble. */
+export const TYPE_START = CURTAIN_DONE + FILM_ALONE;
 
 // ── Timeline « rejoue vite » (déjà vue cette session) ──
 // Pas de compteur ni de rideau : la typographie part quasi immédiatement.
-export const REPEAT_TYPE_START = 0.1;
+export const REPEAT_TYPE_START = 0.15;
 
 /** Instant (secondes) où la nav de `SiteHeader` doit commencer son stagger. */
-export const NAV_STAGGER_START = { intro: CURTAIN_DONE, repeat: REPEAT_TYPE_START };
+export const NAV_STAGGER_START = { intro: TYPE_START, repeat: REPEAT_TYPE_START };
 
 /**
  * « L'intro doit-elle jouer ? » est une lecture du navigateur (sessionStorage

@@ -2,7 +2,16 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { CURTAIN_DONE, CURTAIN_DURATION, COUNTER_DURATION, COUNTER_HOLD, dismissIntro, useIntroPlays } from './intro-timing';
+import {
+  COUNTER_DURATION,
+  COUNTER_HOLD,
+  CURTAIN_DURATION,
+  dismissIntro,
+  LUXE_EASE_CURVE,
+  LUXE_EASE_ID,
+  TYPE_START,
+  useIntroPlays,
+} from './intro-timing';
 
 /**
  * ══════════════════════════════════════════════════════════════
@@ -26,7 +35,6 @@ import { CURTAIN_DONE, CURTAIN_DURATION, COUNTER_DURATION, COUNTER_HOLD, dismiss
  */
 
 const LOOP_POINT = 3.5;
-const CURTAIN_EASE_ID = 'darsafia-curtain';
 
 export function HeroFilm({
   tagline,
@@ -48,6 +56,7 @@ export function HeroFilm({
   const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const counterRef = useRef<HTMLSpanElement>(null);
+  const progressRef = useRef<HTMLSpanElement>(null);
 
   const wantsIntro = useIntroPlays();
   // Permet de couper l'intro en cours (bouton « passer »).
@@ -95,7 +104,8 @@ export function HeroFilm({
       if (disposed || !rootRef.current) return;
       gsap.registerPlugin(ScrollTrigger, CustomEase);
       // La demande de la maison : un cubic-bezier feutré, jamais élastique.
-      CustomEase.create(CURTAIN_EASE_ID, '0.76, 0, 0.24, 1');
+      // Toute l'intro s'y tient — compteur, rideau, typographie.
+      CustomEase.create(LUXE_EASE_ID, LUXE_EASE_CURVE);
 
       const ctx = gsap.context(() => {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -107,7 +117,7 @@ export function HeroFilm({
             yPercent: 0,
           });
           gsap.set(
-            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]', '[data-curtain-seam]'],
+            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]'],
             { opacity: 0 }
           );
           return;
@@ -117,63 +127,65 @@ export function HeroFilm({
         const open = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
         if (introPlays) {
+          const curtainStart = COUNTER_DURATION + COUNTER_HOLD;
           const counter = { value: 0 };
           open
             // Le compteur tourne pendant que le film, déjà lancé, charge
             // sous le rideau — rien n'est perçu à l'écran avant le rideau.
+            // Le chiffre et le filet de progression suivent la MÊME valeur :
+            // ils ne peuvent pas se désynchroniser.
             .to(
               counter,
               {
                 value: 100,
                 duration: COUNTER_DURATION,
-                ease: 'power1.inOut',
+                ease: LUXE_EASE_ID,
                 onUpdate: () => {
                   if (counterRef.current) {
                     counterRef.current.textContent = String(Math.round(counter.value));
+                  }
+                  if (progressRef.current) {
+                    progressRef.current.style.transform = `scaleX(${counter.value / 100})`;
                   }
                 },
               },
               0
             )
-            .to('[data-counter]', { opacity: 0, duration: 0.3 }, COUNTER_DURATION + COUNTER_HOLD - 0.3)
-            // Le rideau : deux pans, teintes de la maison, séparés par un
-            // filet or — pas de couleur nouvelle.
+            // Le compteur s'efface AVANT que le rideau ne bouge : deux gestes
+            // qui se succèdent, pas deux qui se disputent l'attention.
+            .to('[data-counter]', { opacity: 0, duration: 0.45 }, curtainStart - 0.45)
+            // Le rideau : deux pans aux teintes de la maison qui s'écartent —
+            // pas de couleur nouvelle.
             .fromTo(
               '[data-curtain-left]',
               { xPercent: 0 },
-              { xPercent: -100, duration: CURTAIN_DURATION, ease: CURTAIN_EASE_ID },
-              COUNTER_DURATION + COUNTER_HOLD
+              { xPercent: -100, duration: CURTAIN_DURATION, ease: LUXE_EASE_ID },
+              curtainStart
             )
             .fromTo(
               '[data-curtain-right]',
               { xPercent: 0 },
-              { xPercent: 100, duration: CURTAIN_DURATION, ease: CURTAIN_EASE_ID },
-              COUNTER_DURATION + COUNTER_HOLD
+              { xPercent: 100, duration: CURTAIN_DURATION, ease: LUXE_EASE_ID },
+              curtainStart
             )
-            // Le filet suit l'écart des deux pans plutôt que de rester figé
-            // au centre : il s'efface dès que le rideau commence à s'ouvrir.
-            .to(
-              '[data-curtain-seam]',
-              { opacity: 0, duration: 0.4 },
-              COUNTER_DURATION + COUNTER_HOLD
-            )
-            // La typographie sort de l'obscurité pendant que le rideau finit
-            // de s'écarter — pas après : un seul mouvement, pas deux à la file.
+            // Puis on ne fait RIEN pendant `FILM_ALONE` : le plan reste seul
+            // à l'écran. La typographie n'arrive qu'après ce silence, et
+            // lentement — c'est le moment qui donne sa tenue à la séquence.
             .fromTo(
               '[data-hero-line]',
               { yPercent: 108 },
-              { yPercent: 0, duration: 1.5, stagger: 0.12 },
-              CURTAIN_DONE - 0.5
+              { yPercent: 0, duration: 1.9, stagger: 0.14, ease: LUXE_EASE_ID },
+              TYPE_START
             )
             .fromTo(
               '[data-hero-tail]',
               { opacity: 0, y: 18 },
-              { opacity: 1, y: 0, duration: 1.1, stagger: 0.14 },
-              CURTAIN_DONE + 0.3
+              { opacity: 1, y: 0, duration: 1.4, stagger: 0.16, ease: LUXE_EASE_ID },
+              TYPE_START + 0.55
             );
         } else {
           gsap.set(
-            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]', '[data-curtain-seam]'],
+            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]'],
             { opacity: 0 }
           );
           open
@@ -260,20 +272,26 @@ export function HeroFilm({
 
         {/* ── Rideau d'ouverture : deux pans + compteur ── */}
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10">
+          {/* Deux pans, deux teintes de la maison. Pas de filet au raccord :
+              il passait en plein milieu du compteur, ce qui se lisait comme
+              un accident. La rencontre des deux couleurs suffit. */}
           <div data-curtain-left className="absolute inset-y-0 left-0 w-1/2 bg-noir" />
           <div data-curtain-right className="absolute inset-y-0 right-0 w-1/2 bg-burgundy" />
-          {/* Filet or au raccord des deux pans. */}
-          <div
-            data-curtain-seam
-            className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/70"
-          />
           <div
             data-counter
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex flex-col items-center justify-center gap-5"
           >
-            <span className="flex items-baseline gap-1 font-serif text-3xl tracking-[0.14em] text-ivory tabular-nums">
+            <span className="flex items-baseline gap-1 font-serif text-[clamp(2.2rem,5vw,3.4rem)] leading-none tracking-[0.12em] text-ivory tabular-nums">
               <span ref={counterRef}>0</span>
-              <span className="text-lg text-gold-light/90">%</span>
+              <span className="text-[0.45em] text-gold-light/80">%</span>
+            </span>
+            {/* Le filet dit la même chose que le chiffre, en silence. */}
+            <span className="block h-px w-28 overflow-hidden bg-ivory/15">
+              <span
+                ref={progressRef}
+                className="block h-full w-full origin-left bg-gold"
+                style={{ transform: 'scaleX(0)' }}
+              />
             </span>
           </div>
         </div>

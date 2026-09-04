@@ -68,10 +68,21 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
     };
   }, [menuOpen, pathname]);
 
-  // Stagger de la nav, uniquement sur l'accueil et uniquement après le
-  // rideau — voir le commentaire d'en-tête.
+  /**
+   * L'en-tête est en `z-40`, au-dessus du rideau du hero (`z-10`) : rien ne
+   * le masque. Si son état de départ dépendait du chargement de GSAP (import
+   * dynamique), la nav s'afficherait en clair le temps que le module arrive,
+   * AVANT même que le rideau ne bouge — c'était le cas, et ça cassait
+   * l'ouverture. L'état masqué est donc posé en CSS dès le rendu, de façon
+   * synchrone : `usePathname` et `useSyncExternalStore` donnent leur valeur
+   * pendant le rendu, avant la première peinture, et GSAP ne fait plus que
+   * l'animer VERS l'état visible (`.to`, pas `.fromTo`).
+   */
+  const navHidden = isHome && !reduced;
+  const hiddenStyle = navHidden ? { opacity: 0, transform: 'translateY(-14px)' } : undefined;
+
   useEffect(() => {
-    if (!isHome || reduced) return;
+    if (!navHidden) return;
     const root = barRef.current;
     if (!root) return;
 
@@ -84,11 +95,14 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
 
       const delay = wantsIntro ? NAV_STAGGER_START.intro : NAV_STAGGER_START.repeat;
       const ctx = gsap.context(() => {
-        gsap.fromTo(
-          '[data-nav-item]',
-          { opacity: 0, y: -14 },
-          { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay }
-        );
+        gsap.to('[data-nav-item]', {
+          opacity: 1,
+          y: 0,
+          duration: 1.1,
+          stagger: 0.09,
+          ease: 'power3.out',
+          delay,
+        });
       }, root);
       teardown = () => ctx.revert();
     })();
@@ -97,7 +111,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
       disposed = true;
       teardown?.();
     };
-  }, [isHome, reduced, wantsIntro]);
+  }, [navHidden, wantsIntro]);
 
   // Reprend l'ordre du brief (Home, About, Parfums, Find My Match, Contact) :
   // les raccourcis « Pour elle / Pour lui » quittent la barre — ils restent
@@ -127,6 +141,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
         <Link
           href={home}
           data-nav-item
+          style={hiddenStyle}
           className="shrink-0 font-serif text-lg whitespace-nowrap tracking-[0.08em] text-ivory transition-colors hover:text-gold"
         >
           {dict.common.brandName}
@@ -135,7 +150,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
         <nav aria-label={dict.nav.perfumes} className="ms-auto hidden lg:block">
           <ul className="flex items-center gap-7">
             {nav.map(({ href, label }) => (
-              <li key={href} data-nav-item>
+              <li key={href} data-nav-item style={hiddenStyle}>
                 <Link
                   href={href}
                   className="font-ui text-3xs whitespace-nowrap tracking-[0.16em] text-ivory/75 uppercase transition-colors hover:text-gold"
@@ -147,7 +162,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
           </ul>
         </nav>
 
-        <div data-nav-item className="ms-auto flex items-center gap-1 lg:ms-0">
+        <div data-nav-item style={hiddenStyle} className="ms-auto flex items-center gap-1 lg:ms-0">
           <LocaleSwitcher current={locale} label={dict.nav.language} />
           <CartButton />
 

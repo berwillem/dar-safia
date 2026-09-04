@@ -102,6 +102,17 @@ export default async function RootLayout({
   return (
     <html lang={locale} dir={dir} className={FONT_VARS} data-dir={dir}>
       <body className="min-h-screen antialiased">
+        {/* L'en-tête part masqué sur l'accueil, le temps que l'intro le fasse
+            entrer (cf. SiteHeader). Sans JavaScript, personne ne le
+            révélerait : on rend la navigation à ceux qui n'en ont pas. */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: '[data-nav-item]{opacity:1!important;transform:none!important}',
+            }}
+          />
+        </noscript>
+
         <a
           href="#contenu"
           className="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:z-50 focus:bg-gold focus:px-5 focus:py-3 focus:text-sm focus:font-semibold focus:text-noir focus:start-0"
