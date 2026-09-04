@@ -4,17 +4,11 @@ import Link from 'next/link';
 import { useRef } from 'react';
 
 import { useReveal } from '@/components/motion/useReveal';
+import type { SignatureNote } from '@/lib/home/signatures';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionary';
 import { interpolate } from '@/lib/i18n/dictionary';
 import { localePath } from '@/lib/i18n/routing';
-
-export interface SignatureNote {
-  slug: string;
-  name: string;
-  /** Nombre de créations du catalogue qui portent cette matière. */
-  count: number;
-}
 
 /**
  * ══════════════════════════════════════════════════════════════
