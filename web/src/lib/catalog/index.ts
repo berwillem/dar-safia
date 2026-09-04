@@ -27,3 +27,25 @@ export const catalog: CatalogRepository =
 
 export { lowestPrice } from './query';
 export type * from './types';
+
+export {
+  deriveIntensity,
+  deriveMoods,
+  deriveNoteTags,
+  deriveOlfactoryFamilies,
+  deriveSeasons,
+} from './derive-tags';
+export {
+  INTENSITY_TAGS,
+  MOOD_TAGS,
+  NOTE_TAGS,
+  OLFACTORY_FAMILY_TAGS,
+  SEASON_TAGS,
+} from './filter-taxonomy';
+export type {
+  IntensityTag,
+  MoodTag,
+  NoteTag,
+  OlfactoryFamilyTag,
+  SeasonTag,
+} from './filter-taxonomy';
