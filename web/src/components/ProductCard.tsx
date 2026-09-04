@@ -1,10 +1,24 @@
 import Link from 'next/link';
 
-import { lowestPrice, type Product } from '@/lib/catalog';
+import type { Product } from '@/lib/catalog';
 import { formatFamily, formatGender, formatPrice, formatVolume } from '@/lib/format';
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionary';
 import { localePath } from '@/lib/i18n/routing';
+
+/**
+ * Sous-ensemble d'un `Product` que la fiche affiche réellement. Un `Product`
+ * complet le satisfait donc sans conversion (fiche produit, page /parfums
+ * historique) ; la boutique dynamique (`ShopExperience`) peut lui passer la
+ * forme réduite qu'elle envoie au client, sans dupliquer ce composant.
+ */
+export type ProductCardData = Pick<
+  Product,
+  'slug' | 'name' | 'gender' | 'family' | 'badge' | 'images' | 'variants'
+> & {
+  brand: Pick<Product['brand'], 'name'>;
+  notes: { note: Pick<Product['notes'][number]['note'], 'name'> }[];
+};
 
 /**
  * Fiche produit du catalogue.
@@ -17,13 +31,16 @@ export function ProductCard({
   locale,
   dict,
 }: {
-  product: Product;
+  product: ProductCardData;
   locale: Locale;
   dict: Dictionary;
 }) {
   const image = product.images[0];
   const variant = product.variants[0];
-  const price = { amount: lowestPrice(product), currency: 'DZD' as const };
+  const price = {
+    amount: Math.min(...product.variants.map((v) => v.price.amount)),
+    currency: 'DZD' as const,
+  };
 
   return (
     <article
@@ -84,7 +101,10 @@ export function ProductCard({
           <span className="font-serif text-md text-[var(--universe-light)]">
             {formatPrice(price, locale)}
           </span>
-          <span className="text-3xs tracking-(--tracking-label) text-ivory/35 uppercase">
+          {/* Sur une grille à 2 colonnes (mobile), le prix et ce label ne
+              tiennent plus côte à côte sans se chevaucher — la mention
+              reste lisible ailleurs sur le site (pied de page, fiche). */}
+          <span className="hidden shrink-0 text-3xs tracking-(--tracking-label) text-ivory/35 uppercase sm:inline">
             {dict.common.authentic}
           </span>
         </div>
