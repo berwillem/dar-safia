@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_catalog_product_notes",
+  "info": {
+    "displayName": "Note (pyramide)",
+    "description": "Une note olfactive telle qu'elle apparaît dans la pyramide d'un parfum."
+  },
+  "options": {},
+  "attributes": {
+    "note": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::fragrance-note.fragrance-note"
+    },
+    "layer": {
+      "type": "enumeration",
+      "enum": ["top", "heart", "base"],
+      "required": true,
+      "description": "Étage de la pyramide : tête, cœur, fond."
+    },
+    "position": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "description": "Ordre d'affichage dans son étage."
+    }
+  }
+}

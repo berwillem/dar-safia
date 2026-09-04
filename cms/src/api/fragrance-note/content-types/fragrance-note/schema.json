@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fragrance_notes",
+  "info": {
+    "singularName": "fragrance-note",
+    "pluralName": "fragrance-notes",
+    "displayName": "Note olfactive",
+    "description": "Une matière première (rose, jasmin, vétiver…). Entité à part pour relier les parfums qui la partagent."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}

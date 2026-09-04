@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_catalog_monies",
+  "info": {
+    "displayName": "Montant",
+    "description": "Un prix. La devise est fixée au dinar algérien ; le formatage est du ressort de l'affichage."
+  },
+  "options": {},
+  "attributes": {
+    "amount": {
+      "type": "integer",
+      "required": true,
+      "min": 0,
+      "description": "Montant en dinars, sans décimale (le DZD n'a pas d'usage courant des subdivisions)."
+    },
+    "currency": {
+      "type": "enumeration",
+      "enum": ["DZD"],
+      "default": "DZD",
+      "required": true
+    }
+  }
+}

@@ -5,19 +5,20 @@
  *
  * Sert les 45 parfums depuis les JSON produits par scripts/migrate-catalog.mjs.
  *
- * En phase 3, une StrapiCatalogRepository implémentera la MÊME interface et
- * remplacera celle-ci dans index.ts. Aucun composant ne changera — c'est tout
- * l'intérêt de la couture.
+ * La StrapiCatalogRepository (strapi-repository.ts) implémente la MÊME
+ * interface ; on bascule dans index.ts via une variable d'environnement.
+ * Aucun composant ne change — c'est tout l'intérêt de la couture.
  *
  * L'interface est asynchrone alors que ces données sont locales : c'est
- * volontaire. Une interface synchrone aujourd'hui obligerait à réécrire tous
- * les appelants le jour où la source devient distante.
+ * volontaire. Une interface synchrone obligerait à réécrire tous les
+ * appelants le jour où la source devient distante.
  */
 
 import brandsJson from '@/data/brands.json';
 import notesJson from '@/data/notes.json';
 import productsJson from '@/data/products.json';
 
+import { queryProducts, relatedProducts } from './query';
 import type {
   Brand,
   CatalogRepository,
@@ -84,86 +85,19 @@ function hydrate(wire: WireProduct): Product {
 const allProducts: Product[] = wireProducts.map(hydrate);
 const productBySlug = new Map(allProducts.map((p) => [p.slug, p]));
 
-// ── Recherche et tri ───────────────────────────────────────────
-
-/** Prix du format le moins cher — base de tri et d'affichage « à partir de ». */
-export function lowestPrice(product: Product): number {
-  return Math.min(...product.variants.map((v) => v.price.amount));
-}
-
-/** Normalise pour la recherche : minuscules, sans accents. */
-function normalize(value: string): string {
-  return value
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase();
-}
-
-function matchesSearch(product: Product, term: string): boolean {
-  const haystack = normalize(
-    [
-      product.name,
-      product.brand.name,
-      product.description,
-      product.story ?? '',
-      ...product.notes.map((n) => n.note.name),
-    ].join(' ')
-  );
-  // Chaque mot doit apparaître : « dior bois » ne doit pas ramener tout Dior.
-  return normalize(term)
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((word) => haystack.includes(word));
-}
-
-function applySort(products: Product[], sort: ProductQuery['sort']): Product[] {
-  const sorted = [...products];
-  switch (sort) {
-    case 'price-asc':
-      return sorted.sort((a, b) => lowestPrice(a) - lowestPrice(b));
-    case 'price-desc':
-      return sorted.sort((a, b) => lowestPrice(b) - lowestPrice(a));
-    case 'name':
-      return sorted.sort((a, b) => a.name.localeCompare(b.name, 'fr'));
-    case 'rating':
-      // Les produits sans avis passent en dernier — jamais devant, faute de note.
-      return sorted.sort(
-        (a, b) => (b.rating?.average ?? -1) - (a.rating?.average ?? -1)
-      );
-    case 'newest':
-      return sorted.sort(
-        (a, b) => Number(b.newArrival) - Number(a.newArrival)
-      );
-    default:
-      return sorted;
-  }
-}
+// Ré-export : nombre d'appelants importent lowestPrice depuis le repository.
+export { lowestPrice } from './query';
 
 // ── Repository ─────────────────────────────────────────────────
 
 export const staticCatalogRepository: CatalogRepository = {
   async listProducts(query: ProductQuery = {}): Promise<Paginated<Product>> {
-    let items = allProducts;
-
-    if (query.gender) items = items.filter((p) => p.gender === query.gender);
-    if (query.family) {
-      items = items.filter(
-        (p) =>
-          p.family === query.family ||
-          p.secondaryFamilies.includes(query.family!)
-      );
+    // Aucune collection dans les données statiques : un filtre par collection
+    // ne peut rien retourner.
+    if (query.collectionSlug) {
+      return { items: [], total: 0, offset: query.offset ?? 0, limit: query.limit ?? 0 };
     }
-    if (query.brandSlug) items = items.filter((p) => p.brand.slug === query.brandSlug);
-    if (query.featured !== undefined) items = items.filter((p) => p.featured === query.featured);
-    if (query.search) items = items.filter((p) => matchesSearch(p, query.search!));
-
-    const total = items.length;
-    items = applySort(items, query.sort);
-
-    const offset = query.offset ?? 0;
-    const limit = query.limit ?? total;
-
-    return { items: items.slice(offset, offset + limit), total, offset, limit };
+    return queryProducts(allProducts, query);
   },
 
   async getProductBySlug(slug: string): Promise<Product | null> {
@@ -171,26 +105,7 @@ export const staticCatalogRepository: CatalogRepository = {
   },
 
   async getRelatedProducts(slug: string, limit = 3): Promise<Product[]> {
-    const product = productBySlug.get(slug);
-    if (!product) return [];
-
-    // Priorité : même famille ET même genre, puis même marque, puis même famille.
-    const score = (candidate: Product): number => {
-      let value = 0;
-      if (candidate.family === product.family) value += 2;
-      if (candidate.gender === product.gender) value += 2;
-      if (candidate.brand.slug === product.brand.slug) value += 3;
-      if (candidate.secondaryFamilies.includes(product.family)) value += 1;
-      return value;
-    };
-
-    return allProducts
-      .filter((p) => p.slug !== slug)
-      .map((p) => ({ product: p, score: score(p) }))
-      .filter((entry) => entry.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, limit)
-      .map((entry) => entry.product);
+    return relatedProducts(allProducts, slug, limit);
   },
 
   async listBrands(): Promise<Brand[]> {
@@ -201,8 +116,8 @@ export const staticCatalogRepository: CatalogRepository = {
     return brandBySlug.get(slug) ?? null;
   },
 
-  // Les collections n'existent pas encore comme entité : elles arriveront
-  // avec Strapi (phase 3). On renvoie une liste vide plutôt qu'un jeu de
+  // Les collections n'existent pas dans les données statiques : elles ne
+  // vivent que dans Strapi. On renvoie une liste vide plutôt qu'un jeu de
   // données inventé.
   async listCollections(): Promise<Collection[]> {
     return [];

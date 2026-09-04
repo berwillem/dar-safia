@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_catalog_variants",
+  "info": {
+    "displayName": "Format",
+    "description": "Un format vendu (contenance + prix + stock)."
+  },
+  "options": {},
+  "attributes": {
+    "volumeMl": {
+      "type": "integer",
+      "min": 0,
+      "description": "Contenance en millilitres. Vide pour un coffret ou un format sans contenance lisible."
+    },
+    "price": {
+      "type": "component",
+      "component": "catalog.money",
+      "repeatable": false,
+      "required": true
+    },
+    "compareAtPrice": {
+      "type": "component",
+      "component": "catalog.money",
+      "repeatable": false,
+      "description": "Prix barré, si promotion."
+    },
+    "stock": {
+      "type": "integer",
+      "default": 0,
+      "min": 0,
+      "required": true
+    },
+    "sku": {
+      "type": "string"
+    }
+  }
+}

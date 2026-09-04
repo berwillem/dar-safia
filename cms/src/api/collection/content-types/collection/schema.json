@@ -1,0 +1,48 @@
+{
+  "kind": "collectionType",
+  "collectionName": "collections",
+  "info": {
+    "singularName": "collection",
+    "pluralName": "collections",
+    "displayName": "Collection",
+    "description": "Un regroupement éditorial de parfums (niche, importés, campagne…)."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "heroMedia": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images", "videos"]
+    },
+    "theme": {
+      "type": "enumeration",
+      "enum": ["floral", "amber", "woody", "fresh", "gourmand", "spicy"],
+      "description": "Univers visuel appliqué (clé de `universe` dans tokens.json)."
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "inversedBy": "collections"
+    },
+    "seo": {
+      "type": "component",
+      "component": "catalog.seo",
+      "repeatable": false
+    }
+  }
+}

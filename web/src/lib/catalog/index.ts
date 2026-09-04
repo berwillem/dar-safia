@@ -7,14 +7,23 @@
  * jamais importer products.json, ni un client Strapi, ni une implémentation
  * concrète.
  *
- * Phase 3 : remplacer la ligne d'export ci-dessous par la version Strapi.
- * C'est le seul fichier à modifier.
+ * Source pilotée par l'environnement :
+ *   CATALOG_SOURCE=strapi  -> Strapi (nécessite STRAPI_URL, STRAPI_API_TOKEN)
+ *   sinon                  -> données statiques (web/src/data/*.json)
+ *
+ * Les deux implémentations respectent le même contrat et, comme elles
+ * délèguent au même moteur de requête (query.ts), se comportent à l'identique.
+ * Basculer de l'une à l'autre ne demande aucun changement de composant.
  */
 
 import { staticCatalogRepository } from './static-repository';
+import { strapiCatalogRepository } from './strapi-repository';
 import type { CatalogRepository } from './types';
 
-export const catalog: CatalogRepository = staticCatalogRepository;
+const source = process.env.CATALOG_SOURCE ?? 'static';
 
-export { lowestPrice } from './static-repository';
+export const catalog: CatalogRepository =
+  source === 'strapi' ? strapiCatalogRepository : staticCatalogRepository;
+
+export { lowestPrice } from './query';
 export type * from './types';
