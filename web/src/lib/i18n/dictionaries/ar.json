@@ -1,5 +1,7 @@
 {
   "nav": {
+    "home": "الرئيسية",
+    "about": "عن دار صافية",
     "perfumes": "العطور",
     "scentFinder": "اعثر على عطرك",
     "forHer": "لها",
@@ -123,7 +125,70 @@
     "count": "{count} إبداع|{count} إبداعات",
     "empty": "لا يوجد عطر مطابق",
     "emptyHint": "جرّب عائلة عطرية أخرى.",
-    "emptyCta": "عرض كامل المجموعة"
+    "emptyCta": "عرض كامل المجموعة",
+    "filters": {
+      "openButton": "التصفية",
+      "close": "إغلاق التصفية",
+      "clear": "إعادة الضبط",
+      "gender": "الفئة",
+      "family": "العائلة العطرية",
+      "notes": "المكوّنات",
+      "intensity": "الشدة",
+      "season": "الفصل",
+      "mood": "أبحث عن",
+      "familyOptions": {
+        "Floral": "زهري",
+        "Hespéridé / Citronné": "حمضي",
+        "Fruité": "فاكهي",
+        "Gourmand": "حلو",
+        "Aromatique": "عطري نباتي",
+        "Épicé": "بهاري",
+        "Boisé": "خشبي",
+        "Ambré": "كهرماني",
+        "Aquatique": "مائي",
+        "Chypré": "شيبري",
+        "Musqué": "مسكي",
+        "Oriental": "شرقي"
+      },
+      "noteOptions": {
+        "Vanille": "فانيليا",
+        "Rose": "ورد",
+        "Jasmin": "ياسمين",
+        "Fleur d’oranger": "زهر البرتقال",
+        "Bergamote": "برغموت",
+        "Citron": "ليمون",
+        "Poire": "كمثرى",
+        "Pêche": "خوخ",
+        "Mangue": "مانجو",
+        "Musc": "مسك",
+        "Ambre": "عنبر",
+        "Santal": "صندل",
+        "Cèdre": "أرز",
+        "Patchouli": "باتشولي",
+        "Encens": "بخور",
+        "Tonka": "تونكا",
+        "Benjoin": "بنجوان",
+        "Iris": "سوسن"
+      },
+      "seasonOptions": {
+        "Printemps": "الربيع",
+        "Été": "الصيف",
+        "Automne": "الخريف",
+        "Hiver": "الشتاء",
+        "Toute l’année": "طوال السنة"
+      },
+      "moodOptions": {
+        "Sucré": "حلو",
+        "Fleuri": "زهري",
+        "Frais": "منعش",
+        "Épicé": "بهاري",
+        "Boisé": "خشبي",
+        "Frais & aquatique": "منعش ومائي",
+        "Très puissant": "قوي جدًا",
+        "Séducteur": "آسر",
+        "Luxe / chic": "فخم وأنيق"
+      }
+    }
   },
   "product": {
     "breadcrumbHome": "الرئيسية",

@@ -1,5 +1,7 @@
 {
   "nav": {
+    "home": "Accueil",
+    "about": "La maison",
     "perfumes": "Parfums",
     "scentFinder": "Trouver mon parfum",
     "forHer": "Pour Femme",
@@ -123,7 +125,70 @@
     "count": "{count} création|{count} créations",
     "empty": "Aucun parfum ne correspond",
     "emptyHint": "Essayez une autre famille olfactive.",
-    "emptyCta": "Voir toute la collection"
+    "emptyCta": "Voir toute la collection",
+    "filters": {
+      "openButton": "Filtres",
+      "close": "Fermer les filtres",
+      "clear": "Réinitialiser",
+      "gender": "Genre",
+      "family": "Famille olfactive",
+      "notes": "Notes",
+      "intensity": "Intensité",
+      "season": "Saison",
+      "mood": "Je recherche",
+      "familyOptions": {
+        "Floral": "Floral",
+        "Hespéridé / Citronné": "Hespéridé / Citronné",
+        "Fruité": "Fruité",
+        "Gourmand": "Gourmand",
+        "Aromatique": "Aromatique",
+        "Épicé": "Épicé",
+        "Boisé": "Boisé",
+        "Ambré": "Ambré",
+        "Aquatique": "Aquatique",
+        "Chypré": "Chypré",
+        "Musqué": "Musqué",
+        "Oriental": "Oriental"
+      },
+      "noteOptions": {
+        "Vanille": "Vanille",
+        "Rose": "Rose",
+        "Jasmin": "Jasmin",
+        "Fleur d’oranger": "Fleur d’oranger",
+        "Bergamote": "Bergamote",
+        "Citron": "Citron",
+        "Poire": "Poire",
+        "Pêche": "Pêche",
+        "Mangue": "Mangue",
+        "Musc": "Musc",
+        "Ambre": "Ambre",
+        "Santal": "Santal",
+        "Cèdre": "Cèdre",
+        "Patchouli": "Patchouli",
+        "Encens": "Encens",
+        "Tonka": "Tonka",
+        "Benjoin": "Benjoin",
+        "Iris": "Iris"
+      },
+      "seasonOptions": {
+        "Printemps": "Printemps",
+        "Été": "Été",
+        "Automne": "Automne",
+        "Hiver": "Hiver",
+        "Toute l’année": "Toute l’année"
+      },
+      "moodOptions": {
+        "Sucré": "Sucré",
+        "Fleuri": "Fleuri",
+        "Frais": "Frais",
+        "Épicé": "Épicé",
+        "Boisé": "Boisé",
+        "Frais & aquatique": "Frais & aquatique",
+        "Très puissant": "Très puissant",
+        "Séducteur": "Séducteur",
+        "Luxe / chic": "Luxe / chic"
+      }
+    }
   },
   "product": {
     "breadcrumbHome": "Accueil",

@@ -8,8 +8,10 @@ import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionary';
 import { localePath } from '@/lib/i18n/routing';
 
+import { NAV_STAGGER_START, useIntroPlays } from './home/intro-timing';
 import { LocaleSwitcher } from './i18n/LocaleSwitcher';
 import { CartButton } from './cart/CartButton';
+import { usePrefersReducedMotion } from './motion/usePrefersReducedMotion';
 
 /**
  * En-tête du site.
@@ -18,11 +20,23 @@ import { CartButton } from './cart/CartButton';
  * l'image dès la première seconde. L'en-tête reste donc transparent tant
  * qu'on est en haut, et ne prend son fond qu'une fois le film dépassé.
  * Le seuil vient de la hauteur de fenêtre, pas d'une valeur magique.
+ *
+ * Sur l'accueil, la nav entre en scène en même temps que la typographie du
+ * hero — juste après que le rideau (`HeroFilm`) s'est écarté. Les deux
+ * composants ne se parlent pas directement : ils lisent le même minutage
+ * partagé (`intro-timing.ts`), donc rien ne peut dériver entre eux. Sur les
+ * autres pages, l'en-tête ne rejoue rien « parce qu'il est là » — il est
+ * simplement posé, comme aujourd'hui.
  */
 export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [lifted, setLifted] = useState(false);
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+
+  const isHome = pathname === localePath(locale, '/');
+  const wantsIntro = useIntroPlays();
+  const reduced = usePrefersReducedMotion();
 
   // Le menu retient la page où il a été ouvert. Changer de page le referme
   // donc PENDANT le rendu, sans effet ni setState en cascade.
@@ -54,12 +68,51 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
     };
   }, [menuOpen, pathname]);
 
+  // Stagger de la nav, uniquement sur l'accueil et uniquement après le
+  // rideau — voir le commentaire d'en-tête.
+  useEffect(() => {
+    if (!isHome || reduced) return;
+    const root = barRef.current;
+    if (!root) return;
+
+    let disposed = false;
+    let teardown: (() => void) | null = null;
+
+    void (async () => {
+      const { gsap } = await import('gsap');
+      if (disposed) return;
+
+      const delay = wantsIntro ? NAV_STAGGER_START.intro : NAV_STAGGER_START.repeat;
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          '[data-nav-item]',
+          { opacity: 0, y: -14 },
+          { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out', delay }
+        );
+      }, root);
+      teardown = () => ctx.revert();
+    })();
+
+    return () => {
+      disposed = true;
+      teardown?.();
+    };
+  }, [isHome, reduced, wantsIntro]);
+
+  // Reprend l'ordre du brief (Home, About, Parfums, Find My Match, Contact) :
+  // les raccourcis « Pour elle / Pour lui » quittent la barre — ils restent
+  // joignables depuis le filtre Genre de la boutique (partie B) — pour que
+  // sept intitulés ne se pressent pas sur une largeur qui en tenait cinq.
+  //
+  // « About Dar Safia » n'a pas encore de page dédiée : le lien pointe sur
+  // le manifeste de l'accueil plutôt que d'inventer une prose de présentation.
+  const home = localePath(locale, '/');
   const nav = [
-    { href: '/parfums', label: dict.nav.perfumes },
-    { href: '/trouver', label: dict.nav.scentFinder },
-    { href: '/parfums?genre=femme', label: dict.nav.forHer },
-    { href: '/parfums?genre=homme', label: dict.nav.forHim },
-    { href: '/contact', label: dict.nav.contact },
+    { href: home, label: dict.nav.home },
+    { href: `${home}#manifeste`, label: dict.nav.about },
+    { href: localePath(locale, '/parfums'), label: dict.nav.perfumes },
+    { href: localePath(locale, '/trouver'), label: dict.nav.scentFinder },
+    { href: localePath(locale, '/contact'), label: dict.nav.contact },
   ];
 
   return (
@@ -67,20 +120,24 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
       data-lifted={lifted || menuOpen || undefined}
       className="fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-500 ease-(--ease-lux) data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >
-      <div className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8">
+      <div
+        ref={barRef}
+        className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8"
+      >
         <Link
-          href={localePath(locale, '/')}
+          href={home}
+          data-nav-item
           className="shrink-0 font-serif text-lg whitespace-nowrap tracking-[0.08em] text-ivory transition-colors hover:text-gold"
         >
           {dict.common.brandName}
         </Link>
 
         <nav aria-label={dict.nav.perfumes} className="ms-auto hidden lg:block">
-          <ul className="flex items-center gap-8">
+          <ul className="flex items-center gap-7">
             {nav.map(({ href, label }) => (
-              <li key={href}>
+              <li key={href} data-nav-item>
                 <Link
-                  href={localePath(locale, href)}
+                  href={href}
                   className="font-ui text-3xs whitespace-nowrap tracking-[0.16em] text-ivory/75 uppercase transition-colors hover:text-gold"
                 >
                   {label}
@@ -90,7 +147,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
           </ul>
         </nav>
 
-        <div className="ms-auto flex items-center gap-1 lg:ms-0">
+        <div data-nav-item className="ms-auto flex items-center gap-1 lg:ms-0">
           <LocaleSwitcher current={locale} label={dict.nav.language} />
           <CartButton />
 
@@ -129,7 +186,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
             {nav.map(({ href, label }) => (
               <li key={href} className="border-b border-smoke-2 last:border-b-0">
                 <Link
-                  href={localePath(locale, href)}
+                  href={href}
                   className="block py-4 font-body text-2xl text-ivory transition-colors hover:text-gold"
                 >
                   {label}

@@ -1,18 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import { CURTAIN_DONE, CURTAIN_DURATION, COUNTER_DURATION, COUNTER_HOLD, dismissIntro, useIntroPlays } from './intro-timing';
 
 /**
  * ══════════════════════════════════════════════════════════════
  *   HERO — LE FILM
  * ══════════════════════════════════════════════════════════════
  *
- * Parti pris : l'intro cinématique N'EST PAS une animation séparée posée
- * devant le hero. Le film s'ouvre déjà sur le noir et monte vers la lumière ;
- * on utilise donc ses propres premières secondes comme introduction. Un voile
- * noir se lève pendant que la lumière arrive, la typographie sort de
- * l'obscurité à sa place définitive, et rien ne « saute » entre l'intro et le
- * hero. Un seul plan, continu.
+ * L'intro cinématique n'est toujours pas une animation séparée POSÉE devant
+ * le hero : le compte à rebours et le rideau jouent devant le film, déjà en
+ * train de charger et de tourner (muet) dessous, puis s'écartent pour le
+ * révéler — un seul plan continu, jamais un saut entre deux mises en scène.
  *
  * Composition analysée image par image (grille de luminance 4×3, six
  * instants) :
@@ -26,28 +26,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from '
  */
 
 const LOOP_POINT = 3.5;
-const INTRO_SESSION_KEY = 'darsafia.intro.seen';
-
-/**
- * « L'intro doit-elle jouer ? » est une lecture du navigateur (sessionStorage
- * + prefers-reduced-motion), pas un état React : on l'expose donc via
- * useSyncExternalStore. Cela évite un setState dans un effet — que React 19
- * signale comme provoquant des rendus en cascade — et donne un instantané
- * serveur cohérent (false : pas d'intro au rendu statique).
- *
- * La valeur ne change jamais après le montage ; l'abonnement est donc vide.
- */
-const noSubscribe = () => () => {};
-
-function readIntroPlays(): boolean {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  try {
-    return window.sessionStorage.getItem(INTRO_SESSION_KEY) !== '1';
-  } catch {
-    // Navigation privée : on ne force pas l'intro à chaque page.
-    return false;
-  }
-}
+const CURTAIN_EASE_ID = 'darsafia-curtain';
 
 export function HeroFilm({
   tagline,
@@ -68,8 +47,9 @@ export function HeroFilm({
 }) {
   const rootRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const counterRef = useRef<HTMLSpanElement>(null);
 
-  const wantsIntro = useSyncExternalStore(noSubscribe, readIntroPlays, () => false);
+  const wantsIntro = useIntroPlays();
   // Permet de couper l'intro en cours (bouton « passer »).
   const [skipped, setSkipped] = useState(false);
   const introPlays = wantsIntro && !skipped;
@@ -80,7 +60,10 @@ export function HeroFilm({
     if (!video) return;
     const onEnded = () => {
       video.currentTime = LOOP_POINT;
-      void video.play();
+      // L'onglet a pu passer en arrière-plan entre-temps : `play()` est alors
+      // rejeté par le navigateur (économie d'énergie) — rejet attendu, pas
+      // une erreur à laisser remonter en promesse non gérée.
+      void video.play().catch(() => {});
     };
     // Les navigateurs mettent la vidéo en pause quand l'onglet passe en
     // arrière-plan et ne la relancent pas toujours au retour.
@@ -95,7 +78,7 @@ export function HeroFilm({
     };
   }, []);
 
-  // Orchestration : voile qui se lève, typographie qui émerge, parallaxe.
+  // Orchestration : compteur, rideau, typographie qui émerge, parallaxe.
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -104,21 +87,29 @@ export function HeroFilm({
     let teardown: (() => void) | null = null;
 
     void (async () => {
-      const { gsap } = await import('gsap');
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+      const [{ gsap }, { ScrollTrigger }, { CustomEase }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+        import('gsap/CustomEase'),
+      ]);
       if (disposed || !rootRef.current) return;
-      gsap.registerPlugin(ScrollTrigger);
+      gsap.registerPlugin(ScrollTrigger, CustomEase);
+      // La demande de la maison : un cubic-bezier feutré, jamais élastique.
+      CustomEase.create(CURTAIN_EASE_ID, '0.76, 0, 0.24, 1');
 
       const ctx = gsap.context(() => {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         if (reduced) {
-          gsap.set(['[data-veil]', '[data-hero-line]', '[data-hero-tail]'], {
+          gsap.set(['[data-hero-line]', '[data-hero-tail]'], {
             opacity: 1,
             y: 0,
-            clipPath: 'inset(0% 0 0 0)',
+            yPercent: 0,
           });
-          gsap.set('[data-veil]', { opacity: 0 });
+          gsap.set(
+            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]', '[data-curtain-seam]'],
+            { opacity: 0 }
+          );
           return;
         }
 
@@ -126,24 +117,65 @@ export function HeroFilm({
         const open = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
         if (introPlays) {
-          // Le voile part opaque : le film joue dessous, encore dans le noir.
+          const counter = { value: 0 };
           open
-            .fromTo('[data-veil]', { opacity: 1 }, { opacity: 0, duration: 1.6, delay: 0.5 })
-            // La typographie sort de l'obscurité PENDANT que la lumière monte.
+            // Le compteur tourne pendant que le film, déjà lancé, charge
+            // sous le rideau — rien n'est perçu à l'écran avant le rideau.
+            .to(
+              counter,
+              {
+                value: 100,
+                duration: COUNTER_DURATION,
+                ease: 'power1.inOut',
+                onUpdate: () => {
+                  if (counterRef.current) {
+                    counterRef.current.textContent = String(Math.round(counter.value));
+                  }
+                },
+              },
+              0
+            )
+            .to('[data-counter]', { opacity: 0, duration: 0.3 }, COUNTER_DURATION + COUNTER_HOLD - 0.3)
+            // Le rideau : deux pans, teintes de la maison, séparés par un
+            // filet or — pas de couleur nouvelle.
+            .fromTo(
+              '[data-curtain-left]',
+              { xPercent: 0 },
+              { xPercent: -100, duration: CURTAIN_DURATION, ease: CURTAIN_EASE_ID },
+              COUNTER_DURATION + COUNTER_HOLD
+            )
+            .fromTo(
+              '[data-curtain-right]',
+              { xPercent: 0 },
+              { xPercent: 100, duration: CURTAIN_DURATION, ease: CURTAIN_EASE_ID },
+              COUNTER_DURATION + COUNTER_HOLD
+            )
+            // Le filet suit l'écart des deux pans plutôt que de rester figé
+            // au centre : il s'efface dès que le rideau commence à s'ouvrir.
+            .to(
+              '[data-curtain-seam]',
+              { opacity: 0, duration: 0.4 },
+              COUNTER_DURATION + COUNTER_HOLD
+            )
+            // La typographie sort de l'obscurité pendant que le rideau finit
+            // de s'écarter — pas après : un seul mouvement, pas deux à la file.
             .fromTo(
               '[data-hero-line]',
               { yPercent: 108 },
               { yPercent: 0, duration: 1.5, stagger: 0.12 },
-              0.55
+              CURTAIN_DONE - 0.5
             )
             .fromTo(
               '[data-hero-tail]',
               { opacity: 0, y: 18 },
               { opacity: 1, y: 0, duration: 1.1, stagger: 0.14 },
-              1.35
+              CURTAIN_DONE + 0.3
             );
         } else {
-          gsap.set('[data-veil]', { opacity: 0 });
+          gsap.set(
+            ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]', '[data-curtain-seam]'],
+            { opacity: 0 }
+          );
           open
             .fromTo(
               '[data-hero-line]',
@@ -194,20 +226,12 @@ export function HeroFilm({
     };
   }, [introPlays]);
 
-  const dismissIntro = useCallback(() => {
-    try {
-      window.sessionStorage.setItem(INTRO_SESSION_KEY, '1');
-    } catch {
-      /* stockage indisponible : sans conséquence */
-    }
-  }, []);
-
   // Marque la session comme vue dès le montage : un rechargement pendant
   // l'intro ne doit pas la rejouer. Écriture dans un système externe —
   // usage légitime d'un effet.
   useEffect(() => {
     if (wantsIntro) dismissIntro();
-  }, [wantsIntro, dismissIntro]);
+  }, [wantsIntro]);
 
   const [first, second] = statement.split('\n');
 
@@ -234,8 +258,25 @@ export function HeroFilm({
         {/* Dégradé mesuré : renforce la zone déjà sombre, ne voile pas le produit. */}
         <div aria-hidden="true" className="hero-film__scrim" />
 
-        {/* ── Voile d'ouverture ── */}
-        <div data-veil aria-hidden="true" className="pointer-events-none absolute inset-0 bg-noir" />
+        {/* ── Rideau d'ouverture : deux pans + compteur ── */}
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10">
+          <div data-curtain-left className="absolute inset-y-0 left-0 w-1/2 bg-noir" />
+          <div data-curtain-right className="absolute inset-y-0 right-0 w-1/2 bg-burgundy" />
+          {/* Filet or au raccord des deux pans. */}
+          <div
+            data-curtain-seam
+            className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-gold/70"
+          />
+          <div
+            data-counter
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <span className="flex items-baseline gap-1 font-serif text-3xl tracking-[0.14em] text-ivory tabular-nums">
+              <span ref={counterRef}>0</span>
+              <span className="text-lg text-gold-light/90">%</span>
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* ── Typographie ── */}
@@ -287,7 +328,7 @@ export function HeroFilm({
         </div>
       </div>
 
-      {/* Sortie clavier immédiate tant que le voile est là. */}
+      {/* Sortie clavier immédiate tant que le rideau est là. */}
       {introPlays && (
         <button
           type="button"

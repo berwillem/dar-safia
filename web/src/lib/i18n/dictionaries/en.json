@@ -1,5 +1,7 @@
 {
   "nav": {
+    "home": "Home",
+    "about": "About Dar Safia",
     "perfumes": "Perfumes",
     "scentFinder": "Find my scent",
     "forHer": "For Her",
@@ -123,7 +125,70 @@
     "count": "{count} creation|{count} creations",
     "empty": "No perfume matches",
     "emptyHint": "Try another olfactory family.",
-    "emptyCta": "See the whole collection"
+    "emptyCta": "See the whole collection",
+    "filters": {
+      "openButton": "Filters",
+      "close": "Close filters",
+      "clear": "Clear",
+      "gender": "Gender",
+      "family": "Olfactory family",
+      "notes": "Notes",
+      "intensity": "Intensity",
+      "season": "Season",
+      "mood": "I'm looking for",
+      "familyOptions": {
+        "Floral": "Floral",
+        "Hespéridé / Citronné": "Citrus",
+        "Fruité": "Fruity",
+        "Gourmand": "Gourmand",
+        "Aromatique": "Aromatic",
+        "Épicé": "Spicy",
+        "Boisé": "Woody",
+        "Ambré": "Amber",
+        "Aquatique": "Aquatic",
+        "Chypré": "Chypre",
+        "Musqué": "Musky",
+        "Oriental": "Oriental"
+      },
+      "noteOptions": {
+        "Vanille": "Vanilla",
+        "Rose": "Rose",
+        "Jasmin": "Jasmine",
+        "Fleur d’oranger": "Orange blossom",
+        "Bergamote": "Bergamot",
+        "Citron": "Lemon",
+        "Poire": "Pear",
+        "Pêche": "Peach",
+        "Mangue": "Mango",
+        "Musc": "Musk",
+        "Ambre": "Amber",
+        "Santal": "Sandalwood",
+        "Cèdre": "Cedar",
+        "Patchouli": "Patchouli",
+        "Encens": "Incense",
+        "Tonka": "Tonka bean",
+        "Benjoin": "Benzoin",
+        "Iris": "Iris"
+      },
+      "seasonOptions": {
+        "Printemps": "Spring",
+        "Été": "Summer",
+        "Automne": "Autumn",
+        "Hiver": "Winter",
+        "Toute l’année": "Year-round"
+      },
+      "moodOptions": {
+        "Sucré": "Sweet",
+        "Fleuri": "Floral",
+        "Frais": "Fresh",
+        "Épicé": "Spicy",
+        "Boisé": "Woody",
+        "Frais & aquatique": "Fresh & aquatic",
+        "Très puissant": "Very powerful",
+        "Séducteur": "Seductive",
+        "Luxe / chic": "Luxe / chic"
+      }
+    }
   },
   "product": {
     "breadcrumbHome": "Home",
