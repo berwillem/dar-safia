@@ -128,20 +128,14 @@ export function SignatureStage({
         <div className="mx-auto max-w-(--container-site)">
           {heading}
           <ol className="mt-8">
-            {products.map((product, i) => (
+            {products.map((product) => (
               <li
                 key={product.slug}
                 data-universe={product.family}
                 data-fade
                 className="border-t border-smoke-2 py-14 md:py-16"
               >
-                <PanelBody
-                  product={product}
-                  index={i}
-                  total={products.length}
-                  locale={locale}
-                  dict={dict}
-                />
+                <PanelBody product={product} locale={locale} dict={dict} />
               </li>
             ))}
           </ol>
@@ -206,20 +200,14 @@ export function SignatureStage({
               {products.map((product, i) => (
                 <div
                   key={product.slug}
-                  aria-hidden={i !== active}
+                  // `inert` : les panneaux inactifs sortent de l'ordre de
+                  // tabulation ET de l'arbre d'accessibilité — un lien masqué
+                  // ne doit pas pouvoir recevoir le focus.
+                  inert={i !== active}
                   className="absolute inset-0 flex flex-col justify-center transition-opacity duration-500 ease-(--ease-lux)"
-                  style={{
-                    opacity: i === active ? 1 : 0,
-                    pointerEvents: i === active ? undefined : 'none',
-                  }}
+                  style={{ opacity: i === active ? 1 : 0 }}
                 >
-                  <PanelBody
-                    product={product}
-                    index={i}
-                    total={products.length}
-                    locale={locale}
-                    dict={dict}
-                  />
+                  <PanelBody product={product} locale={locale} dict={dict} />
                 </div>
               ))}
             </div>
@@ -252,25 +240,18 @@ export function SignatureStage({
 
 function PanelBody({
   product,
-  index,
-  total,
   locale,
   dict,
 }: {
   product: SignatureProduct;
-  index: number;
-  total: number;
   locale: Locale;
   dict: Dictionary;
 }) {
   const s = dict.signature;
   return (
     <div className="max-w-3xl">
-      <p className="flex items-center gap-3 font-ui text-2xs tracking-[0.24em] text-gold uppercase">
+      <p className="font-ui text-2xs tracking-[0.24em] text-gold uppercase">
         {product.brand}
-        <span className="text-ivory/30 tabular-nums">
-          {String(index + 1).padStart(2, '0')} — {String(total).padStart(2, '0')}
-        </span>
       </p>
 
       <p className="mt-5 font-body font-light text-ivory">
