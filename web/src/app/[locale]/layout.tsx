@@ -15,6 +15,7 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { CartProvider } from '@/components/cart/CartProvider';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
+import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { DIRECTION, LOCALES, isLocale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 
@@ -112,6 +113,7 @@ export default async function RootLayout({
           {/* Le provider n'englobe que du contexte : les pages restent
               des composants serveur. */}
           <CartProvider>
+            <SmoothScroll />
             <SiteHeader locale={locale} dict={dict} />
             {children}
             <SiteFooter locale={locale} dict={dict} />

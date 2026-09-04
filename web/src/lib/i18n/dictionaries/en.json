@@ -11,6 +11,14 @@
     "skipToContent": "Skip to main content",
     "language": "Language"
   },
+  "hero": {
+    "tagline": "Elegance for Everyone",
+    "statement": "A perfume is not described.\nIt is recognised.",
+    "cta": "Discover the collection",
+    "scroll": "Scroll",
+    "videoLabel": "Dar Safia coffret and bottle, lit by candlelight",
+    "skipIntro": "Skip the introduction"
+  },
   "home": {
     "eyebrow": "Fine perfumery house · Algeria",
     "tagline": "A world of exceptional fragrances and the great olfactory signatures. Chosen one by one, delivered across all 58 wilayas.",
@@ -25,9 +33,18 @@
     "houseTitle": "The art of fine perfumery, within reach",
     "houseBody": "Born of a passion for noble trails, Dar Safia brings together the greatest creations of world perfumery and extraits of masterful concentration. Every bottle is chosen on strict criteria: purity of accords, wear on the skin, certified authentic provenance.",
     "pillars": {
-      "authentic": { "title": "100% original perfumes", "body": "Authenticity guaranteed across the whole catalogue, certified provenance." },
-      "sillage": { "title": "Exceptional sillage", "body": "High concentrations, a presence that lasts on the skin." },
-      "concierge": { "title": "WhatsApp concierge", "body": "Personal advice and direct ordering, seven days a week." }
+      "authentic": {
+        "title": "100% original perfumes",
+        "body": "Authenticity guaranteed across the whole catalogue, certified provenance."
+      },
+      "sillage": {
+        "title": "Exceptional sillage",
+        "body": "High concentrations, a presence that lasts on the skin."
+      },
+      "concierge": {
+        "title": "WhatsApp concierge",
+        "body": "Personal advice and direct ordering, seven days a week."
+      }
     },
     "selectionTitle": "The selection",
     "seeAll": "See all →",
@@ -54,7 +71,11 @@
     "order": "Order on WhatsApp",
     "addToCart": "Add to cart",
     "orderUnavailable": "Ordering temporarily unavailable.",
-    "metrics": { "longevity": "Longevity", "sillage": "Sillage", "family": "Family" },
+    "metrics": {
+      "longevity": "Longevity",
+      "sillage": "Sillage",
+      "family": "Family"
+    },
     "pyramidTitle": "Olfactory pyramid",
     "pyramid": {
       "top": "Top notes",
@@ -111,23 +132,74 @@
       "intensity": "What presence are you after?"
     },
     "options": {
-      "femme": { "label": "For her", "hint": "Feminine signatures" },
-      "homme": { "label": "For him", "hint": "Masculine signatures" },
-      "unisexe": { "label": "Either", "hint": "Shared creations" },
-      "cadeau": { "label": "A gift", "hint": "The house's safe bets" },
-      "jour": { "label": "Daytime", "hint": "Light, luminous, easy to wear" },
-      "nuit": { "label": "Evening", "hint": "Deep, enveloping, magnetic" },
-      "prestige": { "label": "Grand occasions", "hint": "The rarest pieces" },
-      "fraicheur": { "label": "A breath of freshness", "hint": "Sharp, crisp, aquatic" },
-      "floral": { "label": "Flowers", "hint": "Rose, jasmine, iris" },
-      "woody": { "label": "Wood", "hint": "Cedar, sandalwood, vetiver" },
-      "amber": { "label": "Amber", "hint": "Vanilla, benzoin, resins" },
-      "fresh": { "label": "Freshness", "hint": "Citrus, marine notes" },
-      "gourmand": { "label": "Gourmand", "hint": "Caramel, cocoa, tonka bean" },
-      "spicy": { "label": "Spices", "hint": "Pepper, cardamom, leather" },
-      "subtil": { "label": "Discreet", "hint": "An aura, not an announcement" },
-      "equilibre": { "label": "Balanced", "hint": "Present without dominating" },
-      "intense": { "label": "Bold", "hint": "A sillage that turns heads" }
+      "femme": {
+        "label": "For her",
+        "hint": "Feminine signatures"
+      },
+      "homme": {
+        "label": "For him",
+        "hint": "Masculine signatures"
+      },
+      "unisexe": {
+        "label": "Either",
+        "hint": "Shared creations"
+      },
+      "cadeau": {
+        "label": "A gift",
+        "hint": "The house's safe bets"
+      },
+      "jour": {
+        "label": "Daytime",
+        "hint": "Light, luminous, easy to wear"
+      },
+      "nuit": {
+        "label": "Evening",
+        "hint": "Deep, enveloping, magnetic"
+      },
+      "prestige": {
+        "label": "Grand occasions",
+        "hint": "The rarest pieces"
+      },
+      "fraicheur": {
+        "label": "A breath of freshness",
+        "hint": "Sharp, crisp, aquatic"
+      },
+      "floral": {
+        "label": "Flowers",
+        "hint": "Rose, jasmine, iris"
+      },
+      "woody": {
+        "label": "Wood",
+        "hint": "Cedar, sandalwood, vetiver"
+      },
+      "amber": {
+        "label": "Amber",
+        "hint": "Vanilla, benzoin, resins"
+      },
+      "fresh": {
+        "label": "Freshness",
+        "hint": "Citrus, marine notes"
+      },
+      "gourmand": {
+        "label": "Gourmand",
+        "hint": "Caramel, cocoa, tonka bean"
+      },
+      "spicy": {
+        "label": "Spices",
+        "hint": "Pepper, cardamom, leather"
+      },
+      "subtil": {
+        "label": "Discreet",
+        "hint": "An aura, not an announcement"
+      },
+      "equilibre": {
+        "label": "Balanced",
+        "hint": "Present without dominating"
+      },
+      "intense": {
+        "label": "Bold",
+        "hint": "A sillage that turns heads"
+      }
     }
   },
   "footer": {
@@ -162,13 +234,29 @@
     "placeholder": "Placeholder WhatsApp number: orders go nowhere. Replace before deployment.",
     "missing": "NEXT_PUBLIC_WHATSAPP_PHONE not set: ordering is disabled."
   },
-  "gender": { "femme": "For Her", "homme": "For Him", "unisexe": "Unisex" },
+  "gender": {
+    "femme": "For Her",
+    "homme": "For Him",
+    "unisexe": "Unisex"
+  },
   "family": {
-    "floral": "Floral", "amber": "Amber", "woody": "Woody",
-    "fresh": "Fresh", "gourmand": "Gourmand", "spicy": "Spicy"
+    "floral": "Floral",
+    "amber": "Amber",
+    "woody": "Woody",
+    "fresh": "Fresh",
+    "gourmand": "Gourmand",
+    "spicy": "Spicy"
   },
   "sillage": {
-    "1": "Intimate", "2": "Discreet", "3": "Moderate", "4": "Assertive", "5": "Powerful"
+    "1": "Intimate",
+    "2": "Discreet",
+    "3": "Moderate",
+    "4": "Assertive",
+    "5": "Powerful"
   },
-  "units": { "ml": "{n} ml", "hours": "{n} h", "set": "Set" }
+  "units": {
+    "ml": "{n} ml",
+    "hours": "{n} h",
+    "set": "Set"
+  }
 }

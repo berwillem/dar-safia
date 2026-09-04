@@ -65,7 +65,7 @@ export default async function CatalogPage({
     <main
       id="contenu"
       tabIndex={-1}
-      className="mx-auto max-w-(--container-site) px-5 py-14 md:px-8"
+      className="mx-auto max-w-(--container-site) px-5 pt-28 pb-14 md:px-8 md:pt-32"
     >
       <p className="text-3xs font-semibold tracking-(--tracking-eyebrow) text-gold uppercase">
         {c.eyebrow}

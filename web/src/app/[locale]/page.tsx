@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { HeroFilm } from '@/components/home/HeroFilm';
 import { ProductCard } from '@/components/ProductCard';
 import { catalog } from '@/lib/catalog';
 import { isLocale } from '@/lib/i18n/config';
@@ -17,11 +18,9 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
 
-  const [dict, featured, all, brands] = await Promise.all([
+  const [dict, featured] = await Promise.all([
     getDictionary(locale),
     catalog.listProducts({ featured: true, limit: 8, sort: 'price-desc' }),
-    catalog.listProducts(),
-    catalog.listBrands(),
   ]);
 
   const h = dict.home;
@@ -29,51 +28,15 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
 
   return (
     <main id="contenu" tabIndex={-1}>
-      {/* ── Ouverture ── */}
-      <section className="mx-auto max-w-(--container-site) px-5 pt-16 pb-12 md:px-8 md:pt-24 md:pb-16">
-        <div className="ds-rise-stagger max-w-3xl">
-          <p className="text-3xs font-semibold tracking-(--tracking-eyebrow) text-gold uppercase">
-            {h.eyebrow}
-          </p>
-          <h1 className="mt-5 font-display text-display-lg leading-[1.05] text-balance text-ivory">
-            {dict.common.brandName}
-          </h1>
-          <p className="mt-6 max-w-xl font-body text-xl leading-relaxed text-ivory/70">
-            {h.tagline}
-          </p>
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Link
-              href={localePath(locale, '/parfums')}
-              className="rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light"
-            >
-              {h.explore}
-            </Link>
-            <Link
-              href={localePath(locale, '/trouver')}
-              className="rounded-sm border border-smoke-2 px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-ivory/80 uppercase transition-colors hover:border-gold hover:text-gold"
-            >
-              {h.findYours}
-            </Link>
-          </div>
-        </div>
-
-        <dl className="mt-14 flex flex-wrap gap-x-12 gap-y-6 border-t border-smoke-2 pt-8">
-          {[
-            { label: h.stats.creations, value: all.total },
-            { label: h.stats.houses, value: brands.length },
-            { label: h.stats.wilayas, value: 58 },
-          ].map(({ label, value }) => (
-            <div key={label}>
-              <dt className="text-3xs tracking-(--tracking-label) text-ivory/45 uppercase">
-                {label}
-              </dt>
-              <dd className="mt-1 font-serif text-2xl text-gold-light tabular-nums">
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </section>
+      <HeroFilm
+        tagline={dict.hero.tagline}
+        statement={dict.hero.statement}
+        cta={dict.hero.cta}
+        ctaHref={localePath(locale, '/parfums')}
+        scrollLabel={dict.hero.scroll}
+        videoLabel={dict.hero.videoLabel}
+        skipLabel={dict.hero.skipIntro}
+      />
 
       {/* ── La maison ── */}
       <section aria-labelledby="maison" className="border-y border-smoke-2 bg-noir-2">

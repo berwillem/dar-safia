@@ -113,7 +113,7 @@ export default async function ProductPage({
         }}
       />
 
-      <div className="relative mx-auto max-w-(--container-site) px-5 py-10 md:px-8 md:py-14">
+      <div className="relative mx-auto max-w-(--container-site) px-5 pt-28 pb-10 md:px-8 md:pt-32 md:pb-14">
         <nav aria-label="breadcrumb" className="text-2xs text-ivory/45">
           <ol className="flex flex-wrap items-center gap-2">
             <li>

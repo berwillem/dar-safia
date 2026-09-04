@@ -22,7 +22,7 @@ export default async function NotFound() {
   return (
     <main
       id="contenu"
-      className="mx-auto flex min-h-[70vh] max-w-(--container-site) flex-col items-start justify-center px-5 py-20 md:px-8"
+      className="mx-auto flex min-h-[80svh] max-w-(--container-site) flex-col items-start justify-center px-5 pt-28 pb-20 md:px-8"
     >
       <p className="text-3xs font-semibold tracking-(--tracking-eyebrow) text-gold uppercase">
         {nf.eyebrow}

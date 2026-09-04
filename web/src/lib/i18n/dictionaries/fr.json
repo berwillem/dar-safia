@@ -11,6 +11,14 @@
     "skipToContent": "Aller au contenu principal",
     "language": "Langue"
   },
+  "hero": {
+    "tagline": "L'Élégance pour Tous",
+    "statement": "Un parfum ne se décrit pas.\nIl se reconnaît.",
+    "cta": "Découvrir la collection",
+    "scroll": "Faites défiler",
+    "videoLabel": "Coffret et flacon Dar Safia, éclairés à la bougie",
+    "skipIntro": "Passer l'introduction"
+  },
   "home": {
     "eyebrow": "Maison de haute parfumerie · Algérie",
     "tagline": "L'univers des fragrances d'exception et des plus grandes signatures olfactives. Sélectionnées une à une, livrées dans les 58 wilayas.",
@@ -25,9 +33,18 @@
     "houseTitle": "L'art de la haute parfumerie, à portée de main",
     "houseBody": "Née d'une passion pour les sillages nobles, Dar Safia réunit les plus grandes créations de la parfumerie mondiale et des extraits d'une concentration magistrale. Chaque flacon est retenu selon des critères d'exigence : pureté des accords, tenue sur la peau, provenance authentique certifiée.",
     "pillars": {
-      "authentic": { "title": "Parfums 100 % originaux", "body": "Authenticité garantie sur l'ensemble du catalogue, provenance certifiée." },
-      "sillage": { "title": "Sillage d'exception", "body": "Des concentrations hautes, une présence qui tient sur la peau." },
-      "concierge": { "title": "Conciergerie WhatsApp", "body": "Conseil personnalisé et commande directe, sept jours sur sept." }
+      "authentic": {
+        "title": "Parfums 100 % originaux",
+        "body": "Authenticité garantie sur l'ensemble du catalogue, provenance certifiée."
+      },
+      "sillage": {
+        "title": "Sillage d'exception",
+        "body": "Des concentrations hautes, une présence qui tient sur la peau."
+      },
+      "concierge": {
+        "title": "Conciergerie WhatsApp",
+        "body": "Conseil personnalisé et commande directe, sept jours sur sept."
+      }
     },
     "selectionTitle": "La sélection",
     "seeAll": "Tout voir →",
@@ -54,7 +71,11 @@
     "order": "Commander sur WhatsApp",
     "addToCart": "Ajouter au panier",
     "orderUnavailable": "Commande momentanément indisponible.",
-    "metrics": { "longevity": "Tenue", "sillage": "Sillage", "family": "Famille" },
+    "metrics": {
+      "longevity": "Tenue",
+      "sillage": "Sillage",
+      "family": "Famille"
+    },
     "pyramidTitle": "Pyramide olfactive",
     "pyramid": {
       "top": "Notes de tête",
@@ -111,23 +132,74 @@
       "intensity": "Quelle présence recherchez-vous ?"
     },
     "options": {
-      "femme": { "label": "Pour elle", "hint": "Signatures féminines" },
-      "homme": { "label": "Pour lui", "hint": "Signatures masculines" },
-      "unisexe": { "label": "Sans distinction", "hint": "Créations mixtes" },
-      "cadeau": { "label": "Un cadeau", "hint": "Les valeurs sûres de la maison" },
-      "jour": { "label": "Le jour", "hint": "Léger, lumineux, facile à porter" },
-      "nuit": { "label": "Le soir", "hint": "Profond, enveloppant, magnétique" },
-      "prestige": { "label": "Les grandes occasions", "hint": "Les pièces les plus rares" },
-      "fraicheur": { "label": "Un souffle de fraîcheur", "hint": "Vif, net, aquatique" },
-      "floral": { "label": "Fleurs", "hint": "Rose, jasmin, iris" },
-      "woody": { "label": "Bois", "hint": "Cèdre, santal, vétiver" },
-      "amber": { "label": "Ambre", "hint": "Vanille, benjoin, résines" },
-      "fresh": { "label": "Fraîcheur", "hint": "Agrumes, notes marines" },
-      "gourmand": { "label": "Gourmandise", "hint": "Caramel, cacao, fève tonka" },
-      "spicy": { "label": "Épices", "hint": "Poivre, cardamome, cuir" },
-      "subtil": { "label": "Discrète", "hint": "Une aura, pas une annonce" },
-      "equilibre": { "label": "Équilibrée", "hint": "Présente sans dominer" },
-      "intense": { "label": "Affirmée", "hint": "Un sillage qui ne passe pas inaperçu" }
+      "femme": {
+        "label": "Pour elle",
+        "hint": "Signatures féminines"
+      },
+      "homme": {
+        "label": "Pour lui",
+        "hint": "Signatures masculines"
+      },
+      "unisexe": {
+        "label": "Sans distinction",
+        "hint": "Créations mixtes"
+      },
+      "cadeau": {
+        "label": "Un cadeau",
+        "hint": "Les valeurs sûres de la maison"
+      },
+      "jour": {
+        "label": "Le jour",
+        "hint": "Léger, lumineux, facile à porter"
+      },
+      "nuit": {
+        "label": "Le soir",
+        "hint": "Profond, enveloppant, magnétique"
+      },
+      "prestige": {
+        "label": "Les grandes occasions",
+        "hint": "Les pièces les plus rares"
+      },
+      "fraicheur": {
+        "label": "Un souffle de fraîcheur",
+        "hint": "Vif, net, aquatique"
+      },
+      "floral": {
+        "label": "Fleurs",
+        "hint": "Rose, jasmin, iris"
+      },
+      "woody": {
+        "label": "Bois",
+        "hint": "Cèdre, santal, vétiver"
+      },
+      "amber": {
+        "label": "Ambre",
+        "hint": "Vanille, benjoin, résines"
+      },
+      "fresh": {
+        "label": "Fraîcheur",
+        "hint": "Agrumes, notes marines"
+      },
+      "gourmand": {
+        "label": "Gourmandise",
+        "hint": "Caramel, cacao, fève tonka"
+      },
+      "spicy": {
+        "label": "Épices",
+        "hint": "Poivre, cardamome, cuir"
+      },
+      "subtil": {
+        "label": "Discrète",
+        "hint": "Une aura, pas une annonce"
+      },
+      "equilibre": {
+        "label": "Équilibrée",
+        "hint": "Présente sans dominer"
+      },
+      "intense": {
+        "label": "Affirmée",
+        "hint": "Un sillage qui ne passe pas inaperçu"
+      }
     }
   },
   "footer": {
@@ -162,13 +234,29 @@
     "placeholder": "Numéro WhatsApp fictif : les commandes n'aboutissent nulle part. À remplacer avant déploiement.",
     "missing": "NEXT_PUBLIC_WHATSAPP_PHONE non défini : les commandes sont désactivées."
   },
-  "gender": { "femme": "Pour Femme", "homme": "Pour Homme", "unisexe": "Unisexe" },
+  "gender": {
+    "femme": "Pour Femme",
+    "homme": "Pour Homme",
+    "unisexe": "Unisexe"
+  },
   "family": {
-    "floral": "Floral", "amber": "Ambré", "woody": "Boisé",
-    "fresh": "Frais", "gourmand": "Gourmand", "spicy": "Épicé"
+    "floral": "Floral",
+    "amber": "Ambré",
+    "woody": "Boisé",
+    "fresh": "Frais",
+    "gourmand": "Gourmand",
+    "spicy": "Épicé"
   },
   "sillage": {
-    "1": "Intime", "2": "Discret", "3": "Modéré", "4": "Affirmé", "5": "Puissant"
+    "1": "Intime",
+    "2": "Discret",
+    "3": "Modéré",
+    "4": "Affirmé",
+    "5": "Puissant"
   },
-  "units": { "ml": "{n} ml", "hours": "{n} h", "set": "Coffret" }
+  "units": {
+    "ml": "{n} ml",
+    "hours": "{n} h",
+    "set": "Coffret"
+  }
 }

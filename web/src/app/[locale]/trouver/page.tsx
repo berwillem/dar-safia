@@ -33,7 +33,7 @@ export default async function ScentFinderPage({
     <main
       id="contenu"
       tabIndex={-1}
-      className="mx-auto max-w-2xl px-5 py-14 md:px-8 md:py-20"
+      className="mx-auto max-w-2xl px-5 pt-28 pb-14 md:px-8 md:pt-36 md:pb-20"
     >
       <p className="text-3xs font-semibold tracking-(--tracking-eyebrow) text-gold uppercase">
         {sf.eyebrow}

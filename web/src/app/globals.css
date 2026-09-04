@@ -180,3 +180,115 @@ body {
   display: inline-block;
   transform: scaleX(-1);
 }
+
+/* ══════════════════════════════════════════════════════════════
+   HERO — INDICATEUR DE DÉFILEMENT
+   Un trait qui descend lentement, en boucle. Un seul mouvement
+   ambiant sur toute la page : il indique quelque chose (« il y a
+   la suite en dessous »), il ne décore pas.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes ds-scroll-rule {
+  0%   { transform: scaleY(0); transform-origin: top; }
+  45%  { transform: scaleY(1); transform-origin: top; }
+  55%  { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.ds-scroll-rule {
+  animation: ds-scroll-rule 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-scroll-rule { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO — DEUX COMPOSITIONS, PAS UNE MISE À L'ÉCHELLE
+   ══════════════════════════════════════════════════════════════
+   Le plan est en 16/9 et sa composition est équilibrée : roses à
+   gauche, coffret et flacon au centre, bougie à droite, ruban en bas.
+   En `cover` sur une fenêtre haute, on en perd 40 % — donc les roses,
+   la bougie et le ruban. Ce qui reste n'est plus une composition.
+
+   On change donc de FORME selon le format de la fenêtre :
+
+   - Fenêtre large (≥ 3/2) : plein cadre. Le film occupe tout l'écran,
+     la typographie se pose dans la bande basse (la seule zone dont on
+     a mesuré qu'elle reste sombre sur tout le plan).
+
+   - Fenêtre haute (mobile, tablette portrait) : le film redevient une
+     PLAQUE en 16/9 posée en haut, dans son cadrage d'origine, et la
+     typographie descend sur le fond noir. Rien n'est rogné, et le
+     texte n'a plus à lutter contre l'image.
+   ══════════════════════════════════════════════════════════════ */
+
+.hero-film {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100svh;
+}
+
+.hero-film__plate {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.hero-film__plate video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-film__type {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* En mode plaque, la typographie occupe l'espace restant : on la centre
+     optiquement plutôt que de la coller en bas, ce qui laisserait un vide
+     qui se lit comme un défaut et non comme une respiration. */
+  justify-content: center;
+}
+
+/* Le dégradé n'a de sens que par-dessus l'image : en mode plaque, il
+   reste cantonné au bas du film. */
+.hero-film__scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(16, 11, 9, 0.92) 0%,
+    rgba(16, 11, 9, 0.5) 30%,
+    rgba(16, 11, 9, 0) 62%
+  );
+}
+
+@media (min-aspect-ratio: 3 / 2) {
+  .hero-film {
+    display: block;
+    height: 100svh;
+    position: relative;
+  }
+  .hero-film__plate {
+    position: absolute;
+    inset: 0;
+    aspect-ratio: auto;
+  }
+  .hero-film__type {
+    position: absolute;
+    inset: 0;
+    /* Plein cadre : la typographie retourne dans la bande basse, la seule
+       dont la mesure garantit qu'elle reste sombre sur tout le plan. */
+    justify-content: flex-end;
+  }
+  .hero-film__scrim {
+    /* Plein cadre : le dégradé remonte un peu moins haut, le produit
+       ne doit pas être voilé. */
+    background: linear-gradient(
+      to top,
+      rgba(16, 11, 9, 0.9) 0%,
+      rgba(16, 11, 9, 0.45) 24%,
+      rgba(16, 11, 9, 0) 50%
+    );
+  }
+}
