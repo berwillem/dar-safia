@@ -21,8 +21,9 @@ import { usePrefersReducedMotion } from './motion/usePrefersReducedMotion';
  * qu'on est en haut, et ne prend son fond qu'une fois le film dépassé.
  * Le seuil vient de la hauteur de fenêtre, pas d'une valeur magique.
  *
- * Sur l'accueil, la nav entre en scène en même temps que la typographie du
- * hero — juste après que le rideau (`HeroFilm`) s'est écarté. Les deux
+ * Sur l'accueil, la nav entre en scène juste après la typographie du hero
+ * (un demi-temps de retard : elle tombe sur un instant du plan plutôt que
+ * sur le même mouvement). Les deux
  * composants ne se parlent pas directement : ils lisent le même minutage
  * partagé (`intro-timing.ts`), donc rien ne peut dériver entre eux. Sur les
  * autres pages, l'en-tête ne rejoue rien « parce qu'il est là » — il est
@@ -79,7 +80,9 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
    * l'animer VERS l'état visible (`.to`, pas `.fromTo`).
    */
   const navHidden = isHome && !reduced;
-  const hiddenStyle = navHidden ? { opacity: 0, transform: 'translateY(-14px)' } : undefined;
+  const hiddenStyle = navHidden
+    ? { opacity: 0, transform: 'translateY(-16px) scale(0.97)' }
+    : undefined;
 
   useEffect(() => {
     if (!navHidden) return;
@@ -98,8 +101,9 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
         gsap.to('[data-nav-item]', {
           opacity: 1,
           y: 0,
-          duration: 1.1,
-          stagger: 0.09,
+          scale: 1,
+          duration: 1,
+          stagger: 0.1,
           ease: 'power3.out',
           delay,
         });
@@ -153,7 +157,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
               <li key={href} data-nav-item style={hiddenStyle}>
                 <Link
                   href={href}
-                  className="font-ui text-3xs whitespace-nowrap tracking-[0.16em] text-ivory/75 uppercase transition-colors hover:text-gold"
+                  className="font-ui text-xs font-semibold whitespace-nowrap tracking-[0.14em] text-ivory/90 uppercase transition-colors hover:text-gold"
                 >
                   {label}
                 </Link>

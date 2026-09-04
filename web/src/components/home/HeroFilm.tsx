@@ -151,37 +151,68 @@ export function HeroFilm({
               },
               0
             )
+            // Un léger sursaut à l'arrivée du chiffre final — la seule
+            // ponctuation du compteur, avant qu'il ne s'efface.
+            .to(
+              '[data-counter] span:first-child',
+              { scale: 1.1, duration: 0.22, ease: 'power2.out', yoyo: true, repeat: 1 },
+              COUNTER_DURATION - 0.22
+            )
             // Le compteur s'efface AVANT que le rideau ne bouge : deux gestes
             // qui se succèdent, pas deux qui se disputent l'attention.
-            .to('[data-counter]', { opacity: 0, duration: 0.45 }, curtainStart - 0.45)
-            // Le rideau : deux pans aux teintes de la maison qui s'écartent —
-            // pas de couleur nouvelle.
+            .to('[data-counter]', { opacity: 0, duration: 0.5 }, curtainStart - 0.5)
+            // Le rideau : deux pans aux teintes de la maison. Ils ne glissent
+            // pas à plat comme deux portes — ils se rétractent vers les
+            // coulisses (scaleX + léger scaleY, origine au bord de scène) en
+            // s'écartant, comme une étoffe qu'on tire plutôt qu'un panneau
+            // qu'on pousse.
             .fromTo(
               '[data-curtain-left]',
-              { xPercent: 0 },
-              { xPercent: -100, duration: CURTAIN_DURATION, ease: LUXE_EASE_ID },
+              { xPercent: 0, scaleX: 1, scaleY: 1 },
+              {
+                xPercent: -100,
+                scaleX: 0.9,
+                scaleY: 0.985,
+                duration: CURTAIN_DURATION,
+                ease: LUXE_EASE_ID,
+              },
               curtainStart
             )
             .fromTo(
               '[data-curtain-right]',
-              { xPercent: 0 },
-              { xPercent: 100, duration: CURTAIN_DURATION, ease: LUXE_EASE_ID },
+              { xPercent: 0, scaleX: 1, scaleY: 1 },
+              {
+                xPercent: 100,
+                scaleX: 0.9,
+                scaleY: 0.985,
+                duration: CURTAIN_DURATION,
+                ease: LUXE_EASE_ID,
+              },
               curtainStart
             )
             // Puis on ne fait RIEN pendant `FILM_ALONE` : le plan reste seul
-            // à l'écran. La typographie n'arrive qu'après ce silence, et
-            // lentement — c'est le moment qui donne sa tenue à la séquence.
+            // à l'écran. La typographie n'arrive qu'après ce silence, lentement
+            // et avec un peu de volume (légère mise à l'échelle en plus du
+            // glissement) — c'est ce qui lui donne une présence, pas un
+            // simple fondu.
             .fromTo(
               '[data-hero-line]',
               { yPercent: 108 },
-              { yPercent: 0, duration: 1.9, stagger: 0.14, ease: LUXE_EASE_ID },
+              { yPercent: 0, duration: 2.1, stagger: 0.16, ease: LUXE_EASE_ID },
               TYPE_START
             )
             .fromTo(
               '[data-hero-tail]',
-              { opacity: 0, y: 18 },
-              { opacity: 1, y: 0, duration: 1.4, stagger: 0.16, ease: LUXE_EASE_ID },
-              TYPE_START + 0.55
+              { opacity: 0, y: 22, scale: 0.97 },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 1.6,
+                stagger: 0.18,
+                ease: LUXE_EASE_ID,
+              },
+              TYPE_START + 0.6
             );
         } else {
           gsap.set(
@@ -274,9 +305,23 @@ export function HeroFilm({
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10">
           {/* Deux pans, deux teintes de la maison. Pas de filet au raccord :
               il passait en plein milieu du compteur, ce qui se lisait comme
-              un accident. La rencontre des deux couleurs suffit. */}
-          <div data-curtain-left className="absolute inset-y-0 left-0 w-1/2 bg-noir" />
-          <div data-curtain-right className="absolute inset-y-0 right-0 w-1/2 bg-burgundy" />
+              un accident. La rencontre des deux couleurs suffit.
+              L'origine de la mise à l'échelle est à l'extérieur (bord de
+              scène) : les pans se rétractent vers les coulisses plutôt que
+              de glisser à plat comme deux portes — l'amorce d'un geste de
+              rideau de théâtre plutôt qu'un split-screen. */}
+          <div
+            data-curtain-left
+            className="absolute inset-y-0 left-0 w-1/2 origin-left bg-noir"
+          >
+            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/35 to-transparent" />
+          </div>
+          <div
+            data-curtain-right
+            className="absolute inset-y-0 right-0 w-1/2 origin-right bg-burgundy"
+          >
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black/35 to-transparent" />
+          </div>
           <div
             data-counter
             className="absolute inset-0 flex flex-col items-center justify-center gap-5"

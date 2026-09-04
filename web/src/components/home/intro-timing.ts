@@ -30,10 +30,10 @@ export const LUXE_EASE_ID = 'darsafia-luxe';
 export const LUXE_EASE_CURVE = '0.76, 0, 0.24, 1';
 
 // ── Timeline « l'intro joue » (première visite de la session) ──
-// Compteur 0→100, tenue, rideau qui s'écarte, PLAN SEUL, puis typographie.
-export const COUNTER_DURATION = 1.6;
-export const COUNTER_HOLD = 0.25;
-export const CURTAIN_DURATION = 1.35;
+// Compteur 000→100, tenue, rideau qui s'écarte, PLAN SEUL, typographie, nav.
+export const COUNTER_DURATION = 2.2;
+export const COUNTER_HOLD = 0.35;
+export const CURTAIN_DURATION = 1.6;
 
 /** Instant où le rideau est entièrement ouvert. */
 export const CURTAIN_DONE = COUNTER_DURATION + COUNTER_HOLD + CURTAIN_DURATION;
@@ -46,15 +46,24 @@ export const CURTAIN_DONE = COUNTER_DURATION + COUNTER_HOLD + CURTAIN_DURATION;
  */
 export const FILM_ALONE = 0.9;
 
-/** Instant où la typographie du hero — et la nav — entrent, ensemble. */
+/** Instant où la typographie du hero entre. */
 export const TYPE_START = CURTAIN_DONE + FILM_ALONE;
+
+/**
+ * La nav ne monte pas avec la typographie : elle attend un temps de plus,
+ * pour tomber sur un moment du plan plutôt que sur le mouvement d'à côté.
+ */
+export const NAV_AFTER_TYPE = 0.5;
 
 // ── Timeline « rejoue vite » (déjà vue cette session) ──
 // Pas de compteur ni de rideau : la typographie part quasi immédiatement.
 export const REPEAT_TYPE_START = 0.15;
 
 /** Instant (secondes) où la nav de `SiteHeader` doit commencer son stagger. */
-export const NAV_STAGGER_START = { intro: TYPE_START, repeat: REPEAT_TYPE_START };
+export const NAV_STAGGER_START = {
+  intro: TYPE_START + NAV_AFTER_TYPE,
+  repeat: REPEAT_TYPE_START,
+};
 
 /**
  * « L'intro doit-elle jouer ? » est une lecture du navigateur (sessionStorage
