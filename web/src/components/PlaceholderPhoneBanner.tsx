@@ -1,20 +1,19 @@
+import type { Dictionary } from '@/lib/i18n/dictionary';
 import { whatsappConfigured, whatsappIsPlaceholder } from '@/lib/whatsapp';
 
 /**
- * Avertit quand la conciergerie n'est pas réellement joignable.
- *
- * Même garde-fou que sur le site Vite : un numéro fictif qui part en
- * production laisserait les clients commander dans le vide, sans que rien
- * ne le signale. Le bandeau doit donc être impossible à manquer.
+ * Avertit quand la conciergerie n'est pas réellement joignable : un numéro
+ * fictif qui part en production laisserait les clients commander dans le vide.
+ * Le bandeau doit être impossible à manquer.
  *
  * Composant serveur : la valeur est connue au build, aucun JavaScript envoyé.
  */
-export function PlaceholderPhoneBanner() {
+export function PlaceholderPhoneBanner({ dict }: { dict: Dictionary }) {
   if (whatsappConfigured && !whatsappIsPlaceholder) return null;
 
   const message = whatsappConfigured
-    ? 'Numéro WhatsApp fictif : les commandes n’aboutissent nulle part. À remplacer avant déploiement.'
-    : 'NEXT_PUBLIC_WHATSAPP_PHONE non défini : les commandes sont désactivées.';
+    ? dict.phoneBanner.placeholder
+    : dict.phoneBanner.missing;
 
   return (
     <div

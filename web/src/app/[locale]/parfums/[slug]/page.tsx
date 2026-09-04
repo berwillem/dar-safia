@@ -14,29 +14,34 @@ import {
   formatSillage,
   formatVolume,
 } from '@/lib/format';
+import { LOCALES, isLocale } from '@/lib/i18n/config';
+import { getDictionary, interpolate } from '@/lib/i18n/dictionaries';
+import { localePath } from '@/lib/i18n/routing';
 import { orderMessage, whatsappUrl } from '@/lib/whatsapp';
 
-type PageProps = { params: Promise<{ slug: string }> };
-
 /**
- * Fiche produit.
+ * Fiche produit. Prégénérée pour chaque parfum × chaque langue : HTML complet,
+ * indexable — l'ancien site rendait la fiche en JavaScript depuis un fragment
+ * d'URL, invisible au crawl.
  *
- * Prégénérée pour les 45 parfums : aucune requête au chargement, et le HTML
- * est complet pour les moteurs de recherche — l'ancien site rendait la fiche
- * en JavaScript depuis un fragment d'URL (#product-12), invisible au crawl.
+ * NB : le CONTENU du parfum (nom, description, notes) reste en français ; sa
+ * traduction relèvera de l'i18n Strapi. Seule l'interface est multilingue.
  */
 export async function generateStaticParams() {
   const { items } = await catalog.listProducts();
-  return items.map((product) => ({ slug: product.slug }));
+  return LOCALES.flatMap((locale) =>
+    items.map((product) => ({ locale, slug: product.slug }))
+  );
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps<'/[locale]/parfums/[slug]'>): Promise<Metadata> {
   const { slug } = await params;
   const product = await catalog.getProductBySlug(slug);
   if (!product) return {};
 
   const image = product.images[0];
-
   return {
     title: product.seo?.title ?? `${product.name} — ${product.brand.name}`,
     description: product.seo?.description ?? product.description.slice(0, 155),
@@ -49,30 +54,31 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function ProductPage({ params }: PageProps) {
-  const { slug } = await params;
-  const product = await catalog.getProductBySlug(slug);
+export default async function ProductPage({
+  params,
+}: PageProps<'/[locale]/parfums/[slug]'>) {
+  const { locale, slug } = await params;
+  if (!isLocale(locale)) notFound();
 
+  const [dict, product] = await Promise.all([
+    getDictionary(locale),
+    catalog.getProductBySlug(slug),
+  ]);
   if (!product) notFound();
 
   const related = await catalog.getRelatedProducts(slug, 4);
+  const p = dict.product;
   const image = product.images[0];
   const variant = product.variants[0];
   const price = { amount: lowestPrice(product), currency: 'DZD' as const };
-  const orderUrl = whatsappUrl(orderMessage(product));
+  const orderUrl = whatsappUrl(orderMessage(product, locale, dict));
 
-  // Seules les mesures réellement connues sont affichées.
   const metrics = [
-    { label: 'Tenue', value: formatLongevity(product.longevityHours) },
-    { label: 'Sillage', value: formatSillage(product.sillage) },
-    { label: 'Famille', value: formatFamily(product.family) },
+    { label: p.metrics.longevity, value: formatLongevity(product.longevityHours, dict) },
+    { label: p.metrics.sillage, value: formatSillage(product.sillage, dict) },
+    { label: p.metrics.family, value: formatFamily(product.family, dict) },
   ].filter((m): m is { label: string; value: string } => m.value !== null);
 
-  /**
-   * Données structurées : elles permettent aux moteurs d'afficher prix et
-   * disponibilité. `offers` reflète le stock réel — pas d'InStock affirmé
-   * par défaut comme le faisait l'ancien site sur toutes les fiches.
-   */
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -95,12 +101,9 @@ export default async function ProductPage({ params }: PageProps) {
     <main id="contenu" tabIndex={-1} data-universe={product.family}>
       <script
         type="application/ld+json"
-        // Contenu généré par nous à partir de données du catalogue, pas d'une
-        // saisie utilisateur ; JSON.stringify échappe les guillemets.
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Atmosphère : dégradé teinté par l'univers de la famille olfactive. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-40"
@@ -111,17 +114,23 @@ export default async function ProductPage({ params }: PageProps) {
       />
 
       <div className="relative mx-auto max-w-(--container-site) px-5 py-10 md:px-8 md:py-14">
-        <nav aria-label="Fil d'Ariane" className="text-2xs text-ivory/45">
+        <nav aria-label="breadcrumb" className="text-2xs text-ivory/45">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
-              <Link href="/" className="hover:text-gold">Accueil</Link>
+              <Link href={localePath(locale, '/')} className="hover:text-gold">
+                {p.breadcrumbHome}
+              </Link>
             </li>
             <li aria-hidden="true">◆</li>
             <li>
-              <Link href="/parfums" className="hover:text-gold">Parfums</Link>
+              <Link href={localePath(locale, '/parfums')} className="hover:text-gold">
+                {p.breadcrumbCatalog}
+              </Link>
             </li>
             <li aria-hidden="true">◆</li>
-            <li className="text-ivory/70" aria-current="page">{product.name}</li>
+            <li className="text-ivory/70" aria-current="page">
+              {product.name}
+            </li>
           </ol>
         </nav>
 
@@ -133,14 +142,12 @@ export default async function ProductPage({ params }: PageProps) {
               style={{ boxShadow: '0 24px 60px -24px var(--universe-glow)' }}
             >
               {image && (
-                /* Voir ProductCard : dérivés déjà optimisés par le pipeline. */
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={image.url}
                   srcSet={image.srcset ?? undefined}
                   sizes="(max-width: 1024px) 92vw, 520px"
                   alt={image.alt}
-                  // Image principale de la page : jamais en lazy, c'est le LCP.
                   fetchPriority="high"
                   decoding="async"
                   className="aspect-4/5 w-full object-cover"
@@ -148,9 +155,6 @@ export default async function ProductPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* ── Mesures ──
-                Une mesure absente n'est pas affichée : mieux vaut deux
-                colonnes justes que trois dont une inventée. */}
             <dl
               className="mt-4 grid gap-px overflow-hidden rounded-md border border-smoke-2 bg-smoke-2"
               style={{ gridTemplateColumns: `repeat(${metrics.length}, minmax(0, 1fr))` }}
@@ -175,7 +179,7 @@ export default async function ProductPage({ params }: PageProps) {
                 {product.brand.name}
               </span>
               <span className="rounded-xs border border-smoke-2 px-2 py-0.5 text-3xs tracking-(--tracking-label) text-ivory/60 uppercase">
-                {formatGender(product.gender)}
+                {formatGender(product.gender, dict)}
               </span>
               {product.concentration && (
                 <span className="text-3xs text-ivory/45">{product.concentration}</span>
@@ -188,17 +192,15 @@ export default async function ProductPage({ params }: PageProps) {
 
             <div className="mt-6 flex flex-wrap items-baseline gap-x-4 gap-y-2 border-y border-smoke-2 py-5">
               <span className="font-serif text-2xl text-[var(--universe-light)] tabular-nums">
-                {formatPrice(price)}
+                {formatPrice(price, locale)}
               </span>
               <span className="text-2xs text-ivory/50">
-                {formatVolume(variant.volumeMl)}
+                {formatVolume(variant.volumeMl, locale, dict)}
               </span>
-              {/* Le stock vient des données ; on n'affirme pas « En Stock »
-                  comme le faisait l'ancien site sur toutes les fiches. */}
-              <span className="ml-auto text-2xs text-ivory/50">
+              <span className="ms-auto text-2xs text-ivory/50">
                 {variant.stock > 0
-                  ? `${variant.stock} en stock`
-                  : 'Sur commande — délai confirmé par la conciergerie'}
+                  ? interpolate(p.inStock, { count: variant.stock })
+                  : p.onOrder}
               </span>
             </div>
 
@@ -214,16 +216,14 @@ export default async function ProductPage({ params }: PageProps) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2.5 rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors duration-200 hover:bg-gold-light"
                 >
-                  Commander sur WhatsApp
+                  {p.order}
                 </a>
               ) : (
                 <p className="rounded-sm border border-smoke-2 px-5 py-3.5 text-sm text-ivory/50">
-                  Commande momentanément indisponible.
+                  {p.orderUnavailable}
                 </p>
               )}
 
-              {/* Instantané construit ici, côté serveur : le composant client
-                  ne reçoit que les champs qu'il affiche. */}
               <AddToCartButton
                 line={{
                   productSlug: product.slug,
@@ -238,12 +238,12 @@ export default async function ProductPage({ params }: PageProps) {
               />
             </div>
 
-            <OlfactoryPyramid notes={product.notes} />
+            <OlfactoryPyramid notes={product.notes} dict={dict} />
 
             {product.story && (
               <section aria-labelledby="histoire" className="mt-14">
                 <h2 id="histoire" className="font-serif text-xl text-ivory">
-                  L&apos;histoire du flacon
+                  {p.storyTitle}
                 </h2>
                 <p className="mt-4 font-body text-xl leading-relaxed text-ivory/70">
                   {product.story}
@@ -253,18 +253,17 @@ export default async function ProductPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* ── Suggestions ── */}
         {related.length > 0 && (
           <section aria-labelledby="similaires" className="mt-24">
             <h2
               id="similaires"
               className="border-b border-smoke-2 pb-4 font-serif text-xl text-ivory"
             >
-              Dans la même famille
+              {p.relatedTitle}
             </h2>
             <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
               {related.map((item) => (
-                <ProductCard key={item.slug} product={item} />
+                <ProductCard key={item.slug} product={item} locale={locale} dict={dict} />
               ))}
             </div>
           </section>

@@ -1,34 +1,31 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 import { ProductCard } from '@/components/ProductCard';
 import { catalog, type FragranceFamily, type Gender } from '@/lib/catalog';
 import { formatFamily, formatGender } from '@/lib/format';
+import { isLocale, type Locale } from '@/lib/i18n/config';
+import { getDictionary, interpolate } from '@/lib/i18n/dictionaries';
+import { localePath } from '@/lib/i18n/routing';
 
-export const metadata: Metadata = {
-  title: 'Tous les parfums',
-  description:
-    "L'intégralité de la collection Dar Safia : parfums niche et signatures d'exception.",
-};
-
-/**
- * Catalogue.
- *
- * Le filtrage passe par l'URL (?genre=femme&famille=woody) plutôt que par un
- * état client : chaque combinaison devient une page partageable et indexable,
- * et la page reste un composant serveur sans JavaScript.
- */
-type PageProps = {
-  searchParams: Promise<{ genre?: string; famille?: string }>;
-};
+export async function generateMetadata({
+  params,
+}: PageProps<'/[locale]/parfums'>): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) return {};
+  const dict = await getDictionary(locale);
+  return { title: dict.catalog.title };
+}
 
 const GENDERS: Gender[] = ['femme', 'homme', 'unisexe'];
 const FAMILIES: FragranceFamily[] = [
   'floral', 'amber', 'woody', 'fresh', 'gourmand', 'spicy',
 ];
 
-/** Construit une URL de filtre en préservant l'autre critère. */
+/** URL de filtre préservant l'autre critère, préfixée par la langue. */
 function filterHref(
+  locale: Locale,
   current: { genre?: string; famille?: string },
   key: 'genre' | 'famille',
   value: string | null
@@ -38,77 +35,79 @@ function filterHref(
   if (next.genre) query.set('genre', next.genre);
   if (next.famille) query.set('famille', next.famille);
   const suffix = query.toString();
-  return suffix ? `/parfums?${suffix}` : '/parfums';
+  return localePath(locale, suffix ? `/parfums?${suffix}` : '/parfums');
 }
 
-export default async function CatalogPage({ searchParams }: PageProps) {
-  const filters = await searchParams;
+export default async function CatalogPage({
+  params,
+  searchParams,
+}: PageProps<'/[locale]/parfums'>) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
 
-  // Les valeurs d'URL sont des saisies utilisateur : on ne retient que
-  // celles du vocabulaire connu, plutôt que de les passer telles quelles.
-  const gender = GENDERS.includes(filters.genre as Gender)
-    ? (filters.genre as Gender)
+  const [dict, filters] = await Promise.all([getDictionary(locale), searchParams]);
+  const c = dict.catalog;
+
+  const genreParam = typeof filters.genre === 'string' ? filters.genre : undefined;
+  const familleParam = typeof filters.famille === 'string' ? filters.famille : undefined;
+
+  const gender = GENDERS.includes(genreParam as Gender)
+    ? (genreParam as Gender)
     : undefined;
-  const family = FAMILIES.includes(filters.famille as FragranceFamily)
-    ? (filters.famille as FragranceFamily)
+  const family = FAMILIES.includes(familleParam as FragranceFamily)
+    ? (familleParam as FragranceFamily)
     : undefined;
 
-  const { items, total } = await catalog.listProducts({
-    gender,
-    family,
-    sort: 'name',
-  });
-
+  const { items, total } = await catalog.listProducts({ gender, family, sort: 'name' });
   const active = { genre: gender, famille: family };
 
   return (
-    <main id="contenu" tabIndex={-1} className="mx-auto max-w-(--container-site) px-5 py-14 md:px-8">
+    <main
+      id="contenu"
+      tabIndex={-1}
+      className="mx-auto max-w-(--container-site) px-5 py-14 md:px-8"
+    >
       <p className="text-3xs font-semibold tracking-(--tracking-eyebrow) text-gold uppercase">
-        Catalogue
+        {c.eyebrow}
       </p>
-      <h1 className="mt-4 font-serif text-display-md text-balance text-ivory">
-        Tous les parfums
-      </h1>
+      <h1 className="mt-4 font-serif text-display-md text-balance text-ivory">{c.title}</h1>
 
-      {/* ── Filtres ── */}
       <div className="mt-10 flex flex-col gap-4 border-y border-smoke-2 py-5">
         <FilterRow
-          legend="Genre"
-          options={GENDERS.map((g) => ({ value: g, label: formatGender(g) }))}
+          legend={c.filterGender}
+          allLabel={c.all}
+          options={GENDERS.map((g) => ({ value: g, label: formatGender(g, dict) }))}
           activeValue={gender}
-          hrefFor={(value) => filterHref(active, 'genre', value)}
+          hrefFor={(value) => filterHref(locale, active, 'genre', value)}
         />
         <FilterRow
-          legend="Famille"
-          options={FAMILIES.map((f) => ({ value: f, label: formatFamily(f) }))}
+          legend={c.filterFamily}
+          allLabel={c.all}
+          options={FAMILIES.map((f) => ({ value: f, label: formatFamily(f, dict) }))}
           activeValue={family}
-          hrefFor={(value) => filterHref(active, 'famille', value)}
+          hrefFor={(value) => filterHref(locale, active, 'famille', value)}
         />
       </div>
 
       <p className="mt-6 text-2xs text-ivory/45" aria-live="polite">
-        {total} {total > 1 ? 'créations' : 'création'}
+        {interpolate(c.count, { count: total })}
       </p>
 
       {items.length > 0 ? (
         <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
           {items.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <ProductCard key={product.slug} product={product} locale={locale} dict={dict} />
           ))}
         </div>
       ) : (
-        /* État vide : une combinaison de filtres peut ne rien donner
-           (« spicy » n'a aucun parfum au catalogue actuel). */
         <div className="mt-10 rounded-md border border-smoke-2 bg-noir-2 px-6 py-14 text-center">
-          <p className="font-serif text-lg text-ivory">Aucun parfum ne correspond</p>
-          <p className="mt-2 text-2xs text-ivory/50">
-            Essayez une autre famille olfactive.
-          </p>
+          <p className="font-serif text-lg text-ivory">{c.empty}</p>
+          <p className="mt-2 text-2xs text-ivory/50">{c.emptyHint}</p>
           <Link
-            href="/parfums"
+            href={localePath(locale, '/parfums')}
             className="mt-6 inline-block rounded-sm border border-gold px-5 py-2.5 text-2xs font-semibold tracking-(--tracking-label) text-gold uppercase transition-colors hover:bg-gold hover:text-noir"
           >
-            Voir toute la collection
+            {c.emptyCta}
           </Link>
         </div>
       )}
@@ -118,11 +117,13 @@ export default async function CatalogPage({ searchParams }: PageProps) {
 
 function FilterRow({
   legend,
+  allLabel,
   options,
   activeValue,
   hrefFor,
 }: {
   legend: string;
+  allLabel: string;
   options: { value: string; label: string }[];
   activeValue: string | undefined;
   hrefFor: (value: string | null) => string;
@@ -138,7 +139,7 @@ function FilterRow({
         aria-current={activeValue === undefined ? 'true' : undefined}
         className={chip(activeValue === undefined)}
       >
-        Tous
+        {allLabel}
       </Link>
 
       {options.map(({ value, label }) => (

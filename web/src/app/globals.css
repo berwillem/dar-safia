@@ -154,3 +154,29 @@ body {
     animation: none;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   ARABE / RTL
+   Les polices arabes sont chargées en permanence (next/font) ;
+   on ne les applique que lorsque dir=rtl, via [data-dir].
+   ══════════════════════════════════════════════════════════════ */
+:root[data-dir="rtl"] {
+  --font-display: var(--font-arabic-serif), "Noto Naskh Arabic", serif;
+  --font-serif: var(--font-arabic-serif), "Noto Naskh Arabic", serif;
+  --font-body: var(--font-arabic-serif), "Noto Naskh Arabic", serif;
+  --font-ui: var(--font-arabic-sans), "Cairo", system-ui, sans-serif;
+}
+
+/* L'arabe n'a pas de capitales : `uppercase` n'a aucun effet mais
+   `letter-spacing` sur un script cursif casse les ligatures. */
+[dir="rtl"] .uppercase,
+[dir="rtl"] [class*="tracking-"] {
+  letter-spacing: 0;
+}
+
+/* Les flèches « → » / « ← » codées en dur dans le texte suivent le
+   sens de lecture. */
+[dir="rtl"] .rtl-flip {
+  display: inline-block;
+  transform: scaleX(-1);
+}

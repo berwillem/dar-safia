@@ -1,40 +1,37 @@
 import type { NoteLayer, ProductNote } from '@/lib/catalog';
+import type { Dictionary } from '@/lib/i18n/dictionary';
 
 /**
  * Pyramide olfactive : tête, cœur, fond.
  *
- * L'ancien site rendait trois chaînes de texte séparées par des virgules.
- * Ici chaque note est une entité distincte, ce qui permettra en phase 3 de
- * lier « autres parfums au jasmin » sans retoucher ce composant.
- *
- * La structure est une liste de définitions : les trois étages ne sont pas
- * décoratifs, ils décrivent l'évolution du parfum dans le temps — un ordre
- * réel, que la sémantique doit porter.
+ * Chaque note est une entité distincte (permet « autres parfums au jasmin »
+ * sans retoucher ce composant). La structure est une liste de définitions :
+ * les trois étages décrivent l'évolution du parfum dans le temps.
  */
+export function OlfactoryPyramid({
+  notes,
+  dict,
+}: {
+  notes: ProductNote[];
+  dict: Dictionary;
+}) {
+  const layers: { key: NoteLayer; label: string; caption: string }[] = [
+    { key: 'top', label: dict.product.pyramid.top, caption: dict.product.pyramid.topCaption },
+    { key: 'heart', label: dict.product.pyramid.heart, caption: dict.product.pyramid.heartCaption },
+    { key: 'base', label: dict.product.pyramid.base, caption: dict.product.pyramid.baseCaption },
+  ];
 
-const LAYERS: { key: NoteLayer; label: string; caption: string }[] = [
-  { key: 'top', label: 'Notes de tête', caption: 'Première impression, les 15 premières minutes' },
-  { key: 'heart', label: 'Notes de cœur', caption: 'Signature du parfum, après évaporation de la tête' },
-  { key: 'base', label: 'Notes de fond', caption: 'Sillage et persistance, plusieurs heures' },
-];
-
-export function OlfactoryPyramid({ notes }: { notes: ProductNote[] }) {
   const byLayer = (layer: NoteLayer) =>
-    notes
-      .filter((n) => n.layer === layer)
-      .sort((a, b) => a.position - b.position);
+    notes.filter((n) => n.layer === layer).sort((a, b) => a.position - b.position);
 
   return (
     <section aria-labelledby="pyramide" className="mt-14">
-      <h2
-        id="pyramide"
-        className="font-serif text-xl text-ivory"
-      >
-        Pyramide olfactive
+      <h2 id="pyramide" className="font-serif text-xl text-ivory">
+        {dict.product.pyramidTitle}
       </h2>
 
       <dl className="mt-6 flex flex-col gap-px overflow-hidden rounded-md border border-smoke-2 bg-smoke-2">
-        {LAYERS.map(({ key, label, caption }) => {
+        {layers.map(({ key, label, caption }) => {
           const layerNotes = byLayer(key);
           if (layerNotes.length === 0) return null;
 

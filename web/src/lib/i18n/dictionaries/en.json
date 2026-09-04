@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "perfumes": "Perfumes",
+    "scentFinder": "Find my scent",
+    "forHer": "For Her",
+    "forHim": "For Him",
+    "cart": "Cart",
+    "cartWithCount": "Cart, {count} item(s)",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to main content",
+    "language": "Language"
+  },
+  "home": {
+    "eyebrow": "Fine perfumery house · Algeria",
+    "tagline": "A world of exceptional fragrances and the great olfactory signatures. Chosen one by one, delivered across all 58 wilayas.",
+    "explore": "Explore the collection",
+    "findYours": "Find your scent",
+    "stats": {
+      "creations": "Creations",
+      "houses": "Houses",
+      "wilayas": "Wilayas served"
+    },
+    "houseEyebrow": "— The house",
+    "houseTitle": "The art of fine perfumery, within reach",
+    "houseBody": "Born of a passion for noble trails, Dar Safia brings together the greatest creations of world perfumery and extraits of masterful concentration. Every bottle is chosen on strict criteria: purity of accords, wear on the skin, certified authentic provenance.",
+    "pillars": {
+      "authentic": { "title": "100% original perfumes", "body": "Authenticity guaranteed across the whole catalogue, certified provenance." },
+      "sillage": { "title": "Exceptional sillage", "body": "High concentrations, a presence that lasts on the skin." },
+      "concierge": { "title": "WhatsApp concierge", "body": "Personal advice and direct ordering, seven days a week." }
+    },
+    "selectionTitle": "The selection",
+    "seeAll": "See all →",
+    "quizBandEyebrow": "— Scent diagnosis",
+    "quizBandTitle": "Four questions to find your signature",
+    "quizBandCta": "Start"
+  },
+  "catalog": {
+    "eyebrow": "Catalogue",
+    "title": "All perfumes",
+    "filterGender": "Gender",
+    "filterFamily": "Family",
+    "all": "All",
+    "count": "{count} creation(s)",
+    "empty": "No perfume matches",
+    "emptyHint": "Try another olfactory family.",
+    "emptyCta": "See the whole collection"
+  },
+  "product": {
+    "breadcrumbHome": "Home",
+    "breadcrumbCatalog": "Perfumes",
+    "inStock": "{count} in stock",
+    "onOrder": "Made to order — timing confirmed by the concierge",
+    "order": "Order on WhatsApp",
+    "addToCart": "Add to cart",
+    "orderUnavailable": "Ordering temporarily unavailable.",
+    "metrics": { "longevity": "Longevity", "sillage": "Sillage", "family": "Family" },
+    "pyramidTitle": "Olfactory pyramid",
+    "pyramid": {
+      "top": "Top notes",
+      "topCaption": "First impression, the first 15 minutes",
+      "heart": "Heart notes",
+      "heartCaption": "The perfume's signature, once the top has lifted",
+      "base": "Base notes",
+      "baseCaption": "Sillage and persistence, several hours"
+    },
+    "storyTitle": "The story of the bottle",
+    "relatedTitle": "In the same family"
+  },
+  "cart": {
+    "title": "Cart",
+    "items": "{count} item(s)",
+    "empty": "Your cart is empty.",
+    "continue": "Keep exploring",
+    "remove": "Remove",
+    "decrease": "Decrease quantity",
+    "increase": "Increase quantity",
+    "quantityFor": "Quantity for {name}",
+    "subtotal": "Subtotal",
+    "deliveryNote": "Delivery and availability confirmed by the concierge.",
+    "checkout": "Order on WhatsApp",
+    "clear": "Empty the cart",
+    "close": "Close cart",
+    "unavailable": "Ordering temporarily unavailable.",
+    "orderIntro": "I would like to finalise the following order:",
+    "orderLine": "{name} ({brand}) — {volume} × {qty} : {total}",
+    "orderSubtotal": "SUBTOTAL: {subtotal}",
+    "orderOutro": "Please confirm availability and delivery terms."
+  },
+  "scentFinder": {
+    "eyebrow": "Scent diagnosis",
+    "title": "Find your scent",
+    "intro": "Four questions, one recommendation. No sign-up.",
+    "stepLabel": "Step {current} of {total}",
+    "previous": "← Previous question",
+    "loading": "Analysing your olfactory profile…",
+    "error": "The diagnosis did not complete.",
+    "restart": "Start over",
+    "resultEyebrow": "Your signature",
+    "compatibility": "{percent}% match with your answers",
+    "seeProduct": "View the page",
+    "order": "Order on WhatsApp",
+    "alsoLike": "You might also like",
+    "redo": "Redo the diagnosis",
+    "orderIntro": "I completed the scent diagnosis. The recommended perfume is:",
+    "orderOutro": "Please confirm availability.",
+    "questions": {
+      "recipient": "Who are you looking for?",
+      "moment": "Which moment do you want to dress?",
+      "family": "Which material do you reach for instinctively?",
+      "intensity": "What presence are you after?"
+    },
+    "options": {
+      "femme": { "label": "For her", "hint": "Feminine signatures" },
+      "homme": { "label": "For him", "hint": "Masculine signatures" },
+      "unisexe": { "label": "Either", "hint": "Shared creations" },
+      "cadeau": { "label": "A gift", "hint": "The house's safe bets" },
+      "jour": { "label": "Daytime", "hint": "Light, luminous, easy to wear" },
+      "nuit": { "label": "Evening", "hint": "Deep, enveloping, magnetic" },
+      "prestige": { "label": "Grand occasions", "hint": "The rarest pieces" },
+      "fraicheur": { "label": "A breath of freshness", "hint": "Sharp, crisp, aquatic" },
+      "floral": { "label": "Flowers", "hint": "Rose, jasmine, iris" },
+      "woody": { "label": "Wood", "hint": "Cedar, sandalwood, vetiver" },
+      "amber": { "label": "Amber", "hint": "Vanilla, benzoin, resins" },
+      "fresh": { "label": "Freshness", "hint": "Citrus, marine notes" },
+      "gourmand": { "label": "Gourmand", "hint": "Caramel, cocoa, tonka bean" },
+      "spicy": { "label": "Spices", "hint": "Pepper, cardamom, leather" },
+      "subtil": { "label": "Discreet", "hint": "An aura, not an announcement" },
+      "equilibre": { "label": "Balanced", "hint": "Present without dominating" },
+      "intense": { "label": "Bold", "hint": "A sillage that turns heads" }
+    }
+  },
+  "footer": {
+    "blurb": "Fine perfumery house. Niche creations and exceptional signatures, chosen and delivered across all 58 wilayas.",
+    "concierge": "WhatsApp concierge",
+    "collection": "The collection",
+    "families": "Olfactory families",
+    "allPerfumes": "All perfumes",
+    "forHer": "For her",
+    "forHim": "For him",
+    "findYours": "Find your scent",
+    "rights": "© {year} Dar Safia. All rights reserved.",
+    "guarantee": "Authenticity guaranteed · Cash on delivery"
+  },
+  "notFound": {
+    "eyebrow": "Error 404",
+    "title": "This bottle can't be found",
+    "body": "The page you are looking for may have moved, or never existed.",
+    "seeCollection": "See the collection",
+    "backHome": "Back to home"
+  },
+  "common": {
+    "authentic": "Authentic",
+    "brandName": "Dar Safia",
+    "orderGreeting": "Hello Maison Dar Safia ✨",
+    "orderProduct": "Perfume: {name} ({brand})",
+    "orderPrice": "Price: {price}",
+    "orderVolume": "Size: {volume}",
+    "conciergeMessage": "Hello Maison Dar Safia ✨\n\nI would like personal advice on choosing a perfume."
+  },
+  "phoneBanner": {
+    "placeholder": "Placeholder WhatsApp number: orders go nowhere. Replace before deployment.",
+    "missing": "NEXT_PUBLIC_WHATSAPP_PHONE not set: ordering is disabled."
+  },
+  "gender": { "femme": "For Her", "homme": "For Him", "unisexe": "Unisex" },
+  "family": {
+    "floral": "Floral", "amber": "Amber", "woody": "Woody",
+    "fresh": "Fresh", "gourmand": "Gourmand", "spicy": "Spicy"
+  },
+  "sillage": {
+    "1": "Intimate", "2": "Discreet", "3": "Moderate", "4": "Assertive", "5": "Powerful"
+  },
+  "units": { "ml": "{n} ml", "hours": "{n} h", "set": "Set" }
+}

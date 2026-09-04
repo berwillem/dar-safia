@@ -3,31 +3,25 @@
  *   FORMATAGE D'AFFICHAGE
  * ══════════════════════════════════════════════════════════════
  *
- * L'ancien catalogue stockait `priceFormatted: '23 500 DA'` à côté du montant
- * numérique : deux sources pour une même donnée, et un formatage figé en
- * français impossible à traduire. Le formatage appartient à l'affichage.
+ * L'ancien catalogue stockait `priceFormatted: '23 500 DA'` à côté du montant :
+ * deux sources pour une même donnée, et un formatage figé en français. Le
+ * formatage appartient à l'affichage.
  *
- * Ces fonctions prennent une locale afin que le passage à l'arabe et à
- * l'anglais (phase 4) ne demande aucune réécriture.
+ * - Les fonctions qui produisent du chiffre localisé prennent une `Locale`
+ *   (Intl gère séparateurs, chiffres arabes, position du symbole).
+ * - Les libellés (genre, famille, sillage, unités) viennent du dictionnaire :
+ *   ces fonctions prennent donc un `Dictionary`.
  */
 
 import type { Money } from './catalog/types';
+import { BCP47, type Locale } from './i18n/config';
+import { interpolate, type Dictionary } from './i18n/dictionary';
 
-export type Locale = 'fr' | 'ar' | 'en';
-
-/** Correspondance locale applicative -> balise BCP 47 régionale. */
-const BCP47: Record<Locale, string> = {
-  fr: 'fr-DZ',
-  ar: 'ar-DZ',
-  en: 'en-DZ',
-};
+export type { Locale };
 
 /**
  * Formate un montant. Le dinar algérien n'ayant pas d'usage courant des
- * subdivisions, on n'affiche aucune décimale.
- *
- * Intl gère l'espace insécable et, en arabe, les chiffres et la position du
- * symbole — ce qu'une concaténation manuelle ne ferait pas.
+ * subdivisions, aucune décimale.
  */
 export function formatPrice(money: Money, locale: Locale = 'fr'): string {
   return new Intl.NumberFormat(BCP47[locale], {
@@ -38,52 +32,41 @@ export function formatPrice(money: Money, locale: Locale = 'fr'): string {
   }).format(money.amount);
 }
 
-/** Contenance : 90 -> « 90 ml ». 0 signifie « non applicable » (coffret). */
-export function formatVolume(volumeMl: number, locale: Locale = 'fr'): string {
-  if (!volumeMl) return locale === 'fr' ? 'Coffret' : 'Set';
-  return `${new Intl.NumberFormat(BCP47[locale]).format(volumeMl)} ml`;
+/** Contenance : 90 -> « 90 ml ». 0 = non applicable (coffret). */
+export function formatVolume(
+  volumeMl: number,
+  locale: Locale,
+  dict: Dictionary
+): string {
+  if (!volumeMl) return dict.units.set;
+  const n = new Intl.NumberFormat(BCP47[locale]).format(volumeMl);
+  return interpolate(dict.units.ml, { n });
 }
 
-/** Tenue : 48 -> « 48 h ». */
-export function formatLongevity(hours: number | undefined): string | null {
-  return hours ? `${hours} h` : null;
+/** Tenue : 48 -> « 48 h ». null si inconnue. */
+export function formatLongevity(
+  hours: number | undefined,
+  dict: Dictionary
+): string | null {
+  return hours ? interpolate(dict.units.hours, { n: hours }) : null;
 }
 
-const GENDER_LABELS: Record<string, Record<Locale, string>> = {
-  femme: { fr: 'Pour Femme', ar: 'للنساء', en: 'For Her' },
-  homme: { fr: 'Pour Homme', ar: 'للرجال', en: 'For Him' },
-  unisexe: { fr: 'Unisexe', ar: 'للجنسين', en: 'Unisex' },
-};
-
-export function formatGender(gender: string, locale: Locale = 'fr'): string {
-  return GENDER_LABELS[gender]?.[locale] ?? gender;
+export function formatGender(gender: string, dict: Dictionary): string {
+  return (dict.gender as Record<string, string>)[gender] ?? gender;
 }
 
-const FAMILY_LABELS: Record<string, Record<Locale, string>> = {
-  floral: { fr: 'Floral', ar: 'زهري', en: 'Floral' },
-  amber: { fr: 'Ambré', ar: 'عنبري', en: 'Amber' },
-  woody: { fr: 'Boisé', ar: 'خشبي', en: 'Woody' },
-  fresh: { fr: 'Frais', ar: 'منعش', en: 'Fresh' },
-  gourmand: { fr: 'Gourmand', ar: 'حلو', en: 'Gourmand' },
-  spicy: { fr: 'Épicé', ar: 'حار', en: 'Spicy' },
-};
-
-export function formatFamily(family: string, locale: Locale = 'fr'): string {
-  return FAMILY_LABELS[family]?.[locale] ?? family;
+export function formatFamily(family: string, dict: Dictionary): string {
+  return (dict.family as Record<string, string>)[family] ?? family;
 }
 
 /**
- * Sillage 1–5 en libellé. Retourne null si la donnée est absente : afficher
- * « Modéré » par défaut affirmerait une mesure que l'on n'a pas.
+ * Sillage 1–5 en libellé. null si absent : afficher « Modéré » par défaut
+ * affirmerait une mesure que l'on n'a pas.
  */
-const SILLAGE_LABELS: Record<number, string> = {
-  1: 'Intime',
-  2: 'Discret',
-  3: 'Modéré',
-  4: 'Affirmé',
-  5: 'Puissant',
-};
-
-export function formatSillage(level: number | undefined): string | null {
-  return level ? (SILLAGE_LABELS[level] ?? null) : null;
+export function formatSillage(
+  level: number | undefined,
+  dict: Dictionary
+): string | null {
+  if (!level) return null;
+  return (dict.sillage as Record<string, string>)[String(level)] ?? null;
 }
