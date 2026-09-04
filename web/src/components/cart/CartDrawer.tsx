@@ -19,7 +19,7 @@ import { useCart } from './CartProvider';
  */
 export function CartDrawer() {
   const { lines, subtotal, count, isOpen, closeCart, changeQuantity, removeLine, clear } = useCart();
-  const { locale, dict, fill } = useI18n();
+  const { locale, dict, fill, plural } = useI18n();
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export function CartDrawer() {
             {dict.cart.title}
             {count > 0 && (
               <span className="ms-2 text-2xs text-ivory/50 tabular-nums">
-                {fill(dict.cart.items, { count })}
+                {plural(dict.cart.items, count)}
               </span>
             )}
           </h2>

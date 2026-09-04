@@ -5,7 +5,7 @@
     "forHer": "Pour Femme",
     "forHim": "Pour Homme",
     "cart": "Panier",
-    "cartWithCount": "Panier, {count} article(s)",
+    "cartWithCount": "Panier, {count} article|Panier, {count} articles",
     "openMenu": "Ouvrir le menu",
     "closeMenu": "Fermer le menu",
     "skipToContent": "Aller au contenu principal",
@@ -41,7 +41,7 @@
     "filterGender": "Genre",
     "filterFamily": "Famille",
     "all": "Tous",
-    "count": "{count} création(s)",
+    "count": "{count} création|{count} créations",
     "empty": "Aucun parfum ne correspond",
     "emptyHint": "Essayez une autre famille olfactive.",
     "emptyCta": "Voir toute la collection"
@@ -69,7 +69,7 @@
   },
   "cart": {
     "title": "Panier",
-    "items": "{count} article(s)",
+    "items": "{count} article|{count} articles",
     "empty": "Votre panier est vide.",
     "continue": "Continuer la découverte",
     "remove": "Retirer",

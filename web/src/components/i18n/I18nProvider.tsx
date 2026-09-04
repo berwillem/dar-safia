@@ -3,7 +3,7 @@
 import { createContext, useCallback, useContext, useMemo, type ReactNode } from 'react';
 
 import type { Locale } from '@/lib/i18n/config';
-import { interpolate, type Dictionary } from '@/lib/i18n/dictionary';
+import { interpolate, pluralize, type Dictionary } from '@/lib/i18n/dictionary';
 
 /**
  * Passe le dictionnaire et la langue aux composants CLIENT (panier, diagnostic,
@@ -19,6 +19,8 @@ interface I18nValue {
   dict: Dictionary;
   /** Interpolation `{clé}`. */
   fill: (template: string, params?: Record<string, string | number>) => string;
+  /** Pluralisation `"un|plusieurs"` selon count. */
+  plural: (template: string, count: number, params?: Record<string, string | number>) => string;
 }
 
 const I18nContext = createContext<I18nValue | null>(null);
@@ -37,8 +39,16 @@ export function I18nProvider({
       interpolate(template, params),
     []
   );
+  const plural = useCallback(
+    (template: string, count: number, params?: Record<string, string | number>) =>
+      pluralize(template, count, params),
+    []
+  );
 
-  const value = useMemo<I18nValue>(() => ({ locale, dict, fill }), [locale, dict, fill]);
+  const value = useMemo<I18nValue>(
+    () => ({ locale, dict, fill, plural }),
+    [locale, dict, fill, plural]
+  );
 
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }

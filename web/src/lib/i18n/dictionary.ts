@@ -20,3 +20,21 @@ export function interpolate(
     key in params ? String(params[key]) : `{${key}}`
   );
 }
+
+/**
+ * Pluralisation simple : un gabarit `"singulier|pluriel"` est choisi selon
+ * `count` (1 -> singulier, sinon pluriel), puis interpolé.
+ *
+ * Suffisant pour le français et l'anglais. L'arabe a six formes ; le
+ * « singulier » y sert de forme courte et le « pluriel » de forme longue —
+ * acceptable pour l'affichage actuel, à affiner avec Intl.PluralRules si le
+ * besoin s'en fait sentir.
+ */
+export function pluralize(
+  template: string,
+  count: number,
+  params: Record<string, string | number> = {}
+): string {
+  const [one, many = one] = template.split('|');
+  return interpolate(count === 1 ? one : many, { count, ...params });
+}

@@ -5,7 +5,7 @@ import type { Dictionary } from './dictionary';
 import fr from './dictionaries/fr.json';
 
 export type { Dictionary };
-export { interpolate } from './dictionary';
+export { interpolate, pluralize } from './dictionary';
 
 const loaders: Record<Locale, () => Promise<Dictionary>> = {
   fr: async () => fr,

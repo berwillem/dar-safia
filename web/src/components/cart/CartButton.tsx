@@ -12,7 +12,7 @@ import { useCart } from './CartProvider';
  */
 export function CartButton() {
   const { count, hydrated, openCart } = useCart();
-  const { dict, fill } = useI18n();
+  const { dict, plural } = useI18n();
 
   return (
     <button
@@ -20,7 +20,7 @@ export function CartButton() {
       onClick={openCart}
       aria-label={
         hydrated && count > 0
-          ? fill(dict.nav.cartWithCount, { count })
+          ? plural(dict.nav.cartWithCount, count)
           : dict.nav.cart
       }
       className="relative rounded-xs p-2 text-ivory/75 transition-colors hover:text-gold"

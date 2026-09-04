@@ -5,7 +5,7 @@
     "forHer": "لها",
     "forHim": "له",
     "cart": "السلة",
-    "cartWithCount": "السلة، {count} عنصر",
+    "cartWithCount": "السلة، {count} عنصر|السلة، {count} عناصر",
     "openMenu": "فتح القائمة",
     "closeMenu": "إغلاق القائمة",
     "skipToContent": "تخطّي إلى المحتوى الرئيسي",
@@ -41,7 +41,7 @@
     "filterGender": "الفئة",
     "filterFamily": "العائلة",
     "all": "الكل",
-    "count": "{count} إبداع",
+    "count": "{count} إبداع|{count} إبداعات",
     "empty": "لا يوجد عطر مطابق",
     "emptyHint": "جرّب عائلة عطرية أخرى.",
     "emptyCta": "عرض كامل المجموعة"
@@ -69,7 +69,7 @@
   },
   "cart": {
     "title": "السلة",
-    "items": "{count} عنصر",
+    "items": "{count} عنصر|{count} عناصر",
     "empty": "سلتك فارغة.",
     "continue": "متابعة الاستكشاف",
     "remove": "إزالة",

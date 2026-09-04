@@ -5,7 +5,7 @@
     "forHer": "For Her",
     "forHim": "For Him",
     "cart": "Cart",
-    "cartWithCount": "Cart, {count} item(s)",
+    "cartWithCount": "Cart, {count} item|Cart, {count} items",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "skipToContent": "Skip to main content",
@@ -41,7 +41,7 @@
     "filterGender": "Gender",
     "filterFamily": "Family",
     "all": "All",
-    "count": "{count} creation(s)",
+    "count": "{count} creation|{count} creations",
     "empty": "No perfume matches",
     "emptyHint": "Try another olfactory family.",
     "emptyCta": "See the whole collection"
@@ -69,7 +69,7 @@
   },
   "cart": {
     "title": "Cart",
-    "items": "{count} item(s)",
+    "items": "{count} item|{count} items",
     "empty": "Your cart is empty.",
     "continue": "Keep exploring",
     "remove": "Remove",

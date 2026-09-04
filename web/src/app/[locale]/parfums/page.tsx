@@ -6,7 +6,7 @@ import { ProductCard } from '@/components/ProductCard';
 import { catalog, type FragranceFamily, type Gender } from '@/lib/catalog';
 import { formatFamily, formatGender } from '@/lib/format';
 import { isLocale, type Locale } from '@/lib/i18n/config';
-import { getDictionary, interpolate } from '@/lib/i18n/dictionaries';
+import { getDictionary, pluralize } from '@/lib/i18n/dictionaries';
 import { localePath } from '@/lib/i18n/routing';
 
 export async function generateMetadata({
@@ -90,7 +90,7 @@ export default async function CatalogPage({
       </div>
 
       <p className="mt-6 text-2xs text-ivory/45" aria-live="polite">
-        {interpolate(c.count, { count: total })}
+        {pluralize(c.count, total)}
       </p>
 
       {items.length > 0 ? (
