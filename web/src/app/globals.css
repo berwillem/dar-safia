@@ -193,12 +193,80 @@ body {
   55%  { transform: scaleY(1); transform-origin: bottom; }
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
+@keyframes ds-shine-y {
+  0%   { background-position: 0 -140%; }
+  100% { background-position: 0 240%; }
+}
 .ds-scroll-rule {
-  animation: ds-scroll-rule 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  /* Or, avec un reflet qui glisse le long du trait plutôt qu'un ivoire plat. */
+  background-image: linear-gradient(
+    180deg,
+    var(--color-gold) 0%,
+    var(--color-gold) 35%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 65%,
+    var(--color-gold) 100%
+  );
+  background-size: 100% 260%;
+  animation:
+    ds-scroll-rule 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite,
+    ds-shine-y 2.6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ds-scroll-rule { animation: none; }
+  .ds-scroll-rule { animation: none; background-position: 0 0; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   REFLET OR — liens et traits soulignés
+   Un léger passage de lumière sur l'or, en boucle lente : la
+   différence entre un aplat et un métal. Usage retenu (CTA du
+   hero) — pas un effet à poser sur chaque lien du site.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes ds-shine-x {
+  0%   { background-position: -140% 0; }
+  100% { background-position: 240% 0; }
+}
+.ds-shine-x {
+  background-image: linear-gradient(
+    100deg,
+    var(--color-gold) 0%,
+    var(--color-gold) 40%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 60%,
+    var(--color-gold) 100%
+  );
+  background-size: 260% 100%;
+  animation: ds-shine-x 3.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-shine-x { animation: none; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   LUEUR DE TITRE — hero
+   Une respiration très légère derrière la typographie du hero,
+   plutôt qu'une lueur fixe : elle se remarque à peine, elle ne
+   s'impose pas. Amplitude volontairement basse.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes ds-glow-breathe {
+  0%, 100% {
+    text-shadow: 0 0 16px rgba(228, 189, 104, 0.16), 0 0 2px rgba(228, 189, 104, 0.08);
+  }
+  50% {
+    text-shadow: 0 0 26px rgba(228, 189, 104, 0.26), 0 0 4px rgba(228, 189, 104, 0.12);
+  }
+}
+.ds-text-glow {
+  animation: ds-glow-breathe 5.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-text-glow {
+    animation: none;
+    text-shadow: 0 0 16px rgba(228, 189, 104, 0.16);
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════

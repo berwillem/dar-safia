@@ -159,8 +159,15 @@ export function HeroFilm({
               COUNTER_DURATION - 0.22
             )
             // Le compteur s'efface AVANT que le rideau ne bouge : deux gestes
-            // qui se succèdent, pas deux qui se disputent l'attention.
-            .to('[data-counter]', { opacity: 0, duration: 0.5 }, curtainStart - 0.5)
+            // qui se succèdent, pas deux qui se disputent l'attention. La
+            // sortie n'est plus un simple fondu : un très léger retrait
+            // (scale) accompagne l'opacité, pour qu'elle se sente plutôt que
+            // de simplement disparaître.
+            .to(
+              '[data-counter]',
+              { opacity: 0, scale: 0.96, duration: 0.7, ease: 'power2.in' },
+              curtainStart - 0.7
+            )
             // Le rideau : deux pans aux teintes de la maison. Ils ne glissent
             // pas à plat comme deux portes — ils se rétractent vers les
             // coulisses (scaleX + léger scaleY, origine au bord de scène) en
@@ -312,14 +319,32 @@ export function HeroFilm({
               rideau de théâtre plutôt qu'un split-screen. */}
           <div
             data-curtain-left
-            className="absolute inset-y-0 left-0 w-1/2 origin-left bg-noir"
+            className="absolute inset-y-0 left-0 w-1/2 origin-left overflow-hidden bg-noir"
           >
+            {/* Une lumière basse, comme une rampe de scène, et une ombre en
+                haut à l'opposé : le pan cesse d'être un aplat. */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(55% 45% at 35% 82%, rgba(228,189,104,0.14) 0%, transparent 68%),' +
+                  'radial-gradient(60% 50% at 70% 8%, rgba(0,0,0,0.4) 0%, transparent 70%)',
+              }}
+            />
             <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-black/35 to-transparent" />
           </div>
           <div
             data-curtain-right
-            className="absolute inset-y-0 right-0 w-1/2 origin-right bg-burgundy"
+            className="absolute inset-y-0 right-0 w-1/2 origin-right overflow-hidden bg-burgundy"
           >
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(55% 45% at 65% 82%, rgba(228,189,104,0.12) 0%, transparent 68%),' +
+                  'radial-gradient(60% 50% at 30% 8%, rgba(0,0,0,0.4) 0%, transparent 70%)',
+              }}
+            />
             <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-black/35 to-transparent" />
           </div>
           <div
@@ -354,7 +379,7 @@ export function HeroFilm({
               <span key={line} className="block overflow-hidden">
                 <span
                   data-hero-line
-                  className="block text-[clamp(1.95rem,4.4vw,3.5rem)] leading-[1.08] tracking-[-0.015em]"
+                  className="ds-text-glow block text-[clamp(1.95rem,4.4vw,3.5rem)] leading-[1.08] tracking-[-0.015em]"
                 >
                   {line}
                 </span>
@@ -368,10 +393,11 @@ export function HeroFilm({
               className="group relative inline-flex items-center pb-1 font-ui text-2xs tracking-[0.2em] text-ivory uppercase"
             >
               {cta}
-              {/* Le trait se rétracte vers la fin de ligne, il ne glisse pas. */}
+              {/* Le trait se rétracte vers la fin de ligne, il ne glisse pas.
+                  L'or n'est plus un aplat : un reflet le parcourt lentement. */}
               <span
                 aria-hidden="true"
-                className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-100 bg-gold transition-transform duration-500 ease-(--ease-lux) group-hover:scale-x-0"
+                className="ds-shine-x absolute inset-x-0 bottom-0 h-px origin-left scale-x-100 transition-transform duration-500 ease-(--ease-lux) group-hover:scale-x-0"
               />
             </a>
           </div>
@@ -384,9 +410,9 @@ export function HeroFilm({
           data-hero-tail
           className="pointer-events-none absolute inset-x-0 bottom-4 hidden justify-center md:flex"
         >
-          <span className="flex items-center gap-3 font-ui text-3xs tracking-[0.28em] text-ivory/40 uppercase">
+          <span className="flex items-center gap-3 font-ui text-3xs tracking-[0.28em] text-gold-light/60 uppercase">
             {scrollLabel}
-            <span aria-hidden="true" className="ds-scroll-rule h-8 w-px bg-ivory/25" />
+            <span aria-hidden="true" className="ds-scroll-rule h-8 w-px" />
           </span>
         </div>
       </div>

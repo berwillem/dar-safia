@@ -31,8 +31,8 @@ export const LUXE_EASE_CURVE = '0.76, 0, 0.24, 1';
 
 // ── Timeline « l'intro joue » (première visite de la session) ──
 // Compteur 000→100, tenue, rideau qui s'écarte, PLAN SEUL, typographie, nav.
-export const COUNTER_DURATION = 2.2;
-export const COUNTER_HOLD = 0.35;
+export const COUNTER_DURATION = 2.8;
+export const COUNTER_HOLD = 0.4;
 export const CURTAIN_DURATION = 1.6;
 
 /** Instant où le rideau est entièrement ouvert. */
@@ -42,9 +42,11 @@ export const CURTAIN_DONE = COUNTER_DURATION + COUNTER_HOLD + CURTAIN_DURATION;
  * Le temps où le film reste SEUL à l'écran, rideau ouvert, avant que quoi
  * que ce soit d'autre n'arrive. C'est ce silence qui fait la différence
  * entre « une animation » et un plan de cinéma : on laisse voir le flacon
- * avant de parler par-dessus.
+ * avant de parler par-dessus. Raccourci de 0,2 s par rapport à la version
+ * précédente — la pause se sentait un peu longue une fois le compteur
+ * lui-même allongé.
  */
-export const FILM_ALONE = 0.9;
+export const FILM_ALONE = 0.7;
 
 /** Instant où la typographie du hero entre. */
 export const TYPE_START = CURTAIN_DONE + FILM_ALONE;
