@@ -16,18 +16,20 @@ import { usePrefersReducedMotion } from './motion/usePrefersReducedMotion';
 /**
  * En-tête du site.
  *
- * Sur une page qui s'ouvre sur un plan plein écran, une barre opaque coupe
- * l'image dès la première seconde. L'en-tête reste donc transparent tant
- * qu'on est en haut, et ne prend son fond qu'une fois le film dépassé.
- * Le seuil vient de la hauteur de fenêtre, pas d'une valeur magique.
+ * L'accueil s'ouvre sur un plan plein écran : une barre opaque le couperait
+ * dès la première seconde. Là, et là seulement, l'en-tête reste transparent
+ * tant qu'on est en haut et ne prend son fond qu'une fois le film dépassé
+ * (seuil = hauteur de fenêtre, pas une valeur magique). Sur TOUTES les
+ * autres pages, il n'y a rien de précieux à ne pas couvrir : l'en-tête porte
+ * son fond dès le départ, pour se lire comme une vraie barre de navigation
+ * et pas comme des liens qui flottent sur le fond.
  *
- * Sur l'accueil, la nav entre en scène juste après la typographie du hero
- * (un demi-temps de retard : elle tombe sur un instant du plan plutôt que
- * sur le même mouvement). Les deux
- * composants ne se parlent pas directement : ils lisent le même minutage
- * partagé (`intro-timing.ts`), donc rien ne peut dériver entre eux. Sur les
- * autres pages, l'en-tête ne rejoue rien « parce qu'il est là » — il est
- * simplement posé, comme aujourd'hui.
+ * Sur l'accueil, la nav entre aussi en scène juste après la typographie du
+ * hero (un demi-temps de retard : elle tombe sur un instant du plan plutôt
+ * que sur le même mouvement). HeroFilm et SiteHeader ne se parlent pas
+ * directement : ils lisent le même minutage partagé (`intro-timing.ts`),
+ * donc rien ne peut dériver entre eux. Ailleurs, l'en-tête ne rejoue rien
+ * « parce qu'il est là » — il est simplement posé.
  */
 export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [lifted, setLifted] = useState(false);
@@ -45,12 +47,17 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
   const menuOpen = menu.open && menu.at === pathname;
   const setMenuOpen = (open: boolean) => setMenu({ open, at: pathname });
 
+  // Le seuil de défilement ne concerne que l'accueil ; ailleurs, le fond est
+  // là dès le premier rendu.
+  const solidHeader = !isHome || lifted || menuOpen;
+
   useEffect(() => {
+    if (!isHome) return;
     const onScroll = () => setLifted(window.scrollY > window.innerHeight * 0.72);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  }, [isHome]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -135,7 +142,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
 
   return (
     <header
-      data-lifted={lifted || menuOpen || undefined}
+      data-lifted={solidHeader || undefined}
       className="fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-500 ease-(--ease-lux) data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >
       <div
