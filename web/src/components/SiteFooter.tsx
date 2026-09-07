@@ -44,20 +44,26 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
             <p className="mt-3 max-w-xs font-body text-md leading-relaxed text-ivory/55">
               {dict.footer.blurb}
             </p>
-            <span className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <span className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2.5">
               {conciergeUrl && (
                 <a
                   href={conciergeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-2xs tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-gold-light"
+                  className="ds-navlink text-2xs tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-gold-light"
                 >
                   {dict.footer.concierge}
                 </a>
               )}
               <Link
+                href={localePath(locale, '/la-maison')}
+                className="ds-navlink text-2xs tracking-(--tracking-label) text-ivory/60 uppercase transition-colors hover:text-gold"
+              >
+                {dict.nav.about}
+              </Link>
+              <Link
                 href={localePath(locale, '/contact')}
-                className="text-2xs tracking-(--tracking-label) text-ivory/60 uppercase transition-colors hover:text-gold"
+                className="ds-navlink text-2xs tracking-(--tracking-label) text-ivory/60 uppercase transition-colors hover:text-gold"
               >
                 {dict.footer.contact}
               </Link>
@@ -74,7 +80,7 @@ export function SiteFooter({ locale, dict }: { locale: Locale; dict: Dictionary 
                   <li key={link.href}>
                     <Link
                       href={localePath(locale, link.href)}
-                      className="text-md text-ivory/65 transition-colors hover:text-gold"
+                      className="ds-navlink text-md text-ivory/65 transition-colors hover:text-gold"
                     >
                       {link.label}
                     </Link>

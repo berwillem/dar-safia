@@ -94,6 +94,43 @@
     "cta": "Discover the collection",
     "secondary": "Or let us guide you"
   },
+  "about": {
+    "eyebrow": "The house",
+    "metaDescription": "Dar Safia doesn't sell perfumes, it keeps them. The stance, the three selection requirements, and the house concierge.",
+    "title": [
+      "A house,",
+      "not a shelf."
+    ],
+    "lead": "Dar Safia doesn't sell perfumes — it keeps them. Every bottle in the catalogue passed through the same hands, set aside or kept against criteria that don't move.",
+    "sceneCaption": "House flacon, slowly turning.",
+    "stanceTitle": "The stance",
+    "stanceBody": "More fragrances are released each year than a lifetime could wear. Most of them blur together. Our work starts there: read, smell, compare, and show only what holds over time — not what sells best in the first week.",
+    "stanceAside": "A tight selection is a service, not a limit: it's time handed back to you.",
+    "requirementsTitle": "Three requirements, every time",
+    "requirements": [
+      {
+        "term": "Clean accords",
+        "detail": "A composition that holds together, with no shrill note and no synthetic shortcut. What you smell on the first spray should still make sense an hour later."
+      },
+      {
+        "term": "It lasts on skin",
+        "detail": "A trail that carries through the day. Low concentrations and eaux that fade in two hours don't make the cut."
+      },
+      {
+        "term": "Traced provenance",
+        "detail": "Authentic bottles, tracked from the original house to you. No grey market, no counterfeit — non-negotiable."
+      }
+    ],
+    "conciergeTitle": "A voice on the line",
+    "conciergeBody": "Advice happens on WhatsApp, with a person — not a form. We point you to what will suit you, even if that means telling you a perfume isn't for you. Payment is on delivery, across all 58 wilayas.",
+    "conciergeCta": "Message the concierge",
+    "closingTitle": [
+      "The rest,",
+      "you'll recognise."
+    ],
+    "closingCta": "Browse the collection",
+    "closingSecondary": "Or let us guide you"
+  },
   "contact": {
     "title": "Let's talk about\nyour scent.",
     "lead": "The Dar Safia concierge answers on WhatsApp, seven days a week — for advice, availability or an order.",

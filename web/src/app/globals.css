@@ -270,6 +270,105 @@ body {
 }
 
 /* ══════════════════════════════════════════════════════════════
+   LIENS — soulignés vivants
+   Le trait sous un lien n'est pas un aplat : il pousse depuis le
+   bord d'attaque au survol / au focus, et un reflet le parcourt.
+   Sur le lien de la page courante (aria-current) il reste posé.
+   ══════════════════════════════════════════════════════════════ */
+@keyframes ds-underline-sheen {
+  0%   { background-position: 120% 0; }
+  100% { background-position: -60% 0; }
+}
+
+.ds-navlink {
+  position: relative;
+  display: inline-block;
+}
+.ds-navlink::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -0.4em;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.42s var(--ease-lux);
+  background-image: linear-gradient(
+    90deg,
+    var(--color-gold-dark) 0%,
+    var(--color-gold) 34%,
+    var(--color-gold-light) 50%,
+    var(--color-gold) 66%,
+    var(--color-gold-dark) 100%
+  );
+  background-size: 220% 100%;
+}
+[dir="rtl"] .ds-navlink::after {
+  transform-origin: right;
+}
+.ds-navlink:hover::after,
+.ds-navlink:focus-visible::after,
+.ds-navlink[aria-current="page"]::after {
+  transform: scaleX(1);
+  animation: ds-underline-sheen 2.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-navlink::after {
+    transition-duration: 0.01ms;
+  }
+  .ds-navlink:hover::after,
+  .ds-navlink:focus-visible::after,
+  .ds-navlink[aria-current="page"]::after {
+    animation: none;
+  }
+}
+
+/* Variante « filet toujours là » : pour les liens éditoriaux inline,
+   le trait est posé en permanence, discret, et s'éclaire au survol. */
+.ds-inklink {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: color 0.3s var(--ease-lux), background-size 0.3s var(--ease-lux);
+  padding-bottom: 0.08em;
+}
+.ds-inklink:hover,
+.ds-inklink:focus-visible {
+  color: var(--color-gold);
+  background-size: 100% 2px;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   BARRE DE DÉFILEMENT
+   Fine, sombre, pouce or discret — elle appartient à l'univers.
+   ══════════════════════════════════════════════════════════════ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-dark) transparent;
+}
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-gold-dark), var(--color-gold));
+  /* La bordure noire fait un pouce visuellement plus fin, avec une gouttière. */
+  border: 3px solid var(--color-noir);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(var(--color-gold), var(--color-gold-light));
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* ══════════════════════════════════════════════════════════════
    HERO — DEUX COMPOSITIONS, PAS UNE MISE À L'ÉCHELLE
    ══════════════════════════════════════════════════════════════
    Le plan est en 16/9 et sa composition est équilibrée : roses à

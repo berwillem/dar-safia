@@ -94,6 +94,43 @@
     "cta": "Découvrir la collection",
     "secondary": "Ou laissez-nous vous guider"
   },
+  "about": {
+    "eyebrow": "La maison",
+    "metaDescription": "Dar Safia ne vend pas des parfums, elle en retient. Le parti pris, les trois exigences de sélection et la conciergerie de la maison.",
+    "title": [
+      "Une maison,",
+      "pas un rayon."
+    ],
+    "lead": "Dar Safia ne vend pas des parfums : elle en retient. Chaque flacon du catalogue est passé par la même main, écarté ou gardé selon des critères qui ne varient pas.",
+    "sceneCaption": "Flacon de la maison, en rotation lente.",
+    "stanceTitle": "Le parti pris",
+    "stanceBody": "Il se crée chaque année plus de fragrances qu'une vie n'en peut porter. La plupart se ressemblent. Notre travail commence là : lire, sentir, comparer, et ne présenter que ce qui tient sur la durée — pas ce qui se vend le mieux la première semaine.",
+    "stanceAside": "Une sélection resserrée est un service, pas une contrainte : c'est du temps qu'on vous rend.",
+    "requirementsTitle": "Trois exigences, à chaque fois",
+    "requirements": [
+      {
+        "term": "La pureté des accords",
+        "detail": "Une composition qui se tient, sans note criarde ni raccourci de synthèse. Ce qu'on sent au premier vaporisateur doit encore avoir du sens une heure après."
+      },
+      {
+        "term": "La tenue sur la peau",
+        "detail": "Un sillage qui traverse la journée. Les concentrations basses et les eaux qui s'éteignent en deux heures ne passent pas la sélection."
+      },
+      {
+        "term": "Une provenance vérifiée",
+        "detail": "Des flacons authentiques, tracés de la maison d'origine jusqu'à vous. Aucun marché parallèle, aucune contrefaçon — c'est non négociable."
+      }
+    ],
+    "conciergeTitle": "Une voix au bout du fil",
+    "conciergeBody": "Le conseil se fait sur WhatsApp, avec une personne — pas un formulaire. On vous oriente vers ce qui vous ira, quitte à vous dire qu'un parfum n'est pas pour vous. La commande se règle à la livraison, dans les 58 wilayas.",
+    "conciergeCta": "Écrire à la conciergerie",
+    "closingTitle": [
+      "Le reste,",
+      "vous le reconnaîtrez."
+    ],
+    "closingCta": "Parcourir la collection",
+    "closingSecondary": "Ou laissez-nous vous guider"
+  },
   "contact": {
     "title": "Parlons de\nvotre parfum.",
     "lead": "La conciergerie Dar Safia répond sur WhatsApp, sept jours sur sept — pour un conseil, une disponibilité ou une commande.",

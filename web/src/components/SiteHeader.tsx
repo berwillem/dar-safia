@@ -8,38 +8,29 @@ import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionary';
 import { localePath } from '@/lib/i18n/routing';
 
-import { NAV_STAGGER_START, useIntroPlays } from './home/intro-timing';
 import { LocaleSwitcher } from './i18n/LocaleSwitcher';
 import { CartButton } from './cart/CartButton';
-import { usePrefersReducedMotion } from './motion/usePrefersReducedMotion';
 
 /**
- * En-tête du site.
+ * En-tête du site — présent, identique, sur TOUTES les pages.
  *
- * L'accueil s'ouvre sur un plan plein écran : une barre opaque le couperait
- * dès la première seconde. Là, et là seulement, l'en-tête reste transparent
- * tant qu'on est en haut et ne prend son fond qu'une fois le film dépassé
- * (seuil = hauteur de fenêtre, pas une valeur magique). Sur TOUTES les
- * autres pages, il n'y a rien de précieux à ne pas couvrir : l'en-tête porte
- * son fond dès le départ, pour se lire comme une vraie barre de navigation
- * et pas comme des liens qui flottent sur le fond.
+ * Une seule différence selon la page : le fond. L'accueil s'ouvre sur un plan
+ * plein écran ; une barre opaque le couperait dès la première seconde, donc
+ * là — et là seulement — l'en-tête reste transparent tant qu'on est en haut
+ * et ne prend son fond qu'une fois le film dépassé (seuil = hauteur de
+ * fenêtre). Partout ailleurs, le fond est là dès le premier rendu.
  *
- * Sur l'accueil, la nav entre aussi en scène juste après la typographie du
- * hero (un demi-temps de retard : elle tombe sur un instant du plan plutôt
- * que sur le même mouvement). HeroFilm et SiteHeader ne se parlent pas
- * directement : ils lisent le même minutage partagé (`intro-timing.ts`),
- * donc rien ne peut dériver entre eux. Ailleurs, l'en-tête ne rejoue rien
- * « parce qu'il est là » — il est simplement posé.
+ * La nav ne joue AUCUNE entrée différée : elle est simplement là. Une nav qui
+ * s'absente pendant quelques secondes se lit comme une nav manquante — c'est
+ * l'inverse de ce qu'on veut. L'en-tête est en `z-40`, au-dessus du rideau du
+ * hero (`z-10`) : il reste lisible même pendant l'intro.
  */
 export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [lifted, setLifted] = useState(false);
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
-  const barRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === localePath(locale, '/');
-  const wantsIntro = useIntroPlays();
-  const reduced = usePrefersReducedMotion();
 
   // Le menu retient la page où il a été ouvert. Changer de page le referme
   // donc PENDANT le rendu, sans effet ni setState en cascade.
@@ -76,83 +67,26 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
     };
   }, [menuOpen, pathname]);
 
-  /**
-   * L'en-tête est en `z-40`, au-dessus du rideau du hero (`z-10`) : rien ne
-   * le masque. Si son état de départ dépendait du chargement de GSAP (import
-   * dynamique), la nav s'afficherait en clair le temps que le module arrive,
-   * AVANT même que le rideau ne bouge — c'était le cas, et ça cassait
-   * l'ouverture. L'état masqué est donc posé en CSS dès le rendu, de façon
-   * synchrone : `usePathname` et `useSyncExternalStore` donnent leur valeur
-   * pendant le rendu, avant la première peinture, et GSAP ne fait plus que
-   * l'animer VERS l'état visible (`.to`, pas `.fromTo`).
-   */
-  const navHidden = isHome && !reduced;
-  const hiddenStyle = navHidden
-    ? { opacity: 0, transform: 'translateY(-16px) scale(0.97)' }
-    : undefined;
-
-  useEffect(() => {
-    if (!navHidden) return;
-    const root = barRef.current;
-    if (!root) return;
-
-    let disposed = false;
-    let teardown: (() => void) | null = null;
-
-    void (async () => {
-      const { gsap } = await import('gsap');
-      if (disposed) return;
-
-      const delay = wantsIntro ? NAV_STAGGER_START.intro : NAV_STAGGER_START.repeat;
-      const ctx = gsap.context(() => {
-        gsap.to('[data-nav-item]', {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          stagger: 0.1,
-          ease: 'power3.out',
-          delay,
-        });
-      }, root);
-      teardown = () => ctx.revert();
-    })();
-
-    return () => {
-      disposed = true;
-      teardown?.();
-    };
-  }, [navHidden, wantsIntro]);
-
-  // Reprend l'ordre du brief (Home, About, Parfums, Find My Match, Contact) :
-  // les raccourcis « Pour elle / Pour lui » quittent la barre — ils restent
-  // joignables depuis le filtre Genre de la boutique (partie B) — pour que
-  // sept intitulés ne se pressent pas sur une largeur qui en tenait cinq.
-  //
-  // « About Dar Safia » n'a pas encore de page dédiée : le lien pointe sur
-  // le manifeste de l'accueil plutôt que d'inventer une prose de présentation.
   const home = localePath(locale, '/');
   const nav = [
     { href: home, label: dict.nav.home },
-    { href: `${home}#manifeste`, label: dict.nav.about },
+    { href: localePath(locale, '/la-maison'), label: dict.nav.about },
     { href: localePath(locale, '/parfums'), label: dict.nav.perfumes },
     { href: localePath(locale, '/trouver'), label: dict.nav.scentFinder },
     { href: localePath(locale, '/contact'), label: dict.nav.contact },
   ];
+
+  const isActive = (href: string) =>
+    href === home ? pathname === home : pathname.startsWith(href.split('?')[0]);
 
   return (
     <header
       data-lifted={solidHeader || undefined}
       className="fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-500 ease-(--ease-lux) data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >
-      <div
-        ref={barRef}
-        className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8"
-      >
+      <div className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8">
         <Link
           href={home}
-          data-nav-item
-          style={hiddenStyle}
           className="shrink-0 font-serif text-lg whitespace-nowrap tracking-[0.08em] text-ivory transition-colors hover:text-gold"
         >
           {dict.common.brandName}
@@ -161,10 +95,11 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
         <nav aria-label={dict.nav.perfumes} className="ms-auto hidden lg:block">
           <ul className="flex items-center gap-7">
             {nav.map(({ href, label }) => (
-              <li key={href} data-nav-item style={hiddenStyle}>
+              <li key={href}>
                 <Link
                   href={href}
-                  className="font-ui text-xs font-semibold whitespace-nowrap tracking-[0.14em] text-ivory/90 uppercase transition-colors hover:text-gold"
+                  aria-current={isActive(href) ? 'page' : undefined}
+                  className="ds-navlink font-ui text-xs font-semibold whitespace-nowrap tracking-[0.14em] text-ivory/90 uppercase transition-colors hover:text-gold aria-[current=page]:text-gold"
                 >
                   {label}
                 </Link>
@@ -173,7 +108,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
           </ul>
         </nav>
 
-        <div data-nav-item style={hiddenStyle} className="ms-auto flex items-center gap-1 lg:ms-0">
+        <div className="ms-auto flex items-center gap-1 lg:ms-0">
           <LocaleSwitcher current={locale} label={dict.nav.language} />
           <CartButton />
 
@@ -213,7 +148,8 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
               <li key={href} className="border-b border-smoke-2 last:border-b-0">
                 <Link
                   href={href}
-                  className="block py-4 font-body text-2xl text-ivory transition-colors hover:text-gold"
+                  aria-current={isActive(href) ? 'page' : undefined}
+                  className="block py-4 font-body text-2xl text-ivory transition-colors hover:text-gold aria-[current=page]:text-gold"
                 >
                   {label}
                 </Link>

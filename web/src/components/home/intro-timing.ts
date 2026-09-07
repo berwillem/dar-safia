@@ -4,19 +4,12 @@ import { useSyncExternalStore } from 'react';
 
 /**
  * ══════════════════════════════════════════════════════════════
- *   INTRO — MINUTAGE PARTAGÉ
+ *   INTRO — MINUTAGE + ÉTAT « ça joue ? »
  * ══════════════════════════════════════════════════════════════
  *
- * `HeroFilm` (le compte à rebours + rideau) et `SiteHeader` (le stagger de
- * la nav) doivent s'accorder sur DEUX choses sans se parler directement :
- * si l'intro joue cette fois-ci, et combien de temps elle prend. Les
- * dupliquer indépendamment dans chaque composant les ferait dériver au
- * premier ajustement de durée — ce module est donc la seule source des deux.
- *
- * Pas d'event bus, pas de contexte : les durées sont déterministes (deux
- * timelines fixes, « joue » ou « rejoue vite »), donc un simple délai
- * calculé au montage suffit à SiteHeader pour démarrer pile quand HeroFilm
- * l'a prévu.
+ * Regroupé ici plutôt qu'éparpillé dans `HeroFilm` : la question « l'intro
+ * joue-t-elle cette session ? » (sessionStorage + prefers-reduced-motion) et
+ * les durées de la timeline d'ouverture. Un seul endroit à ajuster.
  */
 
 export const INTRO_SESSION_KEY = 'darsafia.intro.seen';
@@ -50,22 +43,6 @@ export const FILM_ALONE = 0.7;
 
 /** Instant où la typographie du hero entre. */
 export const TYPE_START = CURTAIN_DONE + FILM_ALONE;
-
-/**
- * La nav ne monte pas avec la typographie : elle attend un temps de plus,
- * pour tomber sur un moment du plan plutôt que sur le mouvement d'à côté.
- */
-export const NAV_AFTER_TYPE = 0.5;
-
-// ── Timeline « rejoue vite » (déjà vue cette session) ──
-// Pas de compteur ni de rideau : la typographie part quasi immédiatement.
-export const REPEAT_TYPE_START = 0.15;
-
-/** Instant (secondes) où la nav de `SiteHeader` doit commencer son stagger. */
-export const NAV_STAGGER_START = {
-  intro: TYPE_START + NAV_AFTER_TYPE,
-  repeat: REPEAT_TYPE_START,
-};
 
 /**
  * « L'intro doit-elle jouer ? » est une lecture du navigateur (sessionStorage
