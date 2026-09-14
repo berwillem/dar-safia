@@ -42,54 +42,69 @@ export function AboutExperience({
   return (
     <div ref={rootRef}>
       {/* ── Hero : le flacon + la déclaration ── */}
+      {/* La piste de défilement du plan. Elle dure plus d'un écran : le canvas
+          est collant et TIENT pendant que la page avance, ce qui laisse le
+          temps de traverser les trois cadrages. Sans ce maintien, la caméra
+          finissait sa course alors que le hero était déjà sorti par le haut.
+
+          Surtout pas d'`overflow-hidden` sur la section : il en ferait son
+          propre conteneur de défilement et le plan cesserait de coller. Le
+          recadrage se fait dans le bloc intérieur. */}
       <section
+        data-scene-track
         aria-labelledby="maison-titre"
-        className="relative flex min-h-[92svh] flex-col justify-end overflow-hidden border-b border-smoke-2 bg-noir"
+        className="relative border-b border-smoke-2 bg-noir"
       >
-        <FlaconScene className="absolute inset-0" />
+        <div className="pointer-events-none sticky top-0 h-[92svh] overflow-hidden">
+          <FlaconScene className="absolute inset-0" />
 
-        {/* Le texte se pose dans la bande basse, sur un dégradé qui garde
-            la lisibilité sans voiler le flacon. */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3"
-          style={{
-            background:
-              'linear-gradient(to top, var(--color-noir) 4%, rgba(26,18,15,0.72) 34%, transparent 100%)',
-          }}
-        />
-
-        <div className="relative mx-auto w-full max-w-(--container-site) px-6 pb-16 md:px-12 md:pb-24 lg:px-20">
-          <p
-            data-fade
-            className="font-ui text-2xs tracking-(--tracking-eyebrow) text-gold uppercase"
-          >
-            {a.eyebrow}
-          </p>
-
-          <h1
-            id="maison-titre"
-            className="mt-5 font-body font-light text-ivory"
-          >
-            {a.title.map((line) => (
-              <span key={line} className="block overflow-hidden">
-                <span
-                  data-rise
-                  className="block text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] tracking-[-0.02em]"
-                >
-                  {line}
-                </span>
-              </span>
-            ))}
-          </h1>
-
-          <p
-            data-fade
-            className="mt-8 max-w-[46ch] font-body text-[clamp(1.15rem,1.7vw,1.45rem)] leading-[1.6] text-ivory/70"
-          >
-            {a.lead}
-          </p>
+          {/* Le texte se pose dans la bande basse, sur un dégradé qui garde
+              la lisibilité sans voiler le flacon. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-x-0 bottom-0 h-2/3"
+            style={{
+              background:
+                'linear-gradient(to top, var(--color-noir) 4%, rgba(26,18,15,0.72) 34%, transparent 100%)',
+            }}
+          />
         </div>
+
+        {/* Remonté par-dessus le plan collant : la typographie occupe le premier
+            écran, puis s'en va et libère le flacon seul. */}
+        <div className="relative -mt-[92svh] flex min-h-[92svh] flex-col justify-end">
+          <div className="mx-auto w-full max-w-(--container-site) px-6 pb-16 md:px-12 md:pb-24 lg:px-20">
+            <p
+              data-fade
+              className="font-ui text-2xs tracking-(--tracking-eyebrow) text-gold uppercase"
+            >
+              {a.eyebrow}
+            </p>
+
+            <h1 id="maison-titre" className="mt-5 font-body font-light text-ivory">
+              {a.title.map((line) => (
+                <span key={line} className="block overflow-hidden">
+                  <span
+                    data-rise
+                    className="block text-[clamp(2.6rem,7vw,5.5rem)] leading-[1.02] tracking-[-0.02em]"
+                  >
+                    {line}
+                  </span>
+                </span>
+              ))}
+            </h1>
+
+            <p
+              data-fade
+              className="mt-8 max-w-[46ch] font-body text-[clamp(1.15rem,1.7vw,1.45rem)] leading-[1.6] text-ivory/70"
+            >
+              {a.lead}
+            </p>
+          </div>
+        </div>
+
+        {/* La course qui reste : le flacon seul, sans un mot par-dessus. */}
+        <div aria-hidden="true" className="h-[45svh] md:h-[80svh]" />
 
         <p className="sr-only">{a.sceneCaption}</p>
       </section>
@@ -134,10 +149,7 @@ export function AboutExperience({
         className="border-b border-smoke-2 bg-noir-2 px-6 py-24 md:px-12 md:py-36 lg:px-20"
       >
         <div className="mx-auto max-w-(--container-site)">
-          <h2
-            id="exigences"
-            className="font-body font-light text-ivory/70"
-          >
+          <h2 id="exigences" className="font-body font-light text-ivory/70">
             <span className="block overflow-hidden">
               <span
                 data-rise
@@ -182,10 +194,7 @@ export function AboutExperience({
         className="border-t border-smoke-2 bg-noir px-6 py-28 md:px-12 md:py-36 lg:px-20"
       >
         <div className="mx-auto max-w-(--container-site) md:grid md:grid-cols-12 md:gap-10">
-          <h2
-            id="conciergerie"
-            className="font-body font-light text-ivory md:col-span-5"
-          >
+          <h2 id="conciergerie" className="font-body font-light text-ivory md:col-span-5">
             <span className="block overflow-hidden">
               <span
                 data-rise

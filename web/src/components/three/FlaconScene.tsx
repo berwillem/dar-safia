@@ -29,9 +29,22 @@ import { usePrefersReducedMotion } from '@/components/motion/usePrefersReducedMo
  * radial) et une caustique chaude au centre. Un shadow map poserait une tache
  * noire opaque sous du verre — faux, et bon marché.
  *
- * Au défilement, c'est la CAMÉRA qui passe entre trois cadrages (ScrollTrigger
- * `scrub`, donc calée sur Lenis) pendant que le flacon tourne lentement.
- * Poussière en suspension et voiles de brume dérivent derrière, en parallaxe.
+ * Le flacon est PRÉSENTÉ, pas posé : socle de pierre polie cerclé d'or, trois
+ * compagnons en retrait, une niche en ogive et des colonnes pour étager la
+ * profondeur. Tout ce second plan est opaque et peint — rien n'alourdit la
+ * passe de réfraction.
+ *
+ * Au défilement, la CAMÉRA passe entre trois cadrages et le flacon entre trois
+ * POSES choisies (ScrollTrigger `scrub`, donc calé sur Lenis) : jamais de
+ * rotation libre, qui finirait par montrer le dos du flacon. Le canvas est
+ * tenu par un parent collant, sinon la course se terminerait hors écran.
+ *
+ * Le pointeur ne fait pas que déplacer la caméra : il promène une lampe sur le
+ * verre, fait glisser les filets de contre-jour réfractés et incline
+ * légèrement l'objet. Sur tactile, une dérive lente le remplace.
+ *
+ * La scène se LÈVE : exposition, floraison, recul de caméra et pose montent
+ * ensemble au premier passage à l'écran.
  *
  * Budget : `three` et le post-traitement sont importés dynamiquement, le rendu
  * passe par `gsap.ticker` (une seule boucle rAF pour la page) et se coupe hors
@@ -90,10 +103,21 @@ const LIQUID_PROFILE: [number, number][] = [
  * avec de l'air au-dessus. Trop près, on décapite le bouchon.
  */
 const SHOTS = [
-  { pos: [0.7, 2.0, 9.1], look: [0, 1.95, 0], fov: 33 },
-  { pos: [-2.1, 2.7, 9.6], look: [0, 1.8, 0], fov: 31 },
-  { pos: [-0.7, 3.6, 11.4], look: [0, 1.5, 0], fov: 30 },
+  { pos: [0.7, 2.1, 11.5], look: [0, 1.72, 0], fov: 32 },
+  { pos: [-2.4, 2.9, 12.1], look: [0, 1.62, 0], fov: 30 },
+  { pos: [-0.8, 3.9, 13.8], look: [0, 1.4, 0], fov: 29 },
 ];
+
+/**
+ * Angle du flacon à chaque cadrage. Le défilement ne « fait plus tourner »
+ * l'objet en continu : il le mène d'une pose CHOISIE à la suivante — étiquette
+ * de face, puis trois quarts, puis profil. Une rotation libre finit toujours
+ * par montrer le dos du flacon, ce qu'aucun photographe ne ferait.
+ */
+const YAW = [0, -0.62, -1.34];
+
+/** Hauteur du socle. Le flacon reste posé à y = 0 ; le sol descend d'autant. */
+const PLINTH_H = 0.38;
 
 export function FlaconScene({ className }: { className?: string }) {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -142,7 +166,7 @@ export function FlaconScene({ className }: { className?: string }) {
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, rich ? 1.75 : 1.4));
       renderer.setSize(width, height);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.18;
+      renderer.toneMappingExposure = 1.34;
       // La réfraction se calcule dans une passe séparée : la moitié de la
       // résolution suffit sur des surfaces aussi lisses, et divise son coût.
       renderer.transmissionResolutionScale = rich ? 0.5 : 0.3;
@@ -242,11 +266,16 @@ export function FlaconScene({ className }: { className?: string }) {
         keep(new THREE.PlaneGeometry(70, 44)),
         keep(
           new THREE.MeshBasicMaterial({
+            // Un fond ALLUMÉ, pas seulement opaque : le halo chaud est calé
+            // derrière le flacon pour que le jus ait quelque chose à
+            // transmettre. Un fond uniformément sombre donne un verre
+            // techniquement juste et visuellement éteint.
             map: radial(
               [
-                [0, 'rgb(38,26,20)'],
-                [0.45, 'rgb(24,16,13)'],
-                [1, 'rgb(13,9,8)'],
+                [0, 'rgb(92,63,38)'],
+                [0.28, 'rgb(46,31,21)'],
+                [0.6, 'rgb(22,15,12)'],
+                [1, 'rgb(11,8,7)'],
               ],
               512
             ),
@@ -254,8 +283,78 @@ export function FlaconScene({ className }: { className?: string }) {
           })
         )
       );
-      backdrop.position.set(-1, 4, -16);
+      backdrop.position.set(0, 2.6, -16);
       scene.add(backdrop);
+
+      // ── Architecture de fond : une niche, puis des colonnes ──
+      // Le fond nu se lisait comme un studio vide. Une alcôve en ogive donne
+      // un point de fuite et un aplomb au flacon ; les colonnes qui la
+      // flanquent creusent la profondeur sans rien raconter de bruyant.
+      const archTex = paintTexture(256, 512, (ctx, w, h) => {
+        ctx.filter = 'blur(14px)'; // bords fondus : aucune arête franche
+        const g = ctx.createLinearGradient(0, h, 0, 0);
+        g.addColorStop(0, 'rgba(96,68,42,0)');
+        g.addColorStop(0.35, 'rgba(122,88,52,0.5)');
+        g.addColorStop(0.78, 'rgba(154,114,68,0.72)');
+        g.addColorStop(1, 'rgba(120,88,54,0.2)');
+        ctx.fillStyle = g;
+        const m = w * 0.2;
+        const r = w / 2 - m;
+        ctx.beginPath();
+        ctx.moveTo(m, h);
+        ctx.lineTo(m, h * 0.42);
+        ctx.arc(w / 2, h * 0.42, r, Math.PI, 0);
+        ctx.lineTo(w - m, h);
+        ctx.closePath();
+        ctx.fill();
+      });
+      const arch = new THREE.Mesh(
+        keep(new THREE.PlaneGeometry(11, 17)),
+        keep(
+          new THREE.MeshBasicMaterial({
+            map: archTex,
+            transparent: true,
+            depthWrite: false,
+            opacity: 0.32,
+          })
+        )
+      );
+      arch.position.set(-0.4, 5.4, -13.6);
+      scene.add(arch);
+
+      // Colonnes : de simples bandes verticales très sourdes, décalées en
+      // profondeur. Elles n'existent que pour que l'œil ait des plans à
+      // étager derrière le verre.
+      const columnTex = paintTexture(32, 256, (ctx, w, h) => {
+        const g = ctx.createLinearGradient(0, h, 0, 0);
+        g.addColorStop(0, 'rgba(0,0,0,0)');
+        g.addColorStop(0.3, 'rgba(118,88,56,0.55)');
+        g.addColorStop(1, 'rgba(74,56,38,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(0, 0, w, h);
+      });
+      (
+        [
+          [-5.6, 4.2, -10.5, 1.5, 12, 0.3],
+          [5.2, 4.2, -10.5, 1.3, 12, 0.26],
+          [-8.4, 4, -8.2, 1.1, 11, 0.16],
+          [8.1, 4, -8.2, 1.1, 11, 0.14],
+        ] as [number, number, number, number, number, number][]
+      ).forEach(([x, y, z, w, h, o]) => {
+        const col = new THREE.Mesh(
+          keep(new THREE.PlaneGeometry(w, h)),
+          keep(
+            new THREE.MeshBasicMaterial({
+              map: columnTex,
+              transparent: true,
+              depthWrite: false,
+              opacity: o,
+            })
+          )
+        );
+        col.position.set(x, y, z);
+        scene.add(col);
+      });
 
       // ── Le flacon ───────────────────────────────────────────
       const bottle = new THREE.Group();
@@ -277,19 +376,24 @@ export function FlaconScene({ className }: { className?: string }) {
             metalness: 0,
             roughness: 0.025,
             transmission: 1,
-            // Épaisseur généreuse : c'est elle qui courbe franchement ce qui
-            // passe au travers. Trop basse, le verre n'est qu'une vitre.
-            thickness: 2.1,
+            // Paroi MINCE, et c'est un choix physique, pas esthétique : une
+            // épaisseur généreuse faisait absorber tout le volume par le verre
+            // lui-même, et le flacon retombait en bloc opaque. Un vrai flacon a
+            // des parois fines ; la couleur vient du jus, pas de la paroi.
+            thickness: 0.85,
             ior: 1.52,
             // Le verre n'est pas incolore : il se teinte dans l'épaisseur.
-            attenuationColor: new THREE.Color(0xbfae88),
-            attenuationDistance: 1.6,
+            // Atténuation allongée : plus courte, le verre s'assombrissait au
+            // point d'avaler le jus et le flacon retombait à une masse opaque.
+            // C'est le LIQUIDE qui doit porter la couleur, pas la paroi.
+            attenuationColor: new THREE.Color(0xd4c7a6),
+            attenuationDistance: 4.2,
             // Pas de vernis par-dessus : le clearcoat ajoute une couche
             // miroir qui renvoie tout l'environnement et referme le verre en
             // blanc laiteux. Le cristal tire son éclat de la réfraction.
             clearcoat: 0.2,
             clearcoatRoughness: 0.08,
-            envMapIntensity: 0.55,
+            envMapIntensity: 1.0,
           })
         )
       );
@@ -315,12 +419,31 @@ export function FlaconScene({ className }: { className?: string }) {
             // Une braise interne, très basse. Physiquement c'est une licence,
             // mais c'est ce qui empêche le jus de retomber au noir dans les
             // creux que le rétroéclairage n'atteint pas.
-            emissive: new THREE.Color(0x662d07),
-            emissiveIntensity: 0.42,
+            emissive: new THREE.Color(0x8c4409),
+            emissiveIntensity: 0.62,
           })
         )
       );
       bottle.add(liquid);
+
+      // Le ménisque. Un fin liseré lumineux à la surface du jus : sans lui, le
+      // passage liquide/air se fond dans la masse et le flacon se lit comme un
+      // bloc teinté. C'est cette ligne, et elle seule, qui dit « c'est rempli ».
+      const meniscus = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.9, 0.9, 0.016, 48, 1, true)),
+        keep(
+          new THREE.MeshBasicMaterial({
+            color: 0xffb257,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            opacity: 0.55,
+            side: THREE.DoubleSide,
+          })
+        )
+      );
+      meniscus.position.y = 2.07;
+      bottle.add(meniscus);
 
       // ── Or : bague de col et bouchon taillé ─────────────────
       const goldMat = keep(
@@ -334,27 +457,96 @@ export function FlaconScene({ className }: { className?: string }) {
         })
       );
 
+      // Or brossé, plus sourd : la bague sertie et le bouchon ne sont pas la
+      // même pièce que le corps poli, et ça doit se voir.
+      const goldDark = keep(
+        new THREE.MeshPhysicalMaterial({
+          color: 0x8a6d33,
+          metalness: 1,
+          roughness: 0.42,
+          envMapIntensity: 1.1,
+        })
+      );
+
+      // Le tube plongeur. Détail minuscule, signal énorme : c'est lui qui fait
+      // lire « vaporisateur » et non « carafe ». Réfracté par le verre et
+      // tordu par le galbe, il travaille le volume de l'intérieur.
+      const dipTube = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.034, 0.034, 2.94, 10, 1, true)),
+        keep(
+          new THREE.MeshPhysicalMaterial({
+            color: 0xe4ded0,
+            metalness: 0,
+            roughness: 0.38,
+            transmission: 0.55,
+            thickness: 0.1,
+            ior: 1.44,
+            side: THREE.DoubleSide,
+          })
+        )
+      );
+      dipTube.position.set(0.07, 1.57, 0.02);
+      dipTube.rotation.z = 0.035; // jamais parfaitement d'aplomb
+      bottle.add(dipTube);
+
+      // Sertissage : la bague écrasée sur la lèvre, sous le col.
+      const crimp = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.382, 0.372, 0.085, 40)),
+        goldDark
+      );
+      crimp.position.y = 3.03;
+      bottle.add(crimp);
+
       const collar = new THREE.Mesh(
         keep(new THREE.CylinderGeometry(0.395, 0.395, 0.14, 40)),
         goldMat
       );
-      collar.position.y = 3.1;
+      collar.position.y = 3.12;
       bottle.add(collar);
 
-      // Bouchon : douze pans, l'écho taillé du col rond.
-      const capBody = new THREE.Mesh(
-        keep(new THREE.CylinderGeometry(0.47, 0.43, 0.66, 12, 1)),
-        goldMat
+      // Bouchon : douze pans à facettes franches. `flatShading` est le seul
+      // moyen d'obtenir des arêtes vraiment coupées — sans lui, les normales
+      // moyennées arrondissent les pans et le bouchon redevient un cylindre.
+      const goldFacet = keep(
+        new THREE.MeshPhysicalMaterial({
+          color: 0xc9a24c,
+          metalness: 1,
+          roughness: 0.14,
+          envMapIntensity: 1.75,
+          flatShading: true,
+        })
       );
-      capBody.position.y = 3.58;
+
+      const capBody = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.47, 0.435, 0.58, 12, 1)),
+        goldFacet
+      );
+      capBody.position.y = 3.55;
       bottle.add(capBody);
 
+      // Chanfrein puis plateau : deux pièces au lieu d'un cône, pour que la
+      // lumière accroche une arête nette au sommet.
+      const capChamfer = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.395, 0.47, 0.11, 12, 1)),
+        goldFacet
+      );
+      capChamfer.position.y = 3.9;
+      bottle.add(capChamfer);
+
       const capTop = new THREE.Mesh(
-        keep(new THREE.CylinderGeometry(0.4, 0.47, 0.1, 12, 1)),
+        keep(new THREE.CylinderGeometry(0.383, 0.395, 0.055, 12, 1)),
         goldMat
       );
-      capTop.position.y = 3.95;
+      capTop.position.y = 3.983;
       bottle.add(capTop);
+
+      // Jonc de séparation : la ligne sombre entre col et bouchon.
+      const capSeam = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(0.452, 0.452, 0.028, 24)),
+        goldDark
+      );
+      capSeam.position.y = 3.25;
+      bottle.add(capSeam);
 
       // ── Étiquette, dessinée au vol puis redessinée à l'arrivée des polices ──
       const drawLabel = (ctx: CanvasRenderingContext2D, w: number, h: number) => {
@@ -411,6 +603,70 @@ export function FlaconScene({ className }: { className?: string }) {
       label.renderOrder = 2;
       bottle.add(label);
 
+      // ── Socle ───────────────────────────────────────────────
+      // Un flacon posé à même le sol flotte. Sur une pierre polie il est
+      // PRÉSENTÉ — c'est la différence entre un rendu et une vitrine.
+      const plinth = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(2.45, 2.55, PLINTH_H, 64)),
+        keep(
+          new THREE.MeshStandardMaterial({
+            color: 0x16110e,
+            roughness: 0.3,
+            metalness: 0.55,
+            envMapIntensity: 0.9,
+          })
+        )
+      );
+      plinth.position.y = -PLINTH_H / 2;
+      scene.add(plinth);
+
+      // Un filet d'or à l'arête du socle : il capte les bandes verticales du
+      // studio et dessine la ligne d'assise.
+      const plinthRing = new THREE.Mesh(
+        keep(new THREE.CylinderGeometry(2.47, 2.47, 0.022, 64, 1, true)),
+        goldMat
+      );
+      plinthRing.position.y = -0.014;
+      scene.add(plinthRing);
+
+      // ── Flacons compagnons, au second plan ──────────────────
+      // Même géométrie (aucun coût de plus), mais un matériau OPAQUE et
+      // sombre : ils ne sont pas du verre à calculer, seulement des
+      // silhouettes qui attrapent les filets verticaux. C'est ce qui remplit
+      // le fond sans alourdir la passe de réfraction.
+      const companionMat = keep(
+        new THREE.MeshStandardMaterial({
+          color: 0x120d0b,
+          roughness: 0.14,
+          metalness: 0.72,
+          envMapIntensity: 1.35,
+        })
+      );
+
+      (
+        [
+          [-3.5, -5.4, 0.82, 0.5],
+          [3.35, -6.3, 0.7, -0.9],
+          [-1.4, -8.1, 0.58, 1.4],
+        ] as [number, number, number, number][]
+      )
+        // Le plus lointain ne sert que la profondeur : on s'en passe sur le
+        // palier léger, où chaque corps compte aussi dans la passe de
+        // réfraction.
+        .slice(0, rich ? 3 : 2)
+        .forEach(([x, z, scale, spin]) => {
+          const g = new THREE.Group();
+          const body = new THREE.Mesh(glass.geometry, companionMat);
+          g.add(body);
+          const cap = new THREE.Mesh(capBody.geometry, goldDark);
+          cap.position.y = 3.55;
+          g.add(cap);
+          g.position.set(x, -PLINTH_H, z); // eux sont posés au sol, pas sur le socle
+          g.scale.setScalar(scale);
+          g.rotation.y = spin;
+          scene.add(g);
+        });
+
       // ── Sol, ombre de contact, caustique ────────────────────
       const floor = new THREE.Mesh(
         keep(new THREE.PlaneGeometry(60, 60)),
@@ -427,7 +683,7 @@ export function FlaconScene({ className }: { className?: string }) {
         )
       );
       floor.rotation.x = -Math.PI / 2;
-      floor.position.y = -0.002;
+      floor.position.y = -PLINTH_H - 0.002;
       scene.add(floor);
 
       const groundSprite = (
@@ -461,7 +717,9 @@ export function FlaconScene({ className }: { className?: string }) {
           [0.45, 'rgba(0,0,0,0.45)'],
           [1, 'rgba(0,0,0,0)'],
         ]),
-        5.2,
+        // Contenue dans le socle : une ombre qui déborde de la pierre trahit
+        // aussitôt le trucage.
+        4.3,
         0.004,
         THREE.NormalBlending,
         1
@@ -474,7 +732,7 @@ export function FlaconScene({ className }: { className?: string }) {
           [0.3, 'rgba(226,150,58,0.4)'],
           [1, 'rgba(0,0,0,0)'],
         ]),
-        3.6,
+        3.0,
         0.006,
         THREE.AdditiveBlending,
         0.95
@@ -559,12 +817,14 @@ export function FlaconScene({ className }: { className?: string }) {
         [
           // Deux filets étroits reculés derrière les épaules, plus une barre
           // basse qui n'existe que pour allumer le jus par l'arrière.
-          [-1.45, 2.3, -3.4, 0.12, 5.0, 0.85],
-          [1.3, 2.1, -3.8, 0.09, 4.4, 0.6],
+          [-1.45, 2.3, -3.4, 0.2, 5.4, 1.0],
+          [1.3, 2.1, -3.8, 0.15, 4.8, 0.8],
           // Large et chaude, calée derrière le niveau du jus : c'est elle qui
           // allume l'ambre par transmission. Sans elle le flacon n'est qu'une
           // silhouette noire — du verre, mais plus du parfum.
-          [0.0, 1.0, -2.8, 2.6, 2.4, 0.95],
+          // Elle doit MONTER jusqu'au ménisque (y ≈ 2,08) : c'est la ligne de
+          // niveau du jus qui fait lire un liquide plutôt qu'un bloc teinté.
+          [0.0, 1.25, -2.8, 2.9, 3.3, 1.0],
         ] as [number, number, number, number, number, number][]
       ).forEach(([x, y, z, w, h, o]) => {
         const bar = new THREE.Mesh(
@@ -619,6 +879,41 @@ export function FlaconScene({ className }: { className?: string }) {
       );
       scene.add(motes);
 
+      // Seconde couche, grosse et lente, très loin derrière : des bokehs.
+      // Une seule taille de poussière aplatit la profondeur ; deux échelles
+      // donnent immédiatement le sentiment d'un volume d'air.
+      const bokehCount = rich ? 34 : 14;
+      const bokehPos = new Float32Array(bokehCount * 3);
+      for (let i = 0; i < bokehCount; i++) {
+        bokehPos[i * 3] = (Math.random() - 0.5) * 20;
+        bokehPos[i * 3 + 1] = Math.random() * 9 - 0.5;
+        bokehPos[i * 3 + 2] = -6 - Math.random() * 8;
+      }
+      const bokehGeo = keep(new THREE.BufferGeometry());
+      bokehGeo.setAttribute('position', new THREE.BufferAttribute(bokehPos, 3));
+      const bokeh = new THREE.Points(
+        bokehGeo,
+        keep(
+          new THREE.PointsMaterial({
+            map: radial(
+              [
+                [0, 'rgba(255,222,168,0.5)'],
+                [0.55, 'rgba(226,176,104,0.16)'],
+                [1, 'rgba(0,0,0,0)'],
+              ],
+              64
+            ),
+            size: 0.85,
+            sizeAttenuation: true,
+            transparent: true,
+            depthWrite: false,
+            blending: THREE.AdditiveBlending,
+            opacity: 0.3,
+          })
+        )
+      );
+      scene.add(bokeh);
+
       // ── Lumières directes : les hautes lumières nettes que
       //    l'environnement seul ne donne pas. ─────────────────
       const key = new THREE.DirectionalLight(0xffd9a2, 2.2);
@@ -629,8 +924,21 @@ export function FlaconScene({ className }: { className?: string }) {
       rim.position.set(-3, 2.4, -3.5);
       scene.add(key, fill, rim);
 
+      // La lampe du curseur. C'est l'interaction la plus payante de la scène :
+      // elle ne déplace rien, elle ÉCLAIRE. Le pointeur promène une spéculaire
+      // vive sur le verre et sur l'or, et l'objet se met à répondre au geste
+      // au lieu de subir une parallaxe.
+      const cursorLight = new THREE.PointLight(0xffd8a0, 0, 13, 2);
+      cursorLight.position.set(0, 2.4, 4.6);
+      scene.add(cursorLight);
+
       // ── Post-traitement (palier riche) ──────────────────────
-      let composer: { render: () => void; setSize: (w: number, h: number) => void } | null = null;
+      let composer: {
+        render: () => void;
+        setSize: (w: number, h: number) => void;
+      } | null = null;
+      /** Gardé pour que le dévoilement puisse monter la floraison avec le reste. */
+      let bloomPass: { strength: number } | null = null;
       if (rich) {
         const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }] =
           await Promise.all([
@@ -649,37 +957,61 @@ export function FlaconScene({ className }: { className?: string }) {
         const c = new EffectComposer(renderer, target);
         c.addPass(new RenderPass(scene, camera));
         // Seuil haut : seules les spéculaires les plus vives débordent.
-        const bloom = new UnrealBloomPass(
-          new THREE.Vector2(width, height),
-          0.42,
-          0.55,
-          0.86
-        );
+        const bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.42, 0.55, 0.86);
         c.addPass(bloom);
+        bloomPass = bloom;
         c.addPass(new OutputPass()); // applique le tone mapping, une seule fois
         composer = c;
         trash.push({ dispose: () => c.dispose() });
       }
 
       // ── État piloté par le défilement et le pointeur ────────
-      const s = { progress: 0, px: 0, py: 0, cpx: 0, cpy: 0, spin: 0 };
+      const s = {
+        progress: 0,
+        px: 0,
+        py: 0,
+        cpx: 0,
+        cpy: 0,
+        spin: 0,
+        /** 0 → 1 : le dévoilement. Piloté par GSAP au premier passage à l'écran. */
+        intro: reduced ? 1 : 0,
+        /** Intensité de la lampe de curseur : monte à l'entrée, retombe à la sortie. */
+        touch: 0,
+      };
+
+      // Le repère de défilement n'est pas le canvas — qui est collant et donc
+      // immobile — mais la SECTION qui lui sert de piste. Mesurer un élément
+      // `sticky` donnerait une progression bloquée à zéro.
+      const track = (mount.closest('[data-scene-track]') as HTMLElement | null) ?? mount;
 
       const st = ScrollTrigger.create({
-        trigger: mount,
+        trigger: track,
         start: 'top top',
-        end: 'bottom top',
+        end: 'bottom bottom',
         scrub: true,
         onUpdate: (self) => {
           s.progress = self.progress;
         },
       });
 
+      const clamp = (v: number) => Math.max(-1, Math.min(1, v));
       const onPointer = (e: PointerEvent) => {
         const r = mount.getBoundingClientRect();
-        s.px = ((e.clientX - r.left) / r.width - 0.5) * 2;
-        s.py = ((e.clientY - r.top) / r.height - 0.5) * 2;
+        s.px = clamp(((e.clientX - r.left) / r.width - 0.5) * 2);
+        s.py = clamp(((e.clientY - r.top) / r.height - 0.5) * 2);
+        s.touch = 1;
       };
-      if (!coarse) window.addEventListener('pointermove', onPointer, { passive: true });
+      // Curseur sorti de la fenêtre : la scène se repose au lieu de rester
+      // figée sur la dernière position, ce qui se lit comme un bug.
+      const onLeave = () => {
+        s.px = 0;
+        s.py = 0;
+        s.touch = 0;
+      };
+      if (!coarse) {
+        window.addEventListener('pointermove', onPointer, { passive: true });
+        document.addEventListener('pointerleave', onLeave);
+      }
 
       const ro = new ResizeObserver(() => {
         const w = mount.clientWidth;
@@ -692,9 +1024,19 @@ export function FlaconScene({ className }: { className?: string }) {
       });
       ro.observe(mount);
 
+      // ── Dévoilement ─────────────────────────────────────────
+      // La scène ne « s'affiche » pas : elle se lève. L'exposition part de
+      // presque rien, la caméra recule puis avance, le flacon se pose sur son
+      // angle. Déclenché à la première intersection, pas au montage : si la
+      // page ouvre ailleurs, le plan attend qu'on le regarde.
       let onScreen = true;
+      let introStarted = reduced;
       const io = new IntersectionObserver(([e]) => {
         onScreen = e.isIntersecting;
+        if (e.isIntersecting && !introStarted) {
+          introStarted = true;
+          gsap.to(s, { intro: 1, duration: 2.6, ease: 'power2.out' });
+        }
       });
       io.observe(mount);
 
@@ -702,16 +1044,22 @@ export function FlaconScene({ className }: { className?: string }) {
       const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
       const camPos = new THREE.Vector3();
       const camLook = new THREE.Vector3();
-      // Sur large écran, la cible glisse à gauche : le flacon se pose à droite
-      // du cadre et rend la colonne de gauche au texte.
-      const lookShift = wide ? -0.95 : 0;
+      // Sur large écran, la cible glisse à l'opposé du texte : le flacon se
+      // pose d'un côté du cadre et rend l'autre colonne à la typographie. En
+      // arabe la colonne de texte passe à droite — sans ce miroir, le flacon
+      // se plantait exactement derrière le titre.
+      const rtl = document.documentElement.dir === 'rtl';
+      const lookShift = wide ? (rtl ? 0.95 : -0.95) : 0;
       // Sur mobile il n'y a pas de colonne libre : on recule, et on vise plus
       // bas pour remonter le flacon dans le tiers haut. Sans ça il est rogné
       // au pied et l'étiquette passe sous le titre.
       const distBoost = wide ? 0 : 2.4;
       const lookRise = wide ? 0 : -0.6;
 
-      /** Interpole les trois cadrages selon la progression. */
+      /** Angle du flacon au cadrage courant, écrit par `shotAt`. */
+      let shotYaw = 0;
+
+      /** Interpole les trois cadrages — et la pose du flacon — selon la progression. */
       const shotAt = (p: number) => {
         const f = Math.min(0.999, Math.max(0, p)) * (SHOTS.length - 1);
         const i = Math.floor(f);
@@ -730,22 +1078,44 @@ export function FlaconScene({ className }: { className?: string }) {
           lerp(a.look[1], b.look[1], e) + lookRise,
           lerp(a.look[2], b.look[2], e)
         );
+        shotYaw = lerp(YAW[i], YAW[Math.min(YAW.length - 1, i + 1)], e);
         return lerp(a.fov, b.fov, e);
       };
 
+      let last = 0;
       const draw = (time: number) => {
         const t = reduced ? 0 : time * 0.001;
+        const intro = s.intro;
 
-        // Le pointeur n'agit pas sur l'objet mais sur la CAMÉRA : la
-        // parallaxe porte alors aussi la poussière et la brume.
-        s.cpx = lerp(s.cpx, s.px, 0.045);
-        s.cpy = lerp(s.cpy, s.py, 0.045);
+        // Amortissement indépendant de la fréquence d'images. Un `lerp` à
+        // coefficient fixe suppose 60 Hz : sur un rAF ralenti (onglet en
+        // arrière-plan, écran 30 Hz, machine chargée) il n'atteint jamais sa
+        // cible, et la pose du flacon reste en retard sur le défilement.
+        const dt = last ? Math.min(0.1, (time - last) * 0.001) : 1 / 60;
+        last = time;
+        const damp = (rate: number) => 1 - Math.pow(1 - rate, dt * 60);
+        const kPointer = damp(0.045);
+        const kSlow = damp(0.06);
 
+        // Sur écran tactile, pas de pointeur : une dérive lente très ample
+        // remplace le geste, sinon la scène est inerte sur mobile.
+        if (coarse && !reduced) {
+          s.px = Math.sin(t * 0.17) * 0.55;
+          s.py = Math.cos(t * 0.12) * 0.3;
+        }
+
+        // Suivi amorti. Lent à la prise, c'est ce qui donne le poids — un
+        // suivi immédiat rendrait l'objet nerveux, donc bon marché.
+        s.cpx = lerp(s.cpx, s.px, kPointer);
+        s.cpy = lerp(s.cpy, s.py, kPointer);
+
+        // ── Caméra : cadrage au défilement + parallaxe au pointeur ──
         const fov = shotAt(s.progress);
         camera.position.set(
           camPos.x + s.cpx * 0.55,
           camPos.y - s.cpy * 0.32 + Math.sin(t * 0.34) * 0.045,
-          camPos.z
+          // Le recul du dévoilement : la caméra arrive de loin et se pose.
+          camPos.z + (1 - intro) * 3.2
         );
         camera.lookAt(camLook.x + s.cpx * 0.14, camLook.y - s.cpy * 0.06, camLook.z);
         if (Math.abs(camera.fov - fov) > 0.001) {
@@ -753,20 +1123,53 @@ export function FlaconScene({ className }: { className?: string }) {
           camera.updateProjectionMatrix();
         }
 
-        s.spin = lerp(s.spin, s.progress * 2.1 + t * 0.055, 0.06);
-        bottle.rotation.y = s.spin;
+        // ── Le flacon : une pose, pas une rotation libre ──
+        // La cible est l'angle du cadrage, plus une réponse bornée au
+        // pointeur et une respiration presque imperceptible. On ne verra
+        // jamais le dos du flacon, et l'étiquette reste lisible.
+        // L'angle du cadrage est appliqué DIRECTEMENT, sans lissage : c'est
+        // ScrollTrigger (`scrub`, donc Lenis) qui amortit déjà la progression.
+        // Un second amortissement par-dessus ne faisait que décrocher la pose
+        // du défilement — exactement ce qu'on cherchait à éviter. Seul le
+        // pointeur, lui, reste amorti : lui n'est pas lissé en amont.
+        s.spin = lerp(s.spin, s.cpx * 0.26, kSlow);
+        bottle.rotation.y =
+          shotYaw + s.spin + (reduced ? 0 : Math.sin(t * 0.26) * 0.022) - (1 - intro) * 0.55;
+        // Bascule minime vers le curseur : le flacon « regarde » la souris.
+        bottle.rotation.x = lerp(bottle.rotation.x, -s.cpy * 0.05, kSlow);
         bottle.position.y = reduced ? 0 : Math.sin(t * 0.5) * 0.022;
+
+        // ── Réponse au curseur : la lampe et les filets ──
+        cursorLight.position.set(s.cpx * 5.2, 2.5 - s.cpy * 2.6, 4.4);
+        // Une base toujours allumée, que le survol MODULE. Partir de zéro
+        // faisait dépendre l'éclairage du flacon de la présence de la souris :
+        // au repos la scène s'éteignait, ce qui n'est pas une interaction mais
+        // un interrupteur.
+        cursorLight.intensity = lerp(cursorLight.intensity, (7.5 + s.touch * 5.5) * intro, kSlow);
+        // Les deux filets de contre-jour glissent avec le pointeur : ce qui
+        // est réfracté DANS le verre bouge, pas seulement ce qui s'y reflète.
+        if (bars[0]) bars[0].position.x = -1.45 + s.cpx * 0.62;
+        if (bars[1]) bars[1].position.x = 1.3 - s.cpx * 0.45;
+
+        // ── Montée en lumière du dévoilement ──
+        renderer.toneMappingExposure = 1.34 * (0.04 + 0.96 * intro);
+        if (bloomPass) bloomPass.strength = 0.42 * intro;
 
         if (!reduced) {
           const p = motes.geometry.attributes.position as Three.BufferAttribute;
           const arr = p.array as Float32Array;
+          const fs = dt * 60; // même dérive quelle que soit la cadence
           for (let i = 0; i < motesCount; i++) {
             const k = i * 3;
-            arr[k + 1] += 0.0016 + (i % 5) * 0.0004;
+            arr[k + 1] += (0.0016 + (i % 5) * 0.0004) * fs;
             if (arr[k + 1] > 7.4) arr[k + 1] = -0.3;
-            arr[k] += Math.sin(t * 0.22 + moteSeed[i]) * 0.0011;
+            arr[k] += Math.sin(t * 0.22 + moteSeed[i]) * 0.0011 * fs;
           }
           p.needsUpdate = true;
+          // Les bokehs ne sont pas animés point par point : faire dériver le
+          // nuage entier coûte une matrice au lieu de 34 écritures tampon.
+          bokeh.position.x = Math.sin(t * 0.06) * 0.5;
+          bokeh.position.y = Math.sin(t * 0.045) * 0.35;
           hazes.forEach((h, i) => {
             h.rotation.z += 0.00035 * (i % 2 ? 1 : -1);
           });
@@ -780,7 +1183,11 @@ export function FlaconScene({ className }: { className?: string }) {
         st.kill();
         ro.disconnect();
         io.disconnect();
-        if (!coarse) window.removeEventListener('pointermove', onPointer);
+        gsap.killTweensOf(s);
+        if (!coarse) {
+          window.removeEventListener('pointermove', onPointer);
+          document.removeEventListener('pointerleave', onLeave);
+        }
         trash.forEach((d) => d.dispose());
         renderer.dispose();
         canvas.remove();
