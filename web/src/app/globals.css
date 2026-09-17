@@ -468,19 +468,44 @@ body {
    invisible. Aucune transition à l'aller — on ne voit pas l'en-tête
    s'effacer, il n'a jamais été présent ; elle ne joue qu'au retour.
    ══════════════════════════════════════════════════════════════ */
+/* Aucune transition d'opacité ni de transform ici : l'entrée de l'en-tête est
+   jouée par la timeline GSAP du hero. Une transition CSS sur les mêmes
+   propriétés se relancerait à chaque image que GSAP écrit, et les deux
+   mouvements se chevaucheraient en un glissement mou. */
 .ds-header {
   transition:
-    opacity 1.2s var(--ease-lux),
-    transform 1.2s var(--ease-lux),
     background-color 0.5s var(--ease-lux),
     border-color 0.5s var(--ease-lux),
     backdrop-filter 0.5s var(--ease-lux);
 }
-:root[data-intro="playing"] .ds-header {
+:root[data-intro] .ds-header {
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-10px);
-  transition: none;
+  transform: translateY(-14px);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   HERO — ÉTAT DE DÉPART, AVANT GSAP
+   Le HTML serveur arrive dans son état FINAL. Entre sa peinture et le
+   chargement de GSAP, le titre s'affichait puis disparaissait avant de
+   s'animer, et le rideau recouvrait le film aux visites suivantes.
+
+   Tant que le mode d'ouverture est posé (script du <head>) et que le hero
+   n'est pas « armé » (GSAP a posé ses valeurs de départ), on tient chaque
+   élément dans son état de DÉPART. `visibility` et non `transform` : GSAP
+   lirait un transform CSS comme un décalage à conserver.
+
+   Sans JavaScript, ou sous mouvement réduit, rien de ceci ne s'applique —
+   sauf le rideau, qui n'a de sens que s'il va s'ouvrir.
+   ══════════════════════════════════════════════════════════════ */
+:root[data-intro] .hero-film:not([data-armed]) [data-hero-line],
+:root[data-intro] .hero-film:not([data-armed]) [data-hero-tail] {
+  visibility: hidden;
+}
+:root:not([data-intro="curtain"]) .hero-film:not([data-armed]) [data-curtain-left],
+:root:not([data-intro="curtain"]) .hero-film:not([data-armed]) [data-curtain-right],
+:root:not([data-intro="curtain"]) .hero-film:not([data-armed]) [data-counter] {
+  visibility: hidden;
 }
 
 /* ══════════════════════════════════════════════════════════════

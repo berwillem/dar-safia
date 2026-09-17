@@ -6,62 +6,58 @@ import { INTRO_ATTR, INTRO_SESSION_KEY, introGuardScript } from './intro-guard';
  * Le script de garde est une CHAÎNE exécutée par le navigateur pendant
  * l'analyse du HTML : ni TypeScript ni le linter ne la voient. On l'exécute
  * donc ici contre de faux globaux pour vérifier qu'elle est valide et qu'elle
- * ne voile l'en-tête que dans le seul cas voulu.
+ * choisit le bon mode d'ouverture.
  */
-function run(pathname: string, { seen = false, reduced = false } = {}) {
+function run(
+  pathname: string,
+  { seen = false, reduced = false, storageThrows = false } = {}
+) {
   const attrs: Record<string, string> = {};
-  const win: { __dsIntro?: number } = {};
+  const win: { __dsIntro?: string } = {};
+  const storage = {
+    getItem: (k: string) => {
+      if (storageThrows) throw new Error('SecurityError');
+      return seen && k === INTRO_SESSION_KEY ? '1' : null;
+    },
+  };
   const globals = {
     location: { pathname },
     matchMedia: () => ({ matches: reduced }),
-    sessionStorage: { getItem: (k: string) => (seen && k === INTRO_SESSION_KEY ? '1' : null) },
+    sessionStorage: storage,
     document: {
       documentElement: { setAttribute: (k: string, v: string) => (attrs[k] = v) },
     },
     window: win,
   };
   new Function(...Object.keys(globals), introGuardScript)(...Object.values(globals));
-  return { veiled: attrs[INTRO_ATTR] === 'playing', flag: win.__dsIntro };
+  return { mode: attrs[INTRO_ATTR] ?? null, flag: win.__dsIntro ?? null };
 }
 
-describe('script de garde de l’intro', () => {
-  it.each(['/fr', '/ar', '/en', '/fr/', '/'])('voile l’en-tête sur l’accueil %s', (path) => {
-    expect(run(path)).toEqual({ veiled: true, flag: 1 });
+describe("script de garde de l'ouverture", () => {
+  it.each(['/fr', '/ar', '/en', '/fr/', '/'])(
+    'joue le rideau à la première visite (%s)',
+    (path) => {
+      expect(run(path)).toEqual({ mode: 'curtain', flag: 'curtain' });
+    }
+  );
+
+  it('ne rejoue pas le rideau à une visite suivante, mais garde la révélation', () => {
+    expect(run('/fr', { seen: true })).toEqual({ mode: 'reveal', flag: 'reveal' });
   });
 
   it.each(['/fr/contact', '/fr/la-maison', '/ar/parfums/x', '/de'])(
     'ne touche à rien hors accueil (%s)',
     (path) => {
-      expect(run(path)).toEqual({ veiled: false, flag: undefined });
+      expect(run(path)).toEqual({ mode: null, flag: null });
     }
   );
 
-  it('ne voile pas une session qui a déjà vu l’intro', () => {
-    expect(run('/fr', { seen: true }).veiled).toBe(false);
+  it('ne pose rien sous prefers-reduced-motion : la page reste dans son état final', () => {
+    expect(run('/fr', { reduced: true }).mode).toBeNull();
   });
 
-  it('ne voile pas sous prefers-reduced-motion', () => {
-    expect(run('/fr', { reduced: true }).veiled).toBe(false);
-  });
-
-  it('ne lève jamais d’erreur, même sans stockage', () => {
-    const throwing = {
-      location: { pathname: '/fr' },
-      matchMedia: () => ({ matches: false }),
-      get sessionStorage(): never {
-        throw new Error('SecurityError');
-      },
-      document: { documentElement: { setAttribute: () => {} } },
-      window: {},
-    };
-    expect(() =>
-      new Function('location', 'matchMedia', 'sessionStorage', 'document', 'window', introGuardScript)(
-        throwing.location,
-        throwing.matchMedia,
-        undefined,
-        throwing.document,
-        throwing.window
-      )
-    ).not.toThrow();
+  it('ne pose rien et ne lève rien si le stockage est inaccessible', () => {
+    expect(() => run('/fr', { storageThrows: true })).not.toThrow();
+    expect(run('/fr', { storageThrows: true }).mode).toBeNull();
   });
 });

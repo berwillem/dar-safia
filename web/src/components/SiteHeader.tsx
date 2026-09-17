@@ -12,7 +12,13 @@ import { LocaleSwitcher } from './i18n/LocaleSwitcher';
 import { CartButton } from './cart/CartButton';
 import { INTRO_ATTR } from '@/lib/intro-guard';
 
-import { INTRO_DONE_EVENT, introWillPlay, NAV_REVEAL } from './home/intro-timing';
+import {
+  clearNavVeil,
+  INTRO_DONE_EVENT,
+  introWillPlay,
+  NAV_FALLBACK,
+  navVeiled,
+} from './home/intro-timing';
 
 /**
  * Au chargement complet, le voile est DÉJÀ posé par le script du <head>. Cet
@@ -49,25 +55,39 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
 
   const isHome = pathname === localePath(locale, '/');
 
+  const headerRef = useRef<HTMLElement>(null);
+
   useVeilEffect(() => {
     const root = document.documentElement;
-    // `window.__dsIntro` d'abord : posé une fois, il survit au remontage. Le
-    // sessionStorage, lui, est marqué « vu » par `HeroFilm` dès son montage —
-    // le relire en pleine intro répondrait faux et laisserait l'en-tête voilé.
-    const veil = isHome && (window.__dsIntro === 1 || introWillPlay());
-    if (!veil) {
-      window.__dsIntro = 0;
-      root.removeAttribute(INTRO_ATTR);
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!isHome || reduced) {
+      clearNavVeil();
       return;
     }
-    window.__dsIntro = 1;
-    root.setAttribute(INTRO_ATTR, 'playing');
+    // Au chargement complet, le mode vient du script de garde (`__dsIntro`
+    // survit au remontage du Strict Mode). Lors d'une navigation client vers
+    // l'accueil, on le déduit de la même façon — AVANT que `HeroFilm` ne
+    // marque la session comme vue.
+    const mode = window.__dsIntro || (introWillPlay() ? 'curtain' : 'reveal');
+    window.__dsIntro = mode;
+    root.setAttribute(INTRO_ATTR, mode);
 
+    // C'est la timeline de `HeroFilm` qui fait entrer l'en-tête, en même
+    // temps que la typographie. Ici, seulement les issues de secours : bouton
+    // « passer », tabulation, délai de sûreté. Entrée brève par l'API Web
+    // Animations — GSAP n'est pas forcément chargé à ce moment-là.
     const lift = () => {
-      window.__dsIntro = 0;
-      root.removeAttribute(INTRO_ATTR);
+      if (!navVeiled()) return;
+      clearNavVeil();
+      headerRef.current?.animate(
+        [
+          { opacity: 0, transform: 'translateY(-14px)' },
+          { opacity: 1, transform: 'none' },
+        ],
+        { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }
+      );
     };
-    const timer = window.setTimeout(lift, NAV_REVEAL * 1000);
+    const timer = window.setTimeout(lift, NAV_FALLBACK[mode] * 1000);
     window.addEventListener(INTRO_DONE_EVENT, lift);
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Tab') lift();
@@ -130,6 +150,7 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
 
   return (
     <header
+      ref={headerRef}
       data-lifted={solidHeader || undefined}
       className="ds-header fixed inset-x-0 top-0 z-40 data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >

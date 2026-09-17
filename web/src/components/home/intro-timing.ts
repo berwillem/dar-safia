@@ -12,14 +12,14 @@ import { useSyncExternalStore } from 'react';
  * les durées de la timeline d'ouverture. Un seul endroit à ajuster.
  */
 
-import { INTRO_SESSION_KEY } from '@/lib/intro-guard';
+import { INTRO_ATTR, INTRO_SESSION_KEY, type IntroMode } from '@/lib/intro-guard';
 
 export { INTRO_SESSION_KEY };
 
 declare global {
   interface Window {
-    /** Posé par le script de garde du <head> ; voir `lib/intro-guard.ts`. */
-    __dsIntro?: number;
+    /** Mode d'ouverture posé par le script de garde du <head> ; voir `lib/intro-guard.ts`. */
+    __dsIntro?: IntroMode | '';
   }
 }
 
@@ -98,14 +98,36 @@ export function dismissIntro(): void {
 }
 
 /**
- * Instant où l'en-tête revient. La nav n'existe pas tant que le film ne s'est
- * pas présenté : elle arrive APRÈS la typographie, une fois le plan installé.
+ * Instant où la typographie secondaire (accroche, lien, indicateur) entre —
+ * et, AVEC elle, l'en-tête. Un seul repère pour les deux : ils partent au même
+ * moment, sur la même courbe et la même durée, dans la MÊME timeline.
  *
- * Ce voile ne concerne QUE l'intro de la première visite, sur l'accueil.
- * Partout ailleurs — et à toute visite suivante — l'en-tête est là au premier
- * rendu : une nav qui s'absente se lit comme une nav manquante.
+ * L'en-tête était auparavant révélé par une minuterie lancée au montage. Or la
+ * timeline, elle, ne démarre qu'une fois GSAP chargé : l'écart variait avec le
+ * réseau, et la nav arrivait bien après le reste.
  */
-export const NAV_REVEAL = TYPE_START + 1.15;
+export const TAIL_START = TYPE_START + 0.6;
+
+/** Durée d'entrée de l'en-tête, égale à celle de la typographie secondaire. */
+export const NAV_IN = { curtain: 1.6, reveal: 0.8 } as const;
+
+/**
+ * Filet de sécurité : si la timeline ne tourne jamais (GSAP bloqué, onglet
+ * resté en arrière-plan), l'en-tête revient quand même. Largement APRÈS le
+ * repère normal, pour ne jamais le devancer quand tout fonctionne.
+ */
+export const NAV_FALLBACK = { curtain: TAIL_START + 4, reveal: 4 } as const;
+
+/** L'en-tête est-il encore tenu hors champ par l'ouverture de l'accueil ? */
+export function navVeiled(): boolean {
+  return document.documentElement.hasAttribute(INTRO_ATTR);
+}
+
+/** Lève le voile. L'animation d'entrée est à la charge de l'appelant. */
+export function clearNavVeil(): void {
+  window.__dsIntro = '';
+  document.documentElement.removeAttribute(INTRO_ATTR);
+}
 
 /**
  * Émis quand l'intro se termine autrement que par la montre : bouton

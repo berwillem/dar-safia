@@ -4,12 +4,16 @@ import { useEffect, useRef, useState } from 'react';
 
 import {
   announceIntroDone,
+  clearNavVeil,
   COUNTER_DURATION,
   COUNTER_HOLD,
   CURTAIN_DURATION,
   dismissIntro,
   LUXE_EASE_CURVE,
   LUXE_EASE_ID,
+  NAV_IN,
+  navVeiled,
+  TAIL_START,
   TYPE_START,
   useIntroPlays,
 } from './intro-timing';
@@ -108,8 +112,25 @@ export function HeroFilm({
       // Toute l'intro s'y tient — compteur, rideau, typographie.
       CustomEase.create(LUXE_EASE_ID, LUXE_EASE_CURVE);
 
-      const ctx = gsap.context(() => {
+      const ctx = gsap.context((self) => {
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // L'en-tête entre DANS cette timeline, pas sur une minuterie à part :
+        // mêmes repère, courbe et durée que la typographie secondaire.
+        const header = document.querySelector<HTMLElement>('.ds-header');
+        const revealNav = (duration: number, ease: string) => {
+          if (!header || !navVeiled()) return; // déjà levé (bouton « passer », tab)
+          self.add(() => {
+            gsap.fromTo(
+              header,
+              { opacity: 0, y: -14 },
+              { opacity: 1, y: 0, duration, ease, clearProps: 'opacity,transform' }
+            );
+          });
+          // Les valeurs de départ sont déjà posées en ligne : lever le voile
+          // CSS maintenant ne montre aucune image intermédiaire.
+          clearNavVeil();
+        };
 
         if (reduced) {
           gsap.set(['[data-hero-line]', '[data-hero-tail]'], {
@@ -216,12 +237,13 @@ export function HeroFilm({
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                duration: 1.6,
+                duration: NAV_IN.curtain,
                 stagger: 0.18,
                 ease: LUXE_EASE_ID,
               },
-              TYPE_START + 0.6
-            );
+              TAIL_START
+            )
+            .call(() => revealNav(NAV_IN.curtain, LUXE_EASE_ID), [], TAIL_START);
         } else {
           gsap.set(
             ['[data-curtain-left]', '[data-curtain-right]', '[data-counter]'],
@@ -236,9 +258,10 @@ export function HeroFilm({
             .fromTo(
               '[data-hero-tail]',
               { opacity: 0, y: 14 },
-              { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
+              { opacity: 1, y: 0, duration: NAV_IN.reveal, stagger: 0.1 },
               0.5
-            );
+            )
+            .call(() => revealNav(NAV_IN.reveal, 'power3.out'), [], 0.5);
         }
 
         // ── Sortie au défilement ──
@@ -275,7 +298,15 @@ export function HeroFilm({
         });
       }, rootRef);
 
-      teardown = () => ctx.revert();
+      // Les états de départ sont maintenant posés en ligne par GSAP : le CSS
+      // qui tenait le hero caché jusqu'ici peut rendre la main. Même tâche
+      // JavaScript, donc aucune peinture entre les deux.
+      rootRef.current.setAttribute('data-armed', '');
+
+      teardown = () => {
+        rootRef.current?.removeAttribute('data-armed');
+        ctx.revert();
+      };
     })();
 
     return () => {
