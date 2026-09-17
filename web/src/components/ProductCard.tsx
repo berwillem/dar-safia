@@ -45,7 +45,7 @@ export function ProductCard({
   return (
     <article
       data-universe={product.family}
-      className="group relative flex flex-col overflow-hidden rounded-md border border-smoke-2 bg-noir-2 transition-colors duration-300 hover:border-[var(--universe-glow)]"
+      className="ds-card group relative flex flex-col overflow-hidden rounded-md border border-smoke-2 bg-noir-2 hover:border-[var(--universe-glow)]"
     >
       <div className="relative aspect-4/5 overflow-hidden bg-noir-3">
         {image && (
@@ -82,7 +82,7 @@ export function ProductCard({
           </span>
         </div>
 
-        <h3 className="font-serif text-lg leading-tight text-ivory">
+        <h3 className="ds-text-lift font-serif text-lg leading-tight text-ivory">
           {/* Le lien couvre toute la carte : une seule cible pour l'AT. */}
           <Link
             href={localePath(locale, `/parfums/${product.slug}`)}

@@ -79,7 +79,7 @@ export function CartDrawer() {
             <button
               type="button"
               onClick={closeCart}
-              className="mt-2 rounded-sm border border-gold px-5 py-2.5 text-2xs font-semibold tracking-(--tracking-label) text-gold uppercase transition-colors hover:bg-gold hover:text-noir"
+              className="ds-btn-ghost mt-2 rounded-sm border border-gold px-5 py-2.5 text-2xs font-semibold tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-noir"
             >
               {dict.cart.continue}
             </button>
@@ -152,7 +152,7 @@ export function CartDrawer() {
                   href={checkoutUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 flex items-center justify-center rounded-sm bg-gold px-6 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light"
+                  className="ds-btn mt-4 flex items-center justify-center rounded-sm bg-gold px-6 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light"
                 >
                   {dict.cart.checkout}
                 </a>

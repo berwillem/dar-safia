@@ -126,7 +126,7 @@ export function FilterSidebar({
         <button
           type="button"
           onClick={onClear}
-          className="self-start pb-4 font-ui text-2xs tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-gold-light"
+          className="ds-navlink self-start pb-4 font-ui text-2xs tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-gold-light"
         >
           {f.clear}
         </button>

@@ -151,7 +151,67 @@
     "undecidedLink": "Take the scent diagnostic",
     "signature": "— {name}, {city}",
     "signatureNameOnly": "— {name}",
-    "signatureCityOnly": "— {city}"
+    "signatureCityOnly": "— {city}",
+    "eyebrow": "Concierge",
+    "tabs": {
+      "personal": {
+        "label": "Write to the house",
+        "hint": "Advice, availability or an order"
+      },
+      "collab": {
+        "label": "Propose a collaboration",
+        "hint": "Brands, boutiques, press and creators"
+      }
+    },
+    "collab": {
+      "houseLabel": "House or retailer",
+      "roleLabel": "Your role",
+      "cityLabel": "City",
+      "subjectLabel": "Subject of your proposal",
+      "subjects": [
+        "Distribution",
+        "Partnership",
+        "Press",
+        "Other"
+      ],
+      "messageLabel": "Your proposal",
+      "messagePlaceholder": "Hello Dar Safia, we represent…",
+      "send": "Send the proposal",
+      "hint": "Your proposal opens WhatsApp: nothing is sent until you've reviewed it.",
+      "intro": "Collaboration proposal:",
+      "lineHouse": "House: {house}",
+      "lineRole": "Role: {role}",
+      "lineCity": "City: {city}",
+      "lineSubject": "Subject: {subject}"
+    },
+    "faqTitle": "Frequently asked",
+    "faq": [
+      {
+        "q": "How do I place an order?",
+        "a": "Everything goes through the WhatsApp concierge. Your message is composed here, in your browser; it opens in WhatsApp and is only sent once you have read it back."
+      },
+      {
+        "q": "When does the concierge reply?",
+        "a": "Seven days a week."
+      },
+      {
+        "q": "Do you deliver across Algeria?",
+        "a": "Yes — all 58 wilayas are served. The concierge confirms the details for yours when you order."
+      },
+      {
+        "q": "How is an order paid for?",
+        "a": "Cash on delivery."
+      },
+      {
+        "q": "Are the fragrances authentic?",
+        "a": "Every piece in the catalogue is selected by the house, and its authenticity is guaranteed."
+      },
+      {
+        "q": "I don't know what to choose.",
+        "a": "The scent diagnostic asks four questions and proposes a signature. No sign-up."
+      }
+    ],
+    "faqFootnote": "A question that isn't here? The concierge replies on WhatsApp."
   },
   "catalog": {
     "eyebrow": "Catalogue",

@@ -26,9 +26,9 @@ type Phase =
   | { name: 'error' };
 
 const primaryButton =
-  'rounded-sm bg-gold px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light';
+  'ds-btn rounded-sm bg-gold px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light';
 const secondaryButton =
-  'mt-2 inline-block rounded-sm border border-smoke-2 px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-ivory/75 uppercase transition-colors hover:border-gold hover:text-gold';
+  'ds-btn-ghost mt-2 inline-block rounded-sm border border-smoke-2 px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-ivory/75 uppercase transition-colors hover:border-gold hover:text-noir';
 
 export function ScentFinder() {
   const { locale, dict, fill } = useI18n();
@@ -119,9 +119,9 @@ export function ScentFinder() {
               key={value}
               type="button"
               onClick={() => choose(step.key, value as never)}
-              className="group flex flex-col items-start rounded-md border border-smoke-2 bg-noir-2 p-5 text-start transition-colors hover:border-gold/60"
+              className="ds-card group flex flex-col items-start rounded-md border border-smoke-2 bg-noir-2 p-5 text-start hover:border-gold/60"
             >
-              <span className="font-serif text-lg text-ivory transition-colors group-hover:text-gold">
+              <span className="ds-text-lift font-serif text-lg text-ivory">
                 {options[value]?.label ?? value}
               </span>
               <span className="mt-1 text-2xs text-ivory/50">{options[value]?.hint}</span>
@@ -134,7 +134,7 @@ export function ScentFinder() {
         <button
           type="button"
           onClick={() => setPhase({ name: 'question', step: phase.step - 1 })}
-          className="mt-6 text-2xs tracking-(--tracking-label) text-ivory/45 uppercase transition-colors hover:text-ivory"
+          className="ds-navlink mt-6 text-2xs tracking-(--tracking-label) text-ivory/45 uppercase transition-colors hover:text-ivory"
         >
           {sf.previous}
         </button>
@@ -239,7 +239,7 @@ function ScentResultView({
               <li key={alt.slug}>
                 <Link
                   href={localePath(locale, `/parfums/${alt.slug}`)}
-                  className="flex gap-3 rounded-md border border-smoke-2 bg-noir-2 p-3 transition-colors hover:border-gold/50"
+                  className="ds-card flex gap-3 rounded-md border border-smoke-2 bg-noir-2 p-3 hover:border-gold/50"
                 >
                   {alt.imageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
@@ -274,7 +274,7 @@ function ScentResultView({
       <button
         type="button"
         onClick={onRestart}
-        className="mt-10 block text-2xs tracking-(--tracking-label) text-ivory/45 uppercase transition-colors hover:text-ivory"
+        className="ds-navlink mt-10 inline-block text-2xs tracking-(--tracking-label) text-ivory/45 uppercase transition-colors hover:text-ivory"
       >
         {sf.redo}
       </button>

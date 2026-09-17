@@ -459,3 +459,144 @@ body {
     );
   }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   EN-TÊTE — VOILE D'INTRO
+   Pendant le film d'ouverture (accueil, première visite), l'en-tête
+   n'est pas encore là. `visibility` en plus de l'opacité : sans elle,
+   la nav resterait dans l'ordre de tabulation alors qu'elle est
+   invisible. Aucune transition à l'aller — on ne voit pas l'en-tête
+   s'effacer, il n'a jamais été présent ; elle ne joue qu'au retour.
+   ══════════════════════════════════════════════════════════════ */
+.ds-header {
+  transition:
+    opacity 1.2s var(--ease-lux),
+    transform 1.2s var(--ease-lux),
+    background-color 0.5s var(--ease-lux),
+    border-color 0.5s var(--ease-lux),
+    backdrop-filter 0.5s var(--ease-lux);
+}
+.ds-header[data-intro-veiled] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: none;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   SURVOL — TROIS GESTES, PAS DIX
+   Le site manquait de réponse au survol. On ajoute donc un vocabulaire
+   COURT et réutilisable, plutôt qu'un effet inventé à chaque endroit :
+
+     .ds-btn        — bouton plein : un reflet traverse l'or.
+     .ds-btn-ghost  — bouton cerclé : le fond se remplit depuis le bord.
+     .ds-card       — carte : elle se soulève à peine, sa bordure s'allume.
+     .ds-text-lift  — texte : l'or monte dans la lettre.
+
+   Tout est neutralisé par la règle prefers-reduced-motion du haut de
+   fichier (transition-duration ramenée à 0,01 ms).
+   ══════════════════════════════════════════════════════════════ */
+.ds-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ds-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.42) 50%,
+    transparent 80%
+  );
+  transform: translateX(-130%);
+  transition: transform 0.8s var(--ease-lux);
+}
+.ds-btn:hover::before,
+.ds-btn:focus-visible::before {
+  transform: translateX(130%);
+}
+/* En lecture droite-à-gauche le reflet part de l'autre bord. */
+[dir="rtl"] .ds-btn::before {
+  transform: translateX(130%);
+}
+[dir="rtl"] .ds-btn:hover::before,
+[dir="rtl"] .ds-btn:focus-visible::before {
+  transform: translateX(-130%);
+}
+
+.ds-btn-ghost {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.ds-btn-ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-lux);
+}
+[dir="rtl"] .ds-btn-ghost::before {
+  transform-origin: right;
+}
+.ds-btn-ghost:hover::before,
+.ds-btn-ghost:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.ds-card {
+  transition:
+    transform 0.55s var(--ease-lux),
+    border-color 0.55s var(--ease-lux),
+    box-shadow 0.55s var(--ease-lux);
+}
+.ds-card:hover,
+.ds-card:focus-within {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.45);
+}
+
+.ds-text-lift {
+  transition:
+    color 0.45s var(--ease-lux),
+    text-shadow 0.45s var(--ease-lux);
+}
+.ds-text-lift:hover,
+.ds-text-lift:focus-visible,
+.group:hover .ds-text-lift {
+  color: var(--color-gold-light);
+  text-shadow: 0 0 22px rgba(228, 189, 104, 0.32);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ds-card:hover,
+  .ds-card:focus-within {
+    transform: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PANNEAU DÉPLIANT (FAQ)
+   `grid-template-rows: 0fr -> 1fr` anime une hauteur inconnue sans
+   la mesurer en JavaScript, donc sans lecture forcée du layout à
+   chaque image. L'enfant porte l'`overflow: hidden`.
+   ══════════════════════════════════════════════════════════════ */
+.ds-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s var(--ease-lux);
+}
+.ds-panel[data-open] {
+  grid-template-rows: 1fr;
+}
+.ds-panel > * {
+  overflow: hidden;
+  min-height: 0;
+}

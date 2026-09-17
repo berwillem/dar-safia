@@ -95,7 +95,7 @@ export function ShopExperience({
             <button
               type="button"
               onClick={() => setFilters(EMPTY_FILTERS)}
-              className="mt-6 inline-block rounded-sm border border-gold px-5 py-2.5 text-2xs font-semibold tracking-(--tracking-label) text-gold uppercase transition-colors hover:bg-gold hover:text-noir"
+              className="ds-btn-ghost mt-6 inline-block rounded-sm border border-gold px-5 py-2.5 text-2xs font-semibold tracking-(--tracking-label) text-gold uppercase transition-colors hover:text-noir"
             >
               {c.emptyCta}
             </button>

@@ -76,7 +76,7 @@ export function ClosingCall({
 
           <Link
             href={localePath(locale, '/trouver')}
-            className="font-ui text-2xs tracking-[0.14em] text-ivory/45 uppercase transition-colors hover:text-gold"
+            className="ds-navlink font-ui text-2xs tracking-[0.14em] text-ivory/45 uppercase transition-colors hover:text-gold"
           >
             {c.secondary}
           </Link>

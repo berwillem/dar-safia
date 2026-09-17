@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import {
+  announceIntroDone,
   COUNTER_DURATION,
   COUNTER_HOLD,
   CURTAIN_DURATION,
@@ -423,6 +424,9 @@ export function HeroFilm({
           type="button"
           onClick={() => {
             dismissIntro();
+            // L'en-tête est voilé pendant l'intro : sans ce signal il
+            // attendrait la fin du minutage alors que le film est déjà parti.
+            announceIntroDone();
             setSkipped(true);
           }}
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:start-4 focus:z-50 focus:rounded-sm focus:bg-gold focus:px-4 focus:py-2 focus:font-ui focus:text-2xs focus:text-noir"

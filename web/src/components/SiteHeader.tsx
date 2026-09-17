@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/dictionary';
@@ -10,6 +10,15 @@ import { localePath } from '@/lib/i18n/routing';
 
 import { LocaleSwitcher } from './i18n/LocaleSwitcher';
 import { CartButton } from './cart/CartButton';
+import { INTRO_DONE_EVENT, introWillPlay, NAV_REVEAL } from './home/intro-timing';
+
+/**
+ * Le voile doit être posé AVANT la peinture, sinon l'en-tête est visible une
+ * image puis disparaît — précisément le défaut qu'on corrige. En rendu
+ * serveur, `useLayoutEffect` n'a pas de sens et React le signale : on retombe
+ * alors sur `useEffect`, qui n'y sera de toute façon jamais exécuté.
+ */
+const useVeilEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 /**
  * En-tête du site — présent, identique, sur TOUTES les pages.
@@ -20,10 +29,15 @@ import { CartButton } from './cart/CartButton';
  * et ne prend son fond qu'une fois le film dépassé (seuil = hauteur de
  * fenêtre). Partout ailleurs, le fond est là dès le premier rendu.
  *
- * La nav ne joue AUCUNE entrée différée : elle est simplement là. Une nav qui
- * s'absente pendant quelques secondes se lit comme une nav manquante — c'est
- * l'inverse de ce qu'on veut. L'en-tête est en `z-40`, au-dessus du rideau du
- * hero (`z-10`) : il reste lisible même pendant l'intro.
+ * Une seule exception à « la nav est toujours là » : le film d'ouverture de
+ * l'accueil, à la première visite de la session. L'en-tête est en `z-40`,
+ * donc au-dessus du rideau (`z-10`) — il se posait par-dessus la mise en
+ * scène avant qu'elle n'ait commencé. Il est donc VOILÉ le temps du film et
+ * arrive une fois le plan installé (`NAV_REVEAL`).
+ *
+ * Trois sorties de secours, pour qu'aucune nav ne soit jamais vraiment
+ * absente : la fin du minutage, le bouton « passer » (`INTRO_DONE_EVENT`) et
+ * la première tabulation — personne au clavier n'attend six secondes.
  */
 export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const [lifted, setLifted] = useState(false);
@@ -31,6 +45,35 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
   const panelRef = useRef<HTMLDivElement>(null);
 
   const isHome = pathname === localePath(locale, '/');
+
+  const [veiled, setVeiled] = useState(false);
+
+  useVeilEffect(() => {
+    // Lu ICI, impérativement, et une seule fois. Avec le hook `useIntroPlays`,
+    // la valeur rebasculait à `false` dès que `HeroFilm` marquait la session
+    // comme vue : la dépendance de cet effet changeait en pleine intro, le
+    // nettoyage emportait le minuteur et les écouteurs — et l'en-tête restait
+    // voilé pour de bon.
+    if (!isHome || !introWillPlay()) {
+      setVeiled(false);
+      return;
+    }
+    setVeiled(true);
+
+    const lift = () => setVeiled(false);
+    const timer = window.setTimeout(lift, NAV_REVEAL * 1000);
+    window.addEventListener(INTRO_DONE_EVENT, lift);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') lift();
+    };
+    window.addEventListener('keydown', onKey);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener(INTRO_DONE_EVENT, lift);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [isHome]);
 
   // Le menu retient la page où il a été ouvert. Changer de page le referme
   // donc PENDANT le rendu, sans effet ni setState en cascade.
@@ -82,7 +125,8 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
   return (
     <header
       data-lifted={solidHeader || undefined}
-      className="fixed inset-x-0 top-0 z-40 transition-[background-color,border-color,backdrop-filter] duration-500 ease-(--ease-lux) data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
+      data-intro-veiled={veiled || undefined}
+      className="ds-header fixed inset-x-0 top-0 z-40 data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8">
         <Link

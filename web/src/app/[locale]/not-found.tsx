@@ -37,13 +37,13 @@ export default async function NotFound() {
       <div className="mt-9 flex flex-wrap gap-3">
         <Link
           href={localePath(locale, '/parfums')}
-          className="rounded-sm bg-gold px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light"
+          className="ds-btn rounded-sm bg-gold px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors hover:bg-gold-light"
         >
           {nf.seeCollection}
         </Link>
         <Link
           href={localePath(locale, '/')}
-          className="rounded-sm border border-smoke-2 px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-ivory/75 uppercase transition-colors hover:border-gold/50 hover:text-ivory"
+          className="ds-btn-ghost rounded-sm border border-smoke-2 px-6 py-3 text-2xs font-semibold tracking-(--tracking-label) text-ivory/75 uppercase transition-colors hover:border-gold/50 hover:text-noir"
         >
           {nf.backHome}
         </Link>

@@ -163,13 +163,13 @@ export function FlaconScene({ className }: { className?: string }) {
         alpha: true,
         powerPreference: 'high-performance',
       });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, rich ? 1.75 : 1.4));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, rich ? 1.4 : 1.25));
       renderer.setSize(width, height);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.34;
       // La réfraction se calcule dans une passe séparée : la moitié de la
       // résolution suffit sur des surfaces aussi lisses, et divise son coût.
-      renderer.transmissionResolutionScale = rich ? 0.5 : 0.3;
+      renderer.transmissionResolutionScale = rich ? 0.35 : 0.25;
       const canvas = renderer.domElement;
       canvas.setAttribute('aria-hidden', 'true');
       canvas.style.width = '100%';
@@ -369,7 +369,7 @@ export function FlaconScene({ className }: { className?: string }) {
         );
 
       const glass = new THREE.Mesh(
-        lathe(BOTTLE_PROFILE, rich ? 96 : 56),
+        lathe(BOTTLE_PROFILE, rich ? 64 : 40),
         keep(
           new THREE.MeshPhysicalMaterial({
             color: 0xffffff,
@@ -402,7 +402,7 @@ export function FlaconScene({ className }: { className?: string }) {
       // Le jus : indice plus bas que le verre, atténuation ambrée courte —
       // c'est la distance parcourue dans le liquide qui fonce la teinte.
       const liquid = new THREE.Mesh(
-        lathe(LIQUID_PROFILE, rich ? 80 : 48),
+        lathe(LIQUID_PROFILE, rich ? 52 : 32),
         keep(
           new THREE.MeshPhysicalMaterial({
             color: 0xffffff,
@@ -474,13 +474,13 @@ export function FlaconScene({ className }: { className?: string }) {
       const dipTube = new THREE.Mesh(
         keep(new THREE.CylinderGeometry(0.034, 0.034, 2.94, 10, 1, true)),
         keep(
-          new THREE.MeshPhysicalMaterial({
-            color: 0xe4ded0,
-            metalness: 0,
-            roughness: 0.38,
-            transmission: 0.55,
-            thickness: 0.1,
-            ior: 1.44,
+          // Opaque, et c'est délibéré : un troisième matériau à transmission
+          // ne se voyait pas — le tube est déjà derrière deux épaisseurs qui
+          // réfractent — mais il payait plein tarif dans la passe.
+          new THREE.MeshStandardMaterial({
+            color: 0xd8d2c4,
+            metalness: 0.1,
+            roughness: 0.42,
             side: THREE.DoubleSide,
           })
         )
@@ -845,7 +845,7 @@ export function FlaconScene({ className }: { className?: string }) {
       });
 
       // ── Poussière en suspension ─────────────────────────────
-      const motesCount = rich ? 420 : 130;
+      const motesCount = rich ? 240 : 90;
       const motePos = new Float32Array(motesCount * 3);
       const moteSeed = new Float32Array(motesCount);
       for (let i = 0; i < motesCount; i++) {
@@ -938,7 +938,7 @@ export function FlaconScene({ className }: { className?: string }) {
         setSize: (w: number, h: number) => void;
       } | null = null;
       /** Gardé pour que le dévoilement puisse monter la floraison avec le reste. */
-      let bloomPass: { strength: number } | null = null;
+      let bloomPass: { strength: number; setSize: (w: number, h: number) => void } | null = null;
       if (rich) {
         const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }, { OutputPass }] =
           await Promise.all([
@@ -951,13 +951,21 @@ export function FlaconScene({ className }: { className?: string }) {
         const target = keep(
           new THREE.WebGLRenderTarget(width, height, {
             type: THREE.HalfFloatType,
-            samples: 4,
+            samples: 2,
           })
         );
         const c = new EffectComposer(renderer, target);
         c.addPass(new RenderPass(scene, camera));
         // Seuil haut : seules les spéculaires les plus vives débordent.
-        const bloom = new UnrealBloomPass(new THREE.Vector2(width, height), 0.42, 0.55, 0.86);
+        // Demi-résolution. La floraison EST un flou : personne n'en voit la
+        // définition, mais elle coûte plusieurs passes de réduction en pleine
+        // résolution. L'économie la plus rentable de la scène.
+        const bloom = new UnrealBloomPass(
+          new THREE.Vector2(width * 0.5, height * 0.5),
+          0.42,
+          0.55,
+          0.86
+        );
         c.addPass(bloom);
         bloomPass = bloom;
         c.addPass(new OutputPass()); // applique le tone mapping, une seule fois
@@ -1021,6 +1029,10 @@ export function FlaconScene({ className }: { className?: string }) {
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
         composer?.setSize(w, h);
+        // `EffectComposer.setSize` repasse la floraison en pleine résolution :
+        // on la ramène à la moitié juste après, sinon l'économie est perdue dès
+        // le premier redimensionnement — qui a lieu au montage.
+        bloomPass?.setSize(w * 0.5, h * 0.5);
       });
       ro.observe(mount);
 
@@ -1082,6 +1094,16 @@ export function FlaconScene({ className }: { className?: string }) {
         return lerp(a.fov, b.fov, e);
       };
 
+      // ── Gouverneur de qualité ──
+      // La machine cible est inconnue : plutôt que de parier sur un palier
+      // fixe, on MESURE les premières secondes de rendu réel. Si le budget
+      // n'est pas tenu, la résolution baisse d'un cran — un seul, pour ne
+      // jamais osciller entre deux qualités à l'écran.
+      const basePixelRatio = renderer.getPixelRatio();
+      let sampled = 0;
+      let sampledTime = 0;
+      let governed = false;
+
       let last = 0;
       const draw = (time: number) => {
         const t = reduced ? 0 : time * 0.001;
@@ -1094,8 +1116,27 @@ export function FlaconScene({ className }: { className?: string }) {
         const dt = last ? Math.min(0.1, (time - last) * 0.001) : 1 / 60;
         last = time;
         const damp = (rate: number) => 1 - Math.pow(1 - rate, dt * 60);
-        const kPointer = damp(0.045);
+        const kPointer = damp(0.085);
         const kSlow = damp(0.06);
+
+        // Les images manifestement volées (onglet qui reprend la main, GC)
+        // sont écartées : elles tireraient la mesure vers le bas et
+        // déclencheraient une baisse de qualité sur une machine saine.
+        if (!governed && intro >= 1 && dt < 0.05) {
+          sampled++;
+          sampledTime += dt;
+          if (sampled >= 120) {
+            governed = true;
+            if (sampledTime / sampled > 0.024) {
+              const w = mount.clientWidth;
+              const h = mount.clientHeight;
+              renderer.setPixelRatio(Math.max(1, basePixelRatio * 0.75));
+              renderer.setSize(w, h);
+              composer?.setSize(w, h);
+              bloomPass?.setSize(w * 0.5, h * 0.5);
+            }
+          }
+        }
 
         // Sur écran tactile, pas de pointeur : une dérive lente très ample
         // remplace le geste, sinon la scène est inerte sur mobile.

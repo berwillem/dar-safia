@@ -151,7 +151,67 @@
     "undecidedLink": "Faites le diagnostic olfactif",
     "signature": "— {name}, {city}",
     "signatureNameOnly": "— {name}",
-    "signatureCityOnly": "— {city}"
+    "signatureCityOnly": "— {city}",
+    "eyebrow": "Conciergerie",
+    "tabs": {
+      "personal": {
+        "label": "Écrire à la maison",
+        "hint": "Un conseil, une disponibilité, une commande"
+      },
+      "collab": {
+        "label": "Proposer une collaboration",
+        "hint": "Marques, boutiques, presse et créateurs"
+      }
+    },
+    "collab": {
+      "houseLabel": "Maison ou enseigne",
+      "roleLabel": "Votre rôle",
+      "cityLabel": "Ville",
+      "subjectLabel": "Objet de la proposition",
+      "subjects": [
+        "Distribution",
+        "Partenariat",
+        "Presse",
+        "Autre"
+      ],
+      "messageLabel": "Votre proposition",
+      "messagePlaceholder": "Bonjour Dar Safia, nous représentons…",
+      "send": "Envoyer la proposition",
+      "hint": "Votre proposition ouvre WhatsApp : rien n'est envoyé tant que vous ne l'avez pas relue.",
+      "intro": "Proposition de collaboration :",
+      "lineHouse": "Maison : {house}",
+      "lineRole": "Rôle : {role}",
+      "lineCity": "Ville : {city}",
+      "lineSubject": "Objet : {subject}"
+    },
+    "faqTitle": "Questions fréquentes",
+    "faq": [
+      {
+        "q": "Comment passer commande ?",
+        "a": "Tout passe par la conciergerie WhatsApp. Le message se compose ici, dans votre navigateur ; il s'ouvre dans WhatsApp et n'est envoyé que lorsque vous l'avez relu."
+      },
+      {
+        "q": "Quand la conciergerie répond-elle ?",
+        "a": "Sept jours sur sept."
+      },
+      {
+        "q": "Livrez-vous dans toute l'Algérie ?",
+        "a": "Oui : les 58 wilayas sont desservies. La conciergerie confirme les modalités pour la vôtre au moment de la commande."
+      },
+      {
+        "q": "Comment se règle une commande ?",
+        "a": "À la livraison."
+      },
+      {
+        "q": "Les parfums sont-ils authentiques ?",
+        "a": "Chaque pièce du catalogue est sélectionnée par la maison, et son authenticité est garantie."
+      },
+      {
+        "q": "Je ne sais pas quoi choisir.",
+        "a": "Le diagnostic olfactif pose quatre questions et propose une signature. Aucune inscription."
+      }
+    ],
+    "faqFootnote": "Une question qui n'est pas là ? La conciergerie répond sur WhatsApp."
   },
   "catalog": {
     "eyebrow": "Catalogue",

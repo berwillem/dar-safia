@@ -28,7 +28,7 @@ export function AddToCartButton({
       onClick={() => addLine(line)}
       className={
         className ??
-        'inline-flex items-center gap-2 rounded-sm border border-smoke-2 px-6 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-ivory uppercase transition-colors duration-200 hover:border-gold hover:text-gold'
+        'ds-btn-ghost inline-flex items-center gap-2 rounded-sm border border-smoke-2 px-6 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-ivory uppercase transition-colors duration-200 hover:border-gold hover:text-noir'
       }
     >
       {dict.product.addToCart}

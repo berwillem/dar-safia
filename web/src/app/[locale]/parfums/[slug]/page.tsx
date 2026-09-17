@@ -117,13 +117,13 @@ export default async function ProductPage({
         <nav aria-label="breadcrumb" className="text-2xs text-ivory/45">
           <ol className="flex flex-wrap items-center gap-2">
             <li>
-              <Link href={localePath(locale, '/')} className="hover:text-gold">
+              <Link href={localePath(locale, '/')} className="ds-navlink hover:text-gold">
                 {p.breadcrumbHome}
               </Link>
             </li>
             <li aria-hidden="true">◆</li>
             <li>
-              <Link href={localePath(locale, '/parfums')} className="hover:text-gold">
+              <Link href={localePath(locale, '/parfums')} className="ds-navlink hover:text-gold">
                 {p.breadcrumbCatalog}
               </Link>
             </li>
@@ -214,7 +214,7 @@ export default async function ProductPage({
                   href={orderUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2.5 rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors duration-200 hover:bg-gold-light"
+                  className="ds-btn inline-flex items-center gap-2.5 rounded-sm bg-gold px-7 py-3.5 text-sm font-semibold tracking-(--tracking-label) text-noir uppercase transition-colors duration-200 hover:bg-gold-light"
                 >
                   {p.order}
                 </a>

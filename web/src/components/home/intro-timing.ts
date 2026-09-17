@@ -63,6 +63,19 @@ function readIntroPlays(): boolean {
   }
 }
 
+/**
+ * Même lecture que `useIntroPlays`, mais impérative : à appeler dans un effet,
+ * quand la réponse doit être FIGÉE au montage.
+ *
+ * Le hook relit `sessionStorage` à chaque rendu. Dès que `HeroFilm` a marqué
+ * la session comme vue, il bascule donc à `false` — ce qui est juste pour
+ * « faut-il jouer l'intro ? », mais faux pour qui pilote une séquence DÉJÀ
+ * commencée : la dépendance change en cours de route et l'effet est démonté.
+ */
+export function introWillPlay(): boolean {
+  return readIntroPlays();
+}
+
 export function useIntroPlays(): boolean {
   return useSyncExternalStore(noSubscribe, readIntroPlays, () => false);
 }
@@ -73,4 +86,25 @@ export function dismissIntro(): void {
   } catch {
     /* stockage indisponible : sans conséquence */
   }
+}
+
+/**
+ * Instant où l'en-tête revient. La nav n'existe pas tant que le film ne s'est
+ * pas présenté : elle arrive APRÈS la typographie, une fois le plan installé.
+ *
+ * Ce voile ne concerne QUE l'intro de la première visite, sur l'accueil.
+ * Partout ailleurs — et à toute visite suivante — l'en-tête est là au premier
+ * rendu : une nav qui s'absente se lit comme une nav manquante.
+ */
+export const NAV_REVEAL = TYPE_START + 1.15;
+
+/**
+ * Émis quand l'intro se termine autrement que par la montre : bouton
+ * « passer ». L'en-tête l'écoute pour ne pas rester voilé alors que le film
+ * est déjà parti.
+ */
+export const INTRO_DONE_EVENT = 'darsafia:intro-done';
+
+export function announceIntroDone(): void {
+  window.dispatchEvent(new Event(INTRO_DONE_EVENT));
 }
