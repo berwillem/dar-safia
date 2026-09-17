@@ -184,7 +184,7 @@
       "lineCity": "Ville : {city}",
       "lineSubject": "Objet : {subject}"
     },
-    "faqTitle": "Questions fréquentes",
+    "faqTitle": "Avant de nous écrire",
     "faq": [
       {
         "q": "Comment passer commande ?",
@@ -211,7 +211,8 @@
         "a": "Le diagnostic olfactif pose quatre questions et propose une signature. Aucune inscription."
       }
     ],
-    "faqFootnote": "Une question qui n'est pas là ? La conciergerie répond sur WhatsApp."
+    "faqFootnote": "Une question qui n'est pas là ? La conciergerie répond sur WhatsApp.",
+    "previewLabel": "Le message tel qu’il partira"
   },
   "catalog": {
     "eyebrow": "Catalogue",

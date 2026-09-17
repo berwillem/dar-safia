@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { FlaconScene } from '@/components/three/FlaconScene';
 import { HouseFigures } from '@/components/home/HouseFigures';
@@ -36,6 +36,50 @@ export function AboutExperience({
   const a = dict.about;
   const rootRef = useRef<HTMLDivElement>(null);
   useReveal(rootRef);
+
+  // La déclaration du hero glissait par-dessus le flacon à la vitesse pleine
+  // du défilement, pendant que le plan, lui, restait tenu : l'écart de vitesse
+  // la faisait paraître aspirée vers le haut. Elle suit maintenant la page à
+  // moindre allure — un plan plus lointain — et se dissout en perdant le net.
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let disposed = false;
+    let teardown: (() => void) | null = null;
+    void (async () => {
+      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
+        import('gsap'),
+        import('gsap/ScrollTrigger'),
+      ]);
+      if (disposed) return;
+      gsap.registerPlugin(ScrollTrigger);
+      const copy = root.querySelector<HTMLElement>('[data-hero-copy]');
+      const track = root.querySelector<HTMLElement>('[data-scene-track]');
+      if (!copy || !track) return;
+      const tween = gsap.to(copy, {
+        y: () => window.innerHeight * 0.32,
+        opacity: 0,
+        filter: 'blur(8px)',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: track,
+          start: 'top top',
+          end: '+=70%',
+          scrub: 0.6,
+          invalidateOnRefresh: true,
+        },
+      });
+      teardown = () => {
+        tween.scrollTrigger?.kill();
+        tween.kill();
+      };
+    })();
+    return () => {
+      disposed = true;
+      teardown?.();
+    };
+  }, []);
 
   const conciergeUrl = whatsappUrl(dict.common.conciergeMessage);
 
@@ -73,7 +117,10 @@ export function AboutExperience({
         {/* Remonté par-dessus le plan collant : la typographie occupe le premier
             écran, puis s'en va et libère le flacon seul. */}
         <div className="relative -mt-[92svh] flex min-h-[92svh] flex-col justify-end">
-          <div className="mx-auto w-full max-w-(--container-site) px-6 pb-16 md:px-12 md:pb-24 lg:px-20">
+          <div
+            data-hero-copy
+            className="mx-auto w-full max-w-(--container-site) px-6 pb-16 md:px-12 md:pb-24 lg:px-20"
+          >
             <p
               data-fade
               className="font-ui text-2xs tracking-(--tracking-eyebrow) text-gold uppercase"

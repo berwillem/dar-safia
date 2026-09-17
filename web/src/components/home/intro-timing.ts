@@ -12,7 +12,16 @@ import { useSyncExternalStore } from 'react';
  * les durées de la timeline d'ouverture. Un seul endroit à ajuster.
  */
 
-export const INTRO_SESSION_KEY = 'darsafia.intro.seen';
+import { INTRO_SESSION_KEY } from '@/lib/intro-guard';
+
+export { INTRO_SESSION_KEY };
+
+declare global {
+  interface Window {
+    /** Posé par le script de garde du <head> ; voir `lib/intro-guard.ts`. */
+    __dsIntro?: number;
+  }
+}
 
 /**
  * Une seule courbe pour toute l'intro — le cubic-bezier demandé par la

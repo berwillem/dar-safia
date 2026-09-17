@@ -255,15 +255,22 @@ export function HeroFilm({
             scrub: true,
           },
         });
+        // La typographie ne FILE plus vers le haut. L'ancienne sortie ajoutait
+        // un -28 % au défilement natif : le texte montait plus vite que la
+        // page, ce qui se lisait comme une fuite. Elle descend désormais
+        // légèrement pendant qu'on défile — elle monte donc MOINS vite que la
+        // page, comme un plan plus lointain — et se dissout en perdant le net.
         gsap.to('[data-hero-type]', {
-          yPercent: -28,
+          y: () => window.innerHeight * 0.2,
           opacity: 0,
+          filter: 'blur(6px)',
           ease: 'none',
           scrollTrigger: {
             trigger: rootRef.current,
             start: 'top top',
-            end: '65% top',
-            scrub: true,
+            end: '80% top',
+            scrub: 0.6,
+            invalidateOnRefresh: true,
           },
         });
       }, rootRef);

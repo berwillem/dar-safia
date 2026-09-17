@@ -15,8 +15,10 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { CartDrawer } from '@/components/cart/CartDrawer';
 import { CartProvider } from '@/components/cart/CartProvider';
 import { I18nProvider } from '@/components/i18n/I18nProvider';
+import { InlineScript } from '@/components/InlineScript';
 import { SmoothScroll } from '@/components/motion/SmoothScroll';
 import { DIRECTION, LOCALES, isLocale } from '@/lib/i18n/config';
+import { introGuardScript } from '@/lib/intro-guard';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 
 import '../globals.css';
@@ -100,7 +102,14 @@ export default async function RootLayout({
   const dir = DIRECTION[locale];
 
   return (
-    <html lang={locale} dir={dir} className={FONT_VARS} data-dir={dir}>
+    // `suppressHydrationWarning` : le script de garde modifie <html> avant
+    // l'hydratation. Il ne couvre QUE les attributs de cet élément.
+    <html lang={locale} dir={dir} className={FONT_VARS} data-dir={dir} suppressHydrationWarning>
+      <head>
+        {/* Exécuté pendant l'analyse du HTML, avant la première peinture :
+            c'est le seul moment où l'en-tête peut être voilé sans flash. */}
+        <InlineScript html={introGuardScript} />
+      </head>
       <body className="min-h-screen antialiased">
         <a
           href="#contenu"

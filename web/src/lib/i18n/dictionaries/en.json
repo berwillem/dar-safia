@@ -184,7 +184,7 @@
       "lineCity": "City: {city}",
       "lineSubject": "Subject: {subject}"
     },
-    "faqTitle": "Frequently asked",
+    "faqTitle": "Before you write",
     "faq": [
       {
         "q": "How do I place an order?",
@@ -211,7 +211,8 @@
         "a": "The scent diagnostic asks four questions and proposes a signature. No sign-up."
       }
     ],
-    "faqFootnote": "A question that isn't here? The concierge replies on WhatsApp."
+    "faqFootnote": "A question that isn't here? The concierge replies on WhatsApp.",
+    "previewLabel": "Your message, as it will be sent"
   },
   "catalog": {
     "eyebrow": "Catalogue",

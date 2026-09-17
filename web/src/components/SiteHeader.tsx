@@ -10,13 +10,16 @@ import { localePath } from '@/lib/i18n/routing';
 
 import { LocaleSwitcher } from './i18n/LocaleSwitcher';
 import { CartButton } from './cart/CartButton';
+import { INTRO_ATTR } from '@/lib/intro-guard';
+
 import { INTRO_DONE_EVENT, introWillPlay, NAV_REVEAL } from './home/intro-timing';
 
 /**
- * Le voile doit être posé AVANT la peinture, sinon l'en-tête est visible une
- * image puis disparaît — précisément le défaut qu'on corrige. En rendu
- * serveur, `useLayoutEffect` n'a pas de sens et React le signale : on retombe
- * alors sur `useEffect`, qui n'y sera de toute façon jamais exécuté.
+ * Au chargement complet, le voile est DÉJÀ posé par le script du <head>. Cet
+ * effet fait le reste : le réappliquer (le Strict Mode de développement efface
+ * les attributs de <html>), le poser lors d'une navigation client vers
+ * l'accueil, et surtout le LEVER. `useLayoutEffect` pour agir avant la
+ * peinture ; `useEffect` côté serveur, où il ne s'exécute jamais.
  */
 const useVeilEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -46,21 +49,24 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
 
   const isHome = pathname === localePath(locale, '/');
 
-  const [veiled, setVeiled] = useState(false);
-
   useVeilEffect(() => {
-    // Lu ICI, impérativement, et une seule fois. Avec le hook `useIntroPlays`,
-    // la valeur rebasculait à `false` dès que `HeroFilm` marquait la session
-    // comme vue : la dépendance de cet effet changeait en pleine intro, le
-    // nettoyage emportait le minuteur et les écouteurs — et l'en-tête restait
-    // voilé pour de bon.
-    if (!isHome || !introWillPlay()) {
-      setVeiled(false);
+    const root = document.documentElement;
+    // `window.__dsIntro` d'abord : posé une fois, il survit au remontage. Le
+    // sessionStorage, lui, est marqué « vu » par `HeroFilm` dès son montage —
+    // le relire en pleine intro répondrait faux et laisserait l'en-tête voilé.
+    const veil = isHome && (window.__dsIntro === 1 || introWillPlay());
+    if (!veil) {
+      window.__dsIntro = 0;
+      root.removeAttribute(INTRO_ATTR);
       return;
     }
-    setVeiled(true);
+    window.__dsIntro = 1;
+    root.setAttribute(INTRO_ATTR, 'playing');
 
-    const lift = () => setVeiled(false);
+    const lift = () => {
+      window.__dsIntro = 0;
+      root.removeAttribute(INTRO_ATTR);
+    };
     const timer = window.setTimeout(lift, NAV_REVEAL * 1000);
     window.addEventListener(INTRO_DONE_EVENT, lift);
     const onKey = (e: KeyboardEvent) => {
@@ -125,7 +131,6 @@ export function SiteHeader({ locale, dict }: { locale: Locale; dict: Dictionary 
   return (
     <header
       data-lifted={solidHeader || undefined}
-      data-intro-veiled={veiled || undefined}
       className="ds-header fixed inset-x-0 top-0 z-40 data-lifted:border-b data-lifted:border-smoke-2 data-lifted:bg-noir/88 data-lifted:backdrop-blur-md"
     >
       <div className="mx-auto flex max-w-(--container-site) items-center gap-4 px-5 py-4 md:px-8">
