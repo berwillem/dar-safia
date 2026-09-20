@@ -1298,6 +1298,16 @@
     </div>
   </div>
 
+  <script>
+    // Fallback de sécurité : masquer le preloader après 2 secondes si main.js échoue (erreur JS, module non chargé)
+    setTimeout(function() {
+      var pl = document.getElementById('preloader');
+      if (pl) {
+        pl.style.opacity = '0';
+        setTimeout(function() { pl.remove(); document.body.classList.remove('no-scroll'); }, 500);
+      }
+    }, 2000);
+  </script>
   <script type="module" src="/main.js"></script>
 </body>
 </html>
